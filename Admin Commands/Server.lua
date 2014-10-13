@@ -55,9 +55,9 @@ function getPlayerQuery(speaker, message, singular)
 	local results = {}
 	local message = ""
 	if #queries > 0 then
-		local queryMatch = string.match(queries[#queries], "^([^%s]+)%s+(.*)")
-		if queryMatch then
-			queries[#queries], message = queryMatch
+		local queryMatch1, queryMatch2 = string.match(queries[#queries], "^([^%s]+)%s+(.*)")
+		if queryMatch1 and queryMatch2 then
+			queries[#queries], message = queryMatch1, queryMatch2
 		end
 		for i = 1, #queries do
 			local bin = {}
@@ -68,7 +68,7 @@ function getPlayerQuery(speaker, message, singular)
 			elseif string.lower(queries[i]) == "others" and not singular then
 				for i, v in pairs(Players:GetPlayers()) do
 					if v ~= speaker then
-						bin[#bin+1]=v
+						bin[#bin+1] = v
 					end
 				end
 			elseif string.sub(string.lower(queries[i], 1, 5)) == "team-" then
