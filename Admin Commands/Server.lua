@@ -2,6 +2,14 @@
 local PREFIX = "/"
 local Players = game:GetService("Players")
 local Teams = game:GetService("Teams")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+-- event is a RemoteEvent located in ReplicatedStorage. We use this to send out notifications to clients.
+-- It is possible another script has already made it.
+local event = ReplicatedStroage:FindFirstChild("event")
+if not event or not event:IsA("RemoteEvent") then
+	event = Instance.new("RemoteEvent", ReplicatedStorage)
+	event.Name = "event"
+end
 -- Store all Commands in here. Use the "Kill" command as a template.
 local Commands = {
 	{
@@ -43,7 +51,7 @@ function search(objects, str)
 	return #results == 1 and results[1] or nil
 end
 function getPlayerQuery(speaker, message, singular)
-	local queries = singular and {message} or string.explode(message,',')
+	local queries = singular and {message} or string.explode(message, ",")
 	local results = {}
 	local message = ""
 	if #queries > 0 then
