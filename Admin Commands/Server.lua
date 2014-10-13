@@ -1,5 +1,6 @@
 -- The prefix used before each command
 local PREFIX = "/"
+local HOSTILE_GROUP_ID = 388389
 local Players = game:GetService("Players")
 local Teams = game:GetService("Teams")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
@@ -95,6 +96,9 @@ function getPlayerQuery(speaker, message, singular)
 end
 function getPermissionsLevel(Player)
 	-- TODO: Establish the Player's permissionsLevel here.
+	-- TEMPORARY: Returns the rank within Hostile for that user.
+	-- We may add special exceptions here in the future for honorary members.
+	return Player:GetRankInGroup(HOSTILE_GROUP_ID)
 end
 function parseString(speaker, message)
 	-- Get speaker's permissionsLevel (should be an integer >= 0)
@@ -105,6 +109,8 @@ function parseString(speaker, message)
 	end
 end
 function PlayerAdded(newPlayer)
+	-- Received incoming players
+	-- Connects .Chatted event
 	newPlayer.Chatted:connect(function(message)
 		parseString(newPlayer, message)
 	end)
