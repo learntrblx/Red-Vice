@@ -8,7 +8,12 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 SINGLE_PLAYER_SYNTAX = "Player"
 TARGET_SINGLE_PLAYER_SYNTAX = "Player1 Player2"
 MULTI_PLAYER_SYNTAX = "Player1, Player2, ..."
-TARGET_MULTI_PLAYER_SYNTAX = "Player1 Player2, Player3, ..."
+TARGET_MULTI_PLAYER_SYNTAX = "Player1, Player2, ... Player3"
+-- Preset Permissions Level Definitions
+GROUP_OWNER = 255
+ADMIN = 250
+USER = 1
+GUEST = 0
 -- event is a RemoteEvent located in ReplicatedStorage
 -- We use this to send out notifications to clients
 -- It is possible another script has already made it
@@ -25,10 +30,10 @@ local Commands = {
 		names = {"Kill", "Blox"},
 		-- This should be a short description of what the command does and the arguments needed
 		-- It is shown within in-game GUI
-		syntax = MULTIPLAYER_SYNTAX
+		syntax = MULTI_PLAYER_SYNTAX
 		description = "Kills the given player.",
 		-- This is the minimum permissions level required to execute this command
-		permissionsLevel = 3,
+		permissionsLevel = ADMIN,
 		-- This function is run only if the speaker meets the minimum permissions level for this command
 		execute = function(speaker, message)
 			-- Converts "a, b, c test" to {Player a, Player b, Player c}, "test"
@@ -45,7 +50,21 @@ local Commands = {
 	},
 	{
 		names = {"teleport", "tp", "tele"},
-		syntax = ""
+		syntax = TARGET_MULTI_PLAYER_SYNTAX,
+		description = "Teleports the given players to the target player.",
+		permissionsLevel = ADMIN,
+		execute = function(speaker, message)
+			local playerQuery, message = getPlayerQuery(speaker, message)
+			local targetPlayer, _ = getPlayerQuery(speaker, message, true)
+			if not targetPlayer or not targetPlayer.Character or not targetPlayer.Character.HumanoidRootPart then
+				return
+			end
+			for i = 1, #playerQuery do
+				if playerQuery[i] and playerQuery[i] ~= targetPlayer and playerQuery[i].Character and playerQuery[i].HumanoidRootPart then
+					playerQuery[i].Character.HumanoidRootPart.CFrame = targetPlayer.Character.HumanoidRootPart.CFrame
+				end
+			end
+		end
 	}
 }
 -- Thanks to bohdan, this was ripped straight from ROBLOX CoreGUI with minor changes
