@@ -1,10 +1,6 @@
-Admin Commands
-=======
-
+<h1>Admin Commands</h1>
 These are the official Hostile Admin Commands. And the only ones permitted to be used within Hostile places.
 
-Command List
-===
+<h2>Command Documentation</h2>
 
-***Kill***
-Test
+<h4>Kill</h4>
