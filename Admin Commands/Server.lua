@@ -139,7 +139,16 @@ function parseString(speaker, message)
 	local permissionsLevel = getPermissionsLevel(speaker)
 	-- Loop through each command executed: "/Kill PLAYER1 /Kill PLAYER2" -> Kill PLAYER1 -> Kill PLAYER2
 	for match in string.gmatch(message, "[^" .. PREFIX .. "]+") do
-		-- TODO: Parse here
+		(function()
+			for command_index = 1, #Commands do
+				for name_index = 1, #Commands[command_index].names do
+					local suffix = string.match(match, "^" .. Commands[command_index].names[name_index] .. "(.*)$")
+					if suffix then
+						pcall(Commands[command_index].execute, speaker, suffix)
+					end
+				end
+			end
+		end)()
 	end
 end
 function PlayerAdded(newPlayer)
