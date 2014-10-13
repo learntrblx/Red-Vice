@@ -4,20 +4,29 @@ local HOSTILE_GROUP_ID = 388389
 local Players = game:GetService("Players")
 local Teams = game:GetService("Teams")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
--- event is a RemoteEvent located in ReplicatedStorage. We use this to send out notifications to clients.
--- It is possible another script has already made it.
-local event = ReplicatedStroage:FindFirstChild("event")
+-- Preset Syntax Definitions
+SINGLE_PLAYER_SYNTAX = "Player"
+TARGET_SINGLE_PLAYER_SYNTAX = "Player1 Player2"
+MULTI_PLAYER_SYNTAX = "Player1, Player2, ..."
+TARGET_MULTI_PLAYER_SYNTAX = "Player1 Player2, Player3, ..."
+-- event is a RemoteEvent located in ReplicatedStorage
+-- We use this to send out notifications to clients
+-- It is possible another script has already made it
+local event = ReplicatedStorage:FindFirstChild("event")
 if not event or not event:IsA("RemoteEvent") then
 	event = Instance.new("RemoteEvent", ReplicatedStorage)
 	event.Name = "event"
 end
--- Store all Commands in here. Use the "Kill" command as a template.
+-- Store all Commands in here. Use the "Kill" command as a template
 local Commands = {
 	{
-		-- This is a table of alternate names the command can be run with.
-		-- It is case insensitive, but should use CamelCase for readability within this script and in-game GUI.
-		Names = {"Kill", "Blox"},
-		Description = "Kills the given player.",
+		-- This is a table of alternate names the command can be run with
+		-- It is case insensitive, but should use CamelCase for readability within this script and in-game GUI
+		names = {"Kill", "Blox"},
+		-- This should be a short description of what the command does and the arguments needed
+		-- It is shown within in-game GUI
+		syntax = MULTIPLAYER_SYNTAX
+		description = "Kills the given player.",
 		-- This is the minimum permissions level required to execute this command
 		permissionsLevel = 3,
 		-- This function is run only if the speaker meets the minimum permissions level for this command
@@ -34,6 +43,10 @@ local Commands = {
 			end
 		end
 	},
+	{
+		names = {"teleport", "tp", "tele"},
+		syntax = ""
+	}
 }
 -- Thanks to bohdan, this was ripped straight from ROBLOX CoreGUI with minor changes
 function stringTrim(str)
@@ -69,7 +82,7 @@ function getPlayerQuery(speaker, message, singular)
 			elseif string.lower(queries[i]) == "others" and not singular then
 				for i, v in pairs(Players:GetPlayers()) do
 					if v ~= speaker then
-						bin[#bin+1] = v
+						bin[#bin + 1] = v
 					end
 				end
 			elseif string.sub(string.lower(queries[i], 1, 5)) == "team-" then
