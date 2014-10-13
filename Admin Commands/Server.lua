@@ -1,19 +1,21 @@
 -- The prefix used before each command
-local PREFIX = "/"
-local HOSTILE_GROUP_ID = 388389
-local Players = game:GetService("Players")
-local Teams = game:GetService("Teams")
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
+PREFIX = "/"
+-- Group Id for Hostile
+HOSTILE_GROUP_ID = 388389
 -- Preset Syntax Definitions
 SINGLE_PLAYER_SYNTAX = "Player"
 TARGET_SINGLE_PLAYER_SYNTAX = "Player1 Player2"
 MULTI_PLAYER_SYNTAX = "Player1, Player2, ..."
 TARGET_MULTI_PLAYER_SYNTAX = "Player1, Player2, ... Player3"
 -- Preset Permissions Level Definitions
-GROUP_OWNER = 255
+OWNER = 255
 ADMIN = 250
 USER = 1
 GUEST = 0
+-- Various services used
+local Players = game:GetService("Players")
+local Teams = game:GetService("Teams")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
 -- event is a RemoteEvent located in ReplicatedStorage
 -- We use this to send out notifications to clients
 -- It is possible another script has already made it
