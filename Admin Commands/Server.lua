@@ -35,13 +35,13 @@ local Commands = {
 	},
 }
 -- Thanks to bohdan, this was ripped straight from ROBLOX CoreGUI with minor changes
-function stringTrim(str, nstr)
-	return string.gsub(string.match(str, "^%s*(.-)%s*$"), "\n","\n" .. nstr)
+function stringTrim(str)
+    return string.gsub(string.match(str, "^%s*(.-)%s*$"), "\n", "")
 end
 function search(objects, str)
 	local results = {}
 	for i=1, #objects do
-		if string.match(string.lower(objects[i].Name), "^%s*(.-)%s*$") == string.match(string.lower(str), "^%s*(.-)%s*$")) then
+		if string.lower(stringTrim(objects[i].Name)) == string.lower(stringTrim(str)) then
 			return objects[i]
 		end
 		if string.match(string.lower(objects[i].Name), "^" .. string.lower(str)) then
@@ -91,7 +91,7 @@ function getPlayerQuery(speaker, message, singular)
 	if singular then
 		results = results[1]
 	end
-	return results, message:match("^%s*(.-)%s*$")
+	return results, stringTrim(message)
 end
 function getPermissionsLevel(Player)
 	-- TODO: Establish the Player's permissionsLevel here.
