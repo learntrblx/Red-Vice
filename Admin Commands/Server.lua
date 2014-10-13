@@ -72,7 +72,7 @@ function getPlayerQuery(speaker, message, singular)
 					end
 				end
 			elseif string.sub(string.lower(queries[i], 1, 5)) == "team-" then
-				local team = search(Teams:children(),queries[i]:sub(6))
+				local team = search(Teams:children(), queries[i]:sub(6))
 				if team then
 					for i, v in pairs(Players:GetPlayers()) do
 						if v.TeamColor == team.TeamColor and v.Neutral == false then
@@ -85,7 +85,7 @@ function getPlayerQuery(speaker, message, singular)
 			else
 				bin = {search(Players:GetPlayers(), queries[i])}
 			end
-			results = table.merge(Results, bin)
+			results = table.merge(results, bin)
 		end
 	end
 	if singular then
