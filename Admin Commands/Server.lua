@@ -62,8 +62,10 @@ local Commands = {
 				return
 			end
 			for i = 1, #playerQuery do
-				if playerQuery[i] and playerQuery[i] ~= targetPlayer and playerQuery[i].Character and playerQuery[i].HumanoidRootPart then
-					playerQuery[i].Character.HumanoidRootPart.CFrame = targetPlayer.Character.HumanoidRootPart.CFrame
+				if playerQuery[i] and playerQuery[i] ~= targetPlayer then
+					if playerQuery[i].Character and playerQuery[i].HumanoidRootPart then
+						playerQuery[i].Character.HumanoidRootPart.CFrame = targetPlayer.Character.HumanoidRootPart.CFrame
+					end
 				end
 			end
 		end
@@ -90,7 +92,7 @@ function getPlayerQuery(speaker, message, singular)
 	local results = {}
 	local message = ""
 	if #queries > 0 then
-		local queryMatch1, queryMatch2 = string.match(queries[#queries], "^([^%s]+)%s+(.*)")
+		local queryMatch1, queryMatch2 = string.match(queries[#queries], "^([^%s]+)%s+(.*)$")
 		if queryMatch1 and queryMatch2 then
 			queries[#queries], message = queryMatch1, queryMatch2
 		end
@@ -107,7 +109,7 @@ function getPlayerQuery(speaker, message, singular)
 					end
 				end
 			elseif string.sub(string.lower(queries[i], 1, 5)) == "team-" then
-				local team = search(Teams:children(), queries[i]:sub(6))
+				local team = search(Teams:children(), string.sub(queries[i], 6))
 				if team then
 					for i, v in pairs(Players:GetPlayers()) do
 						if v.TeamColor == team.TeamColor and v.Neutral == false then
@@ -141,24 +143,26 @@ function parseString(speaker, message)
 	for match in string.gmatch(message, "[^" .. PREFIX .. "]+") do
 		(function()
 			for command_index = 1, #Commands do
-				for name_index = 1, #Commands[command_index].names do
-					local suffix = string.match(match, "^" .. Commands[command_index].names[name_index] .. "(.*)$")
-					if suffix then
-						pcall(Commands[command_index].execute, speaker, suffix)
+				if permissionsLevel >= Commands[command_index].permissionsLevel then
+					for name_index = 1, #Commands[command_index].names do
+						local suffix = string.match(match, "^" .. Commands[command_index].names[name_index] .. "(.*)$")
+						if suffix then
+							pcall(Commands[command_index].execute, speaker, suffix)
+						end
 					end
 				end
 			end
 		end)()
 	end
 end
-function PlayerAdded(newPlayer)
+function playerAdded(newPlayer)
 	-- Received incoming players
 	-- Connects .Chatted event
 	newPlayer.Chatted:connect(function(message)
 		parseString(newPlayer, message)
 	end)
 end
-Players.PlayerAdded:connect(PlayerAdded)
+Players.PlayerAdded:connect(playerAdded)
 for i, v in pairs(Players:GetPlayers()) do
-	PlayerAdded(v)
+	playerAdded(v)
 end
