@@ -1,4 +1,4 @@
-<center>![logo.png](https://github.com/OsyrisHostile/Hostile/blob/master/logo200.png)</center>
+![logo.png](https://github.com/OsyrisHostile/Hostile/blob/master/logo200.png)
 
 Hostile
 =======
