@@ -89,8 +89,8 @@ function search(objects, str)
 	end
 	return #results == 1 and results[1] or nil
 end
-function getPlayerQuery(speaker, message, singular)
-	local queries = singular and {message} or string.explode(message, ",")
+function getPlayerQuery(speaker, message, isSingular)
+	local queries = isSingular and {message} or string.explode(message, ",")
 	local results = {}
 	local message = ""
 	if #queries > 0 then
@@ -102,9 +102,9 @@ function getPlayerQuery(speaker, message, singular)
 			local bin = {}
 			if string.lower(queries[i]) == "me" then
 				bin = {speaker}
-			elseif string.lower(queries[i]) == "all" and not singular then
+			elseif string.lower(queries[i]) == "all" and not isSingular then
 				bin = Players:GetPlayers()
-			elseif string.lower(queries[i]) == "others" and not singular then
+			elseif string.lower(queries[i]) == "others" and not isSingular then
 				for i, v in pairs(Players:GetPlayers()) do
 					if v ~= speaker then
 						bin[#bin + 1] = v
@@ -127,7 +127,7 @@ function getPlayerQuery(speaker, message, singular)
 			results = table.merge(results, bin)
 		end
 	end
-	if singular then
+	if isSingular then
 		results = results[1]
 	end
 	return results, stringTrim(message)
