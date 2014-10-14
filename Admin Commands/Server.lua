@@ -1,3 +1,4 @@
+-- Static variables
 -- The prefix used before each command
 PREFIX = "/"
 -- Group Id for Hostile
@@ -71,6 +72,7 @@ local Commands = {
 		end
 	}
 }
+-- Functions
 -- Thanks to bohdan, this was ripped straight from ROBLOX CoreGUI with minor changes
 function stringTrim(str)
     return string.gsub(string.match(str, "^%s*(.-)%s*$"), "\n", "")
@@ -162,7 +164,9 @@ function playerAdded(newPlayer)
 		parseString(newPlayer, message)
 	end)
 end
+-- Events
 Players.PlayerAdded:connect(playerAdded)
+-- Utility Code
 for i, v in pairs(Players:GetPlayers()) do
 	playerAdded(v)
 end
