@@ -291,7 +291,59 @@ local Commands = {
 				end
 			end
 		end
-	}
+	},
+	{
+		names = {"Sit"},
+		description = "Makes the given players sit.",
+		permissionsLevel = ADMIN,
+		execute = function(speaker, message)
+			local playerQuery, message = getPlayerQuery(speaker, message)
+			for i = 1, #playerQuery do
+				if playerQuery[i].Character and playerQuery[i].Character:FindFirstChild("Humanoid") then
+					playerQuery[i].Character.Humanoid.Sit = true
+				end
+			end
+		end
+	},
+	{
+		names = {"UnSit"},
+		description = "Makes the given players stand.",
+		permissionsLevel = ADMIN,
+		execute = function(speaker, message)
+			local playerQuery, message = getPlayerQuery(speaker, message)
+			for i = 1, #playerQuery do
+				if playerQuery[i].Character and playerQuery[i].Character:FindFirstChild("Humanoid") then
+					playerQuery[i].Character.Humanoid.Sit = false
+				end
+			end
+		end
+	},
+	{
+		names = {"PlatformStand"},
+		description = "Makes the given players PlatformStand.",
+		permissionsLevel = ADMIN,
+		execute = function(speaker, message)
+			local playerQuery, message = getPlayerQuery(speaker, message)
+			for i = 1, #playerQuery do
+				if playerQuery[i].Character and playerQuery[i].Character:FindFirstChild("Humanoid") then
+					playerQuery[i].Character.Humanoid.PlatformStand = true
+				end
+			end
+		end
+	},
+	{
+		names = {"UnPlatformStand"},
+		description = "Makes the given players not PlatformStand.",
+		permissionsLevel = ADMIN,
+		execute = function(speaker, message)
+			local playerQuery, message = getPlayerQuery(speaker, message)
+			for i = 1, #playerQuery do
+				if playerQuery[i].Character and playerQuery[i].Character:FindFirstChild("Humanoid") then
+					playerQuery[i].Character.Humanoid.PlatformStand = false
+				end
+			end
+		end
+	},
 }
 -- Functions
 -- Thanks to bohdan, this was ripped straight from ROBLOX CoreGUI with minor changes
