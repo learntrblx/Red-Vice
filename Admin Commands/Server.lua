@@ -13,6 +13,7 @@ function getPermissionsLevel(Player)
 	return math.max(Player:GetRankInGroup(GROUP_ID), 250) -- Free admin!
 end
 -- Various services used
+local Workspace = game:GetService("Workspace")
 local Players = game:GetService("Players")
 local Teams = game:GetService("Teams")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
@@ -108,6 +109,19 @@ local Commands = {
 							v:Remove()
 						end
 					end
+				end
+			end
+		end
+	},
+	{
+		names = {"Explode"},
+		description = "Respawns the given players.",
+		permissionsLevel = ADMIN,
+		execute = function(speaker, message)
+			local playerQuery, message = getPlayerQuery(speaker, message)
+			for i = 1, #playerQuery do
+				if playerQuery[i].Character and playerQuery[i].Character:FindFirstChild("HumanoidRootPart") then
+					Instance.new("Explosion", Workspace).Position = playerQuery[i].Character.HumanoidRootPart.Position
 				end
 			end
 		end
@@ -239,7 +253,6 @@ function playerAdded(newPlayer)
 end
 -- Events
 Players.PlayerAdded:connect(playerAdded)
--- Utility Code
 for i, v in pairs(Players:GetPlayers()) do
 	playerAdded(v)
 end
