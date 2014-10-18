@@ -381,6 +381,7 @@ function parseString(speaker, message)
 							Commands[command_index].execute(speaker, suffix) -- This line is for debugging so I can see errors
 							--pcall(Commands[command_index].execute, speaker, suffix)
 						end
+						return
 					end
 				end
 			end
