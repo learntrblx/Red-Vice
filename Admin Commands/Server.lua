@@ -230,7 +230,7 @@ local Commands = {
 			local playerQuery, message = getPlayerQuery(speaker, message)
 			local Sword = InsertService:LoadAsset(47433):GetChildren()[1]
 			for i = 1, #playerQuery do
-				Sword:Clone().Parent = playerQuery[i].Character.Backpack
+				Sword:Clone().Parent = playerQuery[i].Character
 			end
 		end
 	}
