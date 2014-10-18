@@ -175,7 +175,7 @@ local Commands = {
 		end
 	},
 	{
-		names = {"TimeOfDay", "Time"},
+		names = {"TimeOfDay", "Time", "TOD"},
 		description = "Sets the TimeOfDay to the given number.",
 		permissionsLevel = ADMIN,
 		execute = function(speaker, message)
@@ -277,7 +277,7 @@ local Commands = {
 				end
 			end
 		end
-	},
+	}
 }
 -- Functions
 -- Thanks to bohdan, this was ripped straight from ROBLOX CoreGUI with minor changes
