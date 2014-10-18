@@ -15,6 +15,7 @@ end
 -- Various services used
 local Workspace = game:GetService("Workspace")
 local Players = game:GetService("Players")
+local Lighting = game:GetService("Lighting")
 local Teams = game:GetService("Teams")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 -- event is a RemoteEvent located in ReplicatedStorage
