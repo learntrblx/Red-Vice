@@ -205,7 +205,7 @@ local Commands = {
 				Hammer.BinType = 4
 			end
 		end
-	}
+	},
 	{
 		names = {"Team", "SetTeam"},
 		description = "Sets the given players to the given team.",
