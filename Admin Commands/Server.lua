@@ -218,6 +218,7 @@ local Commands = {
 			end
 			for i = 1, #playerQuery do
 				playerQuery[i].TeamColor = team.TeamColor
+				playerQuery[i].Neutral = false
 			end
 		end
 	}
