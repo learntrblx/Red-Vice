@@ -105,7 +105,7 @@ local Commands = {
 			local permissionsLevel = getPermissionsLevel(speaker)
 			for i = 1, #playerQuery do
 				if playerQuery[i].Character then
-					for _, v in pairs(playerQuery[i]:GetChildren()) do
+					for _, v in pairs(playerQuery[i].Character:GetChildren()) do
 						if v:IsA("ForceField") then
 							v:Remove()
 						end
