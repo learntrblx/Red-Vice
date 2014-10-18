@@ -218,6 +218,13 @@ function tableMerge(tableA, tableB)
 	end
 	return tableA
 end
+function boolCheck(str)
+	if str == "true" or str == "on" then
+		return true
+	elseif str == "false" or str == "off" then
+		return false
+	end
+end
 function search(objects, str)
 	local results = {}
 	for i=1, #objects do
