@@ -88,7 +88,6 @@ local Commands = {
 		permissionsLevel = ADMIN,
 		execute = function(speaker, message)
 			local playerQuery, message = getPlayerQuery(speaker, message)
-			local permissionsLevel = getPermissionsLevel(speaker)
 			for i = 1, #playerQuery do
 				if playerQuery[i].Character and not playerQuery[i].Character:FindFirstChild("ForceField") then
 					Instance.new("ForceField",playerQuery[i].Character)
@@ -102,7 +101,6 @@ local Commands = {
 		permissionsLevel = ADMIN,
 		execute = function(speaker, message)
 			local playerQuery, message = getPlayerQuery(speaker, message)
-			local permissionsLevel = getPermissionsLevel(speaker)
 			for i = 1, #playerQuery do
 				if playerQuery[i].Character then
 					for _, v in pairs(playerQuery[i].Character:GetChildren()) do
@@ -111,6 +109,17 @@ local Commands = {
 						end
 					end
 				end
+			end
+		end
+	},
+	{
+		names = {"Respawn", "LoadCharacter"},
+		description = "Respawns the given players.",
+		permissionsLevel = ADMIN,
+		execute = function(speaker, message)
+			local playerQuery, message = getPlayerQuery(speaker, message)
+			for i = 1, #playerQuery do
+				playerQuery[i]:LoadCharacter()
 			end
 		end
 	}
