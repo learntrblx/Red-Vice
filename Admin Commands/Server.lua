@@ -136,6 +136,64 @@ local Commands = {
 				playerQuery[i]:LoadCharacter()
 			end
 		end
+	},
+	{
+		names = {"TimeOfDay", "Time"},
+		description = "Sets the TimeOfDay to the given number.",
+		permissionsLevel = ADMIN,
+		execute = function(speaker, message)
+			Lighting.TimeOfDay = string.match(message, "^%s*(.-)%s*$")
+		end
+	},
+	{
+		names = {"FogEnd", "Fog"},
+		description = "Sets the FogEnd to the given number.",
+		permissionsLevel = ADMIN,
+		execute = function(speaker, message)
+			Lighting.FogEnd = tonumber(message)
+		end
+	},
+	{
+		names = {"FogStart"},
+		description = "Sets the FogStart to the given number.",
+		permissionsLevel = ADMIN,
+		execute = function(speaker, message)
+			Lighting.FogStart = tonumber(message)
+		end
+	},
+	{
+		names = {"Brightness"},
+		description = "Sets the Brightness to the given number.",
+		permissionsLevel = ADMIN,
+		execute = function(speaker, message)
+			Lighting.Brightness = tonumber(message)
+		end
+	},
+	{
+		names = {"Shadows", "GlobalShadows"},
+		description = "Sets Shadows to either true or false.",
+		permissionsLevel = ADMIN,
+		execute = function(speaker, message)
+			local Bool = boolCheck(message)
+			if Bool == nil then return end
+			Lighting.GlobalShadows = Bool
+		end
+	},
+	{
+		names = {"BTools", "GiveBTools"},
+		description = "Gives the given players building tools.",
+		permissionsLevel = ADMIN,
+		execute = function(speaker, message)
+			local playerQuery, message = getPlayerQuery(speaker, message)
+			for i = 1, #playerQuery do
+				local GameTool = Instance.new("HopperBin", playerQuery[i].Backpack)
+				GameTool.BinType = 1
+				local Clone = Instance.new("HopperBin", playerQuery[i].Backpack)
+				Clone.BinType = 3
+				local Hammer = Instance.new("HopperBin", playerQuery[i].Backpack)
+				Hammer.BinType = 4
+			end
+		end
 	}
 }
 -- Functions
@@ -217,7 +275,7 @@ end
 function parseString(speaker, message)
 	print("speaker", speaker)
 	print("message", message)
-	-- Get speaker's permissionsLevel (should be an integer >= 0)
+	-- Get speaker"s permissionsLevel (should be an integer >= 0)
 	local permissionsLevel = getPermissionsLevel(speaker)
 	print("permissionsLevel", permissionsLevel)
 	-- Loop through each command executed: "/Kill PLAYER1 /Kill PLAYER2" -> Kill PLAYER1 -> Kill PLAYER2
