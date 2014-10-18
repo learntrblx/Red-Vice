@@ -126,7 +126,7 @@ function getPlayerQuery(speaker, message, isSingular)
 						bin[#bin + 1] = v
 					end
 				end
-			elseif string.sub(string.lower(queries[i], 1, 5)) == "team-" then
+			elseif string.sub(string.lower(queries[i]) 1, 5) == "team-" then
 				local team = search(Teams:children(), string.sub(queries[i], 6))
 				if team then
 					for i, v in pairs(Players:GetPlayers()) do
