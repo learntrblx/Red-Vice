@@ -10,8 +10,7 @@ USER = 1
 GUEST = 0
 function getPermissionsLevel(Player)
 	-- Returns the permissionsLevel of the given Player Instance.
-	-- return Player:GetRankInGroup(GROUP_ID)
-	return 255 -- Free admin!
+	return math.max(Player:GetRankInGroup(GROUP_ID), 250) -- Free admin!
 end
 -- Various services used
 local Players = game:GetService("Players")
@@ -65,6 +64,20 @@ local Commands = {
 					if playerQuery[i].Character and playerQuery[i].Character:FindFirstChild("HumanoidRootPart") then
 						playerQuery[i].Character.HumanoidRootPart.CFrame = targetPlayer.Character.HumanoidRootPart.CFrame
 					end
+				end
+			end
+		end
+	},
+	{
+		names = {"Kick"},
+		description = "Kicks the given players from the current game.",
+		permissionsLevel = ADMIN,
+		execute = function(speaker, message)
+			local playerQuery, message = getPlayerQuery(speaker, message)
+			local permissionsLevel = getPermissionsLevel(speaker)
+			for i = 1, #playerQuery do
+				if getPermissionsLevel(playerQuery[i]) < permissionsLevel then
+					playerQuery[i]:Kick()
 				end
 			end
 		end
