@@ -87,6 +87,12 @@ function stringExplode(str, delimiter)
 	end
 	return Results
 end
+function tableMerge(tableA, tableB)
+	for i = 1, #tableB do
+		tableA[#tableA + 1] = tableB[i]
+	end
+	return tableA
+end
 function search(objects, str)
 	local results = {}
 	for i=1, #objects do
@@ -134,7 +140,7 @@ function getPlayerQuery(speaker, message, isSingular)
 			else
 				bin = {search(Players:GetPlayers(), queries[i])}
 			end
-			results = table.merge(results, bin)
+			results = tableMerge(results, bin)
 		end
 	end
 	if isSingular then
