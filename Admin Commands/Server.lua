@@ -113,7 +113,7 @@ local Commands = {
 		end
 	},
 	{
-		names = {"Respawn", "LoadCharacter"},
+		names = {"Respawn", "LoadCharacter", "RS"},
 		description = "Respawns the given players.",
 		permissionsLevel = ADMIN,
 		execute = function(speaker, message)
