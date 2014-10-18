@@ -151,6 +151,20 @@ local Commands = {
 		end
 	},
 	{
+		names = {"Heal", "SetHealth"},
+		description = "Sets the given players' Health to their MaxHealth or the number given.",
+		permissionsLevel = ADMIN,
+		execute = function(speaker, message)
+			local playerQuery, message = getPlayerQuery(speaker, message)
+			local targetHealth = tonumber(message)
+			for i = 1, #playerQuery do
+				if playerQuery[i].Character and playerQuery[i].Character:FindFirstChild("Humanoid") then
+					playerQuery[i].Character.Humanoid.Health = targetHealth or playerQuery[i].Character.Humanoid.MaxHealth
+				end
+			end
+		end
+	},
+	{
 		names = {"Explode"},
 		description = "Respawns the given players.",
 		permissionsLevel = ADMIN,
