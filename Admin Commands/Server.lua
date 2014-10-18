@@ -33,7 +33,7 @@ local Commands = {
 		names = {"Kill", "Blox"},
 		-- This should be a short description of what the command does and the arguments needed
 		-- It is shown within in-game GUI
-		syntax = MULTI_PLAYER_SYNTAX
+		syntax = MULTI_PLAYER_SYNTAX,
 		description = "Kills the given player.",
 		-- This is the minimum permissions level required to execute this command
 		permissionsLevel = ADMIN,
@@ -170,3 +170,4 @@ Players.PlayerAdded:connect(playerAdded)
 for i, v in pairs(Players:GetPlayers()) do
 	playerAdded(v)
 end
+print("Hositle Admin Commands Loaded")
