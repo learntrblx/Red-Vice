@@ -77,6 +77,16 @@ local Commands = {
 function stringTrim(str)
     return string.gsub(string.match(str, "^%s*(.-)%s*$"), "\n", "")
 end
+function stringExplode(str, delimiter)
+	local Results = {}
+	for match in string.gmatch(str, "[^" .. delimiter .. "]+") do
+		match = stringTrim(match)
+		if match ~= "" then
+			Results[#Results + 1] = match
+		end
+	end
+	return Results
+end
 function search(objects, str)
 	local results = {}
 	for i=1, #objects do
@@ -90,7 +100,7 @@ function search(objects, str)
 	return #results == 1 and results[1] or nil
 end
 function getPlayerQuery(speaker, message, isSingular)
-	local queries = isSingular and {message} or string.explode(message, ",")
+	local queries = isSingular and {message} or stringExplode(message, ",")
 	local results = {}
 	local message = ""
 	if #queries > 0 then
