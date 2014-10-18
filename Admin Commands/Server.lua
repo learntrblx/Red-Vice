@@ -59,12 +59,12 @@ local Commands = {
 		execute = function(speaker, message)
 			local playerQuery, message = getPlayerQuery(speaker, message)
 			local targetPlayer, _ = getPlayerQuery(speaker, message, true)
-			if not targetPlayer or not targetPlayer.Character or not targetPlayer.Character.HumanoidRootPart then
+			if not targetPlayer or not targetPlayer.Character or not targetPlayer.Character:FindFirstChild("HumanoidRootPart") then
 				return
 			end
 			for i = 1, #playerQuery do
 				if playerQuery[i] and playerQuery[i] ~= targetPlayer then
-					if playerQuery[i].Character and playerQuery[i].HumanoidRootPart then
+					if playerQuery[i].Character and playerQuery[i].Character:FindFirstChild("HumanoidRootPart") then
 						playerQuery[i].Character.HumanoidRootPart.CFrame = targetPlayer.Character.HumanoidRootPart.CFrame
 					end
 				end
