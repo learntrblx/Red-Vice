@@ -221,6 +221,18 @@ local Commands = {
 				playerQuery[i].Neutral = false
 			end
 		end
+	},
+	{
+		names = {"Sword", "GiveSword"},
+		description = "Gives a LinkedSword to the given players.",
+		permissionsLevel = ADMIN,
+		execute = function(speaker, message)
+			local playerQuery, message = getPlayerQuery(speaker, message)
+			local Sword = InsertService:LoadAsset(47433):GetChildren()[1]
+			for i = 1, #playerQuery do
+				Sword:Clone().Parent = playerQuery[i].Character.Backpack
+			end
+		end
 	}
 }
 -- Functions
