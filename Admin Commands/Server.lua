@@ -29,6 +29,14 @@ end
 -- Store all Commands in here. Use the "Kill" command as a template
 local Commands = {
 	{
+		names = {"w", "wait"},
+		description = "Waits for the number of given seconds",
+		permissionsLevel = ADMIN,
+		execute = function(speaker, message)
+			wait(tonumber(message) or 0)
+		end
+	},
+	{
 		-- This is a table of alternate names the command can be run with
 		-- It is case insensitive, but should use CamelCase for readability within this script and in-game GUI
 		names = {"Kill", "Blox"},
