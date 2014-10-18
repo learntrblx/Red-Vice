@@ -167,6 +167,7 @@ function parseString(speaker, message)
 	end
 	for match in string.gmatch(message, "[^" .. PREFIX .. "]+") do
 		(function()
+			match = stringTrim(match)
 			for command_index = 1, #Commands do
 				for name_index = 1, #Commands[command_index].names do
 					local matchSuccess = string.lower(string.sub(match, 1, #Commands[command_index].names[name_index])) == string.lower(Commands[command_index].names[name_index])
