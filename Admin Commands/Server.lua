@@ -145,6 +145,9 @@ function parseString(speaker, message)
 	local permissionsLevel = getPermissionsLevel(speaker)
 	print("permissionsLevel", permissionsLevel)
 	-- Loop through each command executed: "/Kill PLAYER1 /Kill PLAYER2" -> Kill PLAYER1 -> Kill PLAYER2
+	if string.sub(message, 1, #PREFIX) ~= PREFIX then
+		return
+	end
 	for match in string.gmatch(message, "[^" .. PREFIX .. "]+") do
 		(function()
 			for command_index = 1, #Commands do
@@ -154,7 +157,9 @@ function parseString(speaker, message)
 						if permissionsLevel >= Commands[command_index].permissionsLevel then
 							print("Executing " .. Commands[command_index].names[name_index])
 							local suffix = stringTrim(string.sub(match, #Commands[command_index].names[name_index] + 1))
-							pcall(Commands[command_index].execute, speaker, suffix)
+							print("suffix", suffix)
+							Commands[command_index].execute(speaker, suffix)
+							--pcall(Commands[command_index].execute, speaker, suffix)
 						end
 					end
 				end
