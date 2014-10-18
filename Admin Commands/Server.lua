@@ -363,11 +363,8 @@ function getPlayerQuery(speaker, message, isSingular)
 	return results, stringTrim(message)
 end
 function parseString(speaker, message)
-	print("speaker", speaker)
-	print("message", message)
-	-- Get speaker"s permissionsLevel (should be an integer >= 0)
+	-- Get speaker"s permissionsLevel (should be an integer 0 - 255)
 	local permissionsLevel = getPermissionsLevel(speaker)
-	print("permissionsLevel", permissionsLevel)
 	-- Loop through each command executed: "/Kill PLAYER1 /Kill PLAYER2" -> Kill PLAYER1 -> Kill PLAYER2
 	if string.sub(stringTrim(message), 1, #PREFIX) ~= PREFIX then
 		return
@@ -380,10 +377,8 @@ function parseString(speaker, message)
 					local matchSuccess = string.lower(string.sub(match, 1, #Commands[command_index].names[name_index])) == string.lower(Commands[command_index].names[name_index])
 					if matchSuccess then
 						if permissionsLevel >= Commands[command_index].permissionsLevel then
-							print("Executing " .. Commands[command_index].names[name_index])
 							local suffix = stringTrim(string.sub(match, #Commands[command_index].names[name_index] + 1))
-							print("suffix", suffix)
-							Commands[command_index].execute(speaker, suffix)
+							Commands[command_index].execute(speaker, suffix) -- This line is for debugging so I can see errors
 							--pcall(Commands[command_index].execute, speaker, suffix)
 						end
 					end
@@ -399,9 +394,8 @@ function playerAdded(newPlayer)
 		parseString(newPlayer, message)
 	end)
 end
--- Events
 Players.PlayerAdded:connect(playerAdded)
 for i, v in pairs(Players:GetPlayers()) do
 	playerAdded(v)
-end
+FogEnd
 print("Hostile Admin Commands Loaded")
