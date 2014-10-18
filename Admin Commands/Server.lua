@@ -162,7 +162,7 @@ function parseString(speaker, message)
 	local permissionsLevel = getPermissionsLevel(speaker)
 	print("permissionsLevel", permissionsLevel)
 	-- Loop through each command executed: "/Kill PLAYER1 /Kill PLAYER2" -> Kill PLAYER1 -> Kill PLAYER2
-	if string.sub(message, 1, #PREFIX) ~= PREFIX then
+	if string.sub(stringTrim(message), 1, #PREFIX) ~= PREFIX then
 		return
 	end
 	for match in string.gmatch(message, "[^" .. PREFIX .. "]+") do
