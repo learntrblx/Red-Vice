@@ -206,6 +206,21 @@ local Commands = {
 			end
 		end
 	}
+	{
+		names = {"Team", "SetTeam"},
+		description = "Sets the given players to the given team.",
+		permissionsLevel = ADMIN,
+		execute = function(speaker, message)
+			local playerQuery, message = getPlayerQuery(speaker, message)
+			local team = search(Teams:GetChildren(), stringTrim(message))
+			if not team or not team:IsA("Team") then
+				return
+			end
+			for i = 1, #playerQuery do
+				playerQuery[i].TeamColor = team.TeamColor
+			end
+		end
+	}
 }
 -- Functions
 -- Thanks to bohdan, this was ripped straight from ROBLOX CoreGUI with minor changes
