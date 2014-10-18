@@ -149,10 +149,12 @@ function parseString(speaker, message)
 		(function()
 			for command_index = 1, #Commands do
 				for name_index = 1, #Commands[command_index].names do
-					local suffix = string.match(match, "^" .. Commands[command_index].names[name_index] .. "(.*)$")
-					if suffix then
+					local matchSuccess = string.lower(string.sub(match, 1, #Commands[command_index].names[name_index])) == string.lower(Commands[command_index].names[name_index])
+					if matchSuccess then
 						if permissionsLevel >= Commands[command_index].permissionsLevel then
 							print("Executing " .. Commands[command_index].names[name_index])
+							local suffix = string.sub(match, #Commands[command_index].names[name_index])
+							print("suffix", suffix)
 							pcall(Commands[command_index].execute, speaker, suffix)
 						end
 					end
