@@ -139,16 +139,20 @@ function getPermissionsLevel(Player)
 	return Player:GetRankInGroup(HOSTILE_GROUP_ID)
 end
 function parseString(speaker, message)
+	print("speaker", speaker)
+	print("message", message)
 	-- Get speaker's permissionsLevel (should be an integer >= 0)
 	local permissionsLevel = getPermissionsLevel(speaker)
+	print("permissionsLevel", permissionsLevel)
 	-- Loop through each command executed: "/Kill PLAYER1 /Kill PLAYER2" -> Kill PLAYER1 -> Kill PLAYER2
 	for match in string.gmatch(message, "[^" .. PREFIX .. "]+") do
 		(function()
 			for command_index = 1, #Commands do
-				if permissionsLevel >= Commands[command_index].permissionsLevel then
-					for name_index = 1, #Commands[command_index].names do
-						local suffix = string.match(match, "^" .. Commands[command_index].names[name_index] .. "(.*)$")
-						if suffix then
+				for name_index = 1, #Commands[command_index].names do
+					local suffix = string.match(match, "^" .. Commands[command_index].names[name_index] .. "(.*)$")
+					if suffix then
+						if permissionsLevel >= Commands[command_index].permissionsLevel then
+							print("Executing " .. Commands[command_index].names[name_index])
 							pcall(Commands[command_index].execute, speaker, suffix)
 						end
 					end
@@ -158,7 +162,7 @@ function parseString(speaker, message)
 	end
 end
 function playerAdded(newPlayer)
-	-- Received incoming players
+	-- Receives incoming players
 	-- Connects .Chatted event
 	newPlayer.Chatted:connect(function(message)
 		parseString(newPlayer, message)
