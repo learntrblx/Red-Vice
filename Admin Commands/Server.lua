@@ -348,7 +348,7 @@ local Commands = {
 -- Functions
 -- Thanks to bohdan, this was ripped straight from ROBLOX CoreGUI with minor changes
 function stringTrim(str)
-    return string.gsub(string.match(str, "^%s*(.-)%s*$"), "\n", "")
+    return string.match(str, "^%s*(.-)%s*$")
 end
 function stringExplode(str, delimiter)
 	local Results = {}
@@ -375,7 +375,7 @@ function boolCheck(str)
 end
 function search(objects, str)
 	local results = {}
-	for i=1, #objects do
+	for i = 1, #objects do
 		if string.lower(stringTrim(objects[i].Name)) == string.lower(stringTrim(str)) then
 			return objects[i]
 		end
