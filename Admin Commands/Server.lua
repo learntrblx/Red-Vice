@@ -3,11 +3,6 @@
 PREFIX = "/"
 -- Group Id for Hostile
 HOSTILE_GROUP_ID = 388389
--- Preset Syntax Definitions
-SINGLE_PLAYER_SYNTAX = "Player"
-TARGET_SINGLE_PLAYER_SYNTAX = "Player1 Player2"
-MULTI_PLAYER_SYNTAX = "Player1, Player2, ..."
-TARGET_MULTI_PLAYER_SYNTAX = "Player1, Player2, ... Player3"
 -- Preset Permissions Level Definitions
 OWNER = 255
 ADMIN = 250
@@ -33,7 +28,6 @@ local Commands = {
 		names = {"Kill", "Blox"},
 		-- This should be a short description of what the command does and the arguments needed
 		-- It is shown within in-game GUI
-		syntax = MULTI_PLAYER_SYNTAX,
 		description = "Kills the given player.",
 		-- This is the minimum permissions level required to execute this command
 		permissionsLevel = ADMIN,
@@ -53,7 +47,6 @@ local Commands = {
 	},
 	{
 		names = {"teleport", "tp", "tele"},
-		syntax = TARGET_MULTI_PLAYER_SYNTAX,
 		description = "Teleports the given players to the target player.",
 		permissionsLevel = ADMIN,
 		execute = function(speaker, message)
