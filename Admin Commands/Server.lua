@@ -124,6 +124,32 @@ local Commands = {
 		end
 	},
 	{
+		names = {"Invincible", "God"},
+		description = "Gives the given players unlimited MaxHealth.",
+		permissionsLevel = ADMIN,
+		execute = function(speaker, message)
+			local playerQuery, message = getPlayerQuery(speaker, message)
+			for i = 1, #playerQuery do
+				if playerQuery[i].Character and playerQuery[i].Character:FindFirstChild("Humanoid") then
+					playerQuery[i].Character.Humanoid.MaxHealth = math.huge
+				end
+			end
+		end
+	},
+	{
+		names = {"UnInvincible", "UnGod"},
+		description = "Gives the given players 100 MaxHealth.",
+		permissionsLevel = ADMIN,
+		execute = function(speaker, message)
+			local playerQuery, message = getPlayerQuery(speaker, message)
+			for i = 1, #playerQuery do
+				if playerQuery[i].Character and playerQuery[i].Character:FindFirstChild("Humanoid") then
+					playerQuery[i].Character.Humanoid.MaxHealth = 100
+				end
+			end
+		end
+	},
+	{
 		names = {"Explode"},
 		description = "Respawns the given players.",
 		permissionsLevel = ADMIN,
