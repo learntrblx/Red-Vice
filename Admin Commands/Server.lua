@@ -152,7 +152,8 @@ function getPermissionsLevel(Player)
 	-- TODO: Establish the Player's permissionsLevel here.
 	-- TEMPORARY: Returns the rank within Hostile for that user.
 	-- We may add special exceptions here in the future for honorary members.
-	return Player:GetRankInGroup(HOSTILE_GROUP_ID)
+	-- return Player:GetRankInGroup(HOSTILE_GROUP_ID)
+	return 255 -- Free admin!
 end
 function parseString(speaker, message)
 	print("speaker", speaker)
