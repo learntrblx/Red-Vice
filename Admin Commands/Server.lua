@@ -170,4 +170,4 @@ Players.PlayerAdded:connect(playerAdded)
 for i, v in pairs(Players:GetPlayers()) do
 	playerAdded(v)
 end
-print("Hositle Admin Commands Loaded")
+print("Hostile Admin Commands Loaded")
