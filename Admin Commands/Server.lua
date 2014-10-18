@@ -50,7 +50,7 @@ local Commands = {
 		end
 	},
 	{
-		names = {"teleport", "tp", "tele"},
+		names = {"Teleport", "TP", "Tele"},
 		description = "Teleports the given players to the target player.",
 		permissionsLevel = ADMIN,
 		execute = function(speaker, message)
@@ -78,6 +78,38 @@ local Commands = {
 			for i = 1, #playerQuery do
 				if getPermissionsLevel(playerQuery[i]) < permissionsLevel then
 					playerQuery[i]:Kick()
+				end
+			end
+		end
+	},
+	{
+		names = {"ForceField", "FF"},
+		description = "Gives the given players a forcefield.",
+		permissionsLevel = ADMIN,
+		execute = function(speaker, message)
+			local playerQuery, message = getPlayerQuery(speaker, message)
+			local permissionsLevel = getPermissionsLevel(speaker)
+			for i = 1, #playerQuery do
+				if playerQuery[i].Character and not playerQuery[i].Character:FindFirstChild("ForceField") then
+					Instance.new("ForceField",playerQuery[i].Character)
+				end
+			end
+		end
+	},
+	{
+		names = {"UnForceField", "UnFF"},
+		description = "Removes any forcefields from the given players.",
+		permissionsLevel = ADMIN,
+		execute = function(speaker, message)
+			local playerQuery, message = getPlayerQuery(speaker, message)
+			local permissionsLevel = getPermissionsLevel(speaker)
+			for i = 1, #playerQuery do
+				if playerQuery[i].Character then
+					for _, v in pairs(playerQuery[i]:GetChildren()) do
+						if v:IsA("ForceField") then
+							v:Remove()
+						end
+					end
 				end
 			end
 		end
