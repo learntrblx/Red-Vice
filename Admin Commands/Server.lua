@@ -153,8 +153,7 @@ function parseString(speaker, message)
 					if matchSuccess then
 						if permissionsLevel >= Commands[command_index].permissionsLevel then
 							print("Executing " .. Commands[command_index].names[name_index])
-							local suffix = string.sub(match, #Commands[command_index].names[name_index])
-							print("suffix", suffix)
+							local suffix = stringTrim(string.sub(match, #Commands[command_index].names[name_index] + 1))
 							pcall(Commands[command_index].execute, speaker, suffix)
 						end
 					end
