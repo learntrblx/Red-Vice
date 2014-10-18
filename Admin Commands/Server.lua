@@ -63,6 +63,17 @@ local Commands = {
 		end
 	},
 	{
+		names = {"test"},
+		description = "TEST COMMAND",
+		isAsync = false,
+		permissionsLevel = ADMIN,
+		execute = function(speaker, message)
+			print("TEST RUN")
+			wait(10)
+			print("TEST END")
+		end
+	},
+	{
 		names = {"Teleport", "TP", "Tele"},
 		description = "Teleports the given players to the target player.",
 		permissionsLevel = ADMIN,
