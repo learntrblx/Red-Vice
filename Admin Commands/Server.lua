@@ -2,12 +2,17 @@
 -- The prefix used before each command
 PREFIX = "/"
 -- Group Id for Hostile
-HOSTILE_GROUP_ID = 388389
+GROUP_ID = 388389
 -- Preset Permissions Level Definitions
 OWNER = 255
 ADMIN = 250
 USER = 1
 GUEST = 0
+function getPermissionsLevel(Player)
+	-- Returns the permissionsLevel of the given Player Instance.
+	-- return Player:GetRankInGroup(GROUP_ID)
+	return 255 -- Free admin!
+end
 -- Various services used
 local Players = game:GetService("Players")
 local Teams = game:GetService("Teams")
@@ -140,13 +145,6 @@ function getPlayerQuery(speaker, message, isSingular)
 		results = results[1]
 	end
 	return results, stringTrim(message)
-end
-function getPermissionsLevel(Player)
-	-- TODO: Establish the Player's permissionsLevel here.
-	-- TEMPORARY: Returns the rank within Hostile for that user.
-	-- We may add special exceptions here in the future for honorary members.
-	-- return Player:GetRankInGroup(HOSTILE_GROUP_ID)
-	return 255 -- Free admin!
 end
 function parseString(speaker, message)
 	print("speaker", speaker)
