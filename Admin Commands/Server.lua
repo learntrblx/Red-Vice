@@ -19,6 +19,7 @@ local Lighting = game:GetService("Lighting")
 local Teams = game:GetService("Teams")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local InsertService = game:GetService("InsertService")
+local Debris = game:GetService("Debris")
 -- event is a RemoteEvent located in ReplicatedStorage
 -- We use this to send out notifications to clients
 -- It is possible another script has already made it
@@ -35,7 +36,7 @@ local Commands = {
 		names = {"Kill", "Blox"},
 		-- This should be a short description of what the command does and the arguments needed
 		-- It is shown within in-game GUI
-		description = "Kills the given player.",
+		description = "Kills the given players.",
 		-- This is the minimum permissions level required to execute this command
 		permissionsLevel = ADMIN,
 		-- This function is run only if the speaker meets the minimum permissions level for this command
@@ -260,7 +261,23 @@ local Commands = {
 				Sword:Clone().Parent = playerQuery[i].Character
 			end
 		end
-	}
+	},
+	{
+		names = {"Fling", "Throw"},
+		description = "Flings the given players in a random direction.",
+		permissionsLevel = ADMIN,
+		execute = function(speaker, message)
+			local playerQuery, message = getPlayerQuery(speaker, message)
+			for i = 1, #playerQuery do
+				if playerQuery[i].Character and playerQuery[i].Character:FindFirstChild("Torso") and playerQuery[i].Character:FindFirstChild("Humanoid") then
+					local BodyForce = Instance.new("BodyForce", playerQuery[i].Character.Torso)
+					BodyForce.force = Vector3.new(math.random(22220, 39996), 39996, math.random(22220, 39996))
+					playerQuery[i].Character.Humanoid.Sit = true
+					Debris:AddItem(BodyForce, 0.1)
+				end
+			end
+		end
+	},
 }
 -- Functions
 -- Thanks to bohdan, this was ripped straight from ROBLOX CoreGUI with minor changes
