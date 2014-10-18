@@ -183,9 +183,11 @@ local Commands = {
 		description = "Sets Shadows to either true or false.",
 		permissionsLevel = ADMIN,
 		execute = function(speaker, message)
-			local Bool = boolCheck(message)
-			if Bool == nil then return end
-			Lighting.GlobalShadows = Bool
+			local bool = boolCheck(message)
+			if bool == nil then
+				return
+			end
+			Lighting.GlobalShadows = bool
 		end
 	},
 	{
