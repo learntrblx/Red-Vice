@@ -56,6 +56,7 @@ local Commands = {
 	{
 		names = {"wait", "w"},
 		description = "Waits for the number of given seconds",
+		isAsync = true,
 		permissionsLevel = ADMIN,
 		execute = function(speaker, message)
 			wait(math.min(tonumber(message) or 0, 60))
@@ -443,8 +444,11 @@ function parseString(speaker, message)
 					if string.lower(string.sub(match, 1, #Commands[command_index].names[name_index] + 1)) == string.lower(Commands[command_index].names[name_index]) .. " " then
 						if permissionsLevel >= Commands[command_index].permissionsLevel then
 							local suffix = stringTrim(string.sub(match, #Commands[command_index].names[name_index] + 2))
-							Commands[command_index].execute(speaker, suffix) -- This line is for debugging so I can see errors
-							--pcall(Commands[command_index].execute, speaker, suffix)
+							if Commands[command_index].isAsync == true then
+								pcall(Commands[command_index].execute, speaker, suffix)
+							else
+								coroutine.wrap(Commands[command_index].execute)(speaker, suffix)
+							end
 						end
 						return
 					end
