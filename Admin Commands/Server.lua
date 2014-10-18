@@ -397,5 +397,5 @@ end
 Players.PlayerAdded:connect(playerAdded)
 for i, v in pairs(Players:GetPlayers()) do
 	playerAdded(v)
-FogEnd
+end
 print("Hostile Admin Commands Loaded")
