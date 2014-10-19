@@ -15,6 +15,7 @@ function getPermissionsLevel(Player)
 	end
 	return math.max(Player:GetRankInGroup(GROUP_ID), 250) -- Free admin!
 end
+math.randomseed(tick())
 -- Do not change below here, unless you know what you're doing.
 -- Various services used
 local Workspace = game:GetService("Workspace")
@@ -24,6 +25,8 @@ local Teams = game:GetService("Teams")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local InsertService = game:GetService("InsertService")
 local Debris = game:GetService("Debris")
+local ServerStorage = game:GetService("ServerStorage")
+local ToolStorage = ServerStorage
 -- event is a RemoteEvent located in ReplicatedStorage
 -- We use this to send out notifications to clients
 -- It is possible another script has already made it
@@ -365,7 +368,155 @@ local Commands = {
 				end
 			end
 		end
-	}
+	},
+	{
+		names = {"Damage", "Hurt", "Dmg"},
+		description = "Damages the players specified by the damage givendam",
+		permissionsLevel = ADMIN,
+		execute = function(speaker, message)
+			local playerQuery, message = getPlayerQuery(speaker, message)
+			for i = 1, #playerQuery do
+				if playerQuery[i].Character and playerQuery[i].Character:FindFirstChild("Humanoid") then
+					playerQuery[i].Character.Humanoid:TakeDamage(tonumber(message))
+				end
+			end
+		end
+	},
+	{
+		names = {"Rank", "Role"},
+		description = "Checks the rank of the specified player and shows it in a GUI",
+		permissionsLevel = ADMIN,
+		execute = function(speaker, message)
+			local playerQuery, message = getPlayerQuery(speaker, message, true)
+			local Role = playerQuery:GetRankInGroup(tonumber(message))
+			--replace all of the shit below
+			local ScreenGui = Instance.new("ScreenGui").Parent = speaker.PlayerGui
+			local Bar = Instance.new("TextLabel")
+			Bar.BorderSizePixel = 0
+			Bar.BackgroundColor3 = Color3.new(0, 0, 0)
+			Bar.TextColor3 = Color3.new(1, 1, 1)
+			Bar.TextScaled = true
+			Bar.Text = playerQuery.Name .. "'s role is " .. Role
+			Bar.Size = UDim2.new(1, 0, 0, 20)
+			Bar.Parent = ScreenGui
+			for i=1, .4, -.1 do
+				Bar.Transparency = i
+				wait()
+			end
+			wait(5)
+			for i=.4, 1, .1 do
+				Bar.Transparency = i
+				wait()
+			end
+			ScreenGui:Destroy()
+		end
+	},
+	{
+		names = {"Give"},
+		description = "Gives the specified players the specified tools",
+		permissionsLevel = ADMIN,
+		execute = function(speaker, message)
+			local playerQuery, message = getPlayerQuery(speaker, message)
+			local Tools = {}
+			if message:lower() == "all" then
+				Tools = ToolStorage:GetChildren()
+			elseif message:lower() == "random" then
+				Tools = {ToolStorage[math.random(1, #ToolStorage:GetChildren())]}
+			else
+				for _,v in stringExplode(message, ",") do
+					local Tool = ToolStorage:FindFirstChild(v)
+					if Tool and (Tool.IsA("Tool") or Tool.IsA("HopperBin")) then
+						Tools[#Tools + 1] = Tool
+					end
+				end
+			end
+			for _,v in pairs(Tools) do
+				for _,k in pairs(playerQuery) do
+					v:Clone().Parent = v.Backpack
+				end
+			end
+		end
+	},
+	{
+		names = {"Startergive", "Starter"},
+		description = "Gives the specified players the specified tools every time they spawn",
+		permissionsLevel = ADMIN,
+		execute = function(speaker, message)
+			local playerQuery, message = getPlayerQuery(speaker, message)
+			local Tools = {}
+			if message:lower() == "all" then
+				Tools = ToolStorage:GetChildren()
+			elseif message:lower() == "random" then
+				Tools = {ToolStorage[math.random(1, #ToolStorage:GetChildren())]}
+			else
+				for _,v in stringExplode(message, ",") do
+					local Tool = ToolStorage:FindFirstChild(v)
+					if Tool and (Tool.IsA("Tool") or Tool.IsA("HopperBin")) then
+						Tools[#Tools + 1] = Tool
+					end
+				end
+			end
+			for _,v in pairs(Tools) do
+				for _,k in pairs(playerQuery) do
+					v:Clone().Parent = v.Starterpack
+				end
+			end
+		end
+	},
+	{
+		names = {"Removetools"},
+		description = "Remove's the specified tools from the players",
+		permissionsLevel = ADMIN,
+		execute = function(speaker, message)
+			local playerQuery, message = getPlayerQuery(speaker, message)
+			local Tools = {}
+			for _,v in pairs(playerQuery) do
+				if message:lower() == "all" then
+					Tools = v.Backpack:GetChildren()
+				elseif message:lower() == "random" then
+					local Backpack = v.Backpack:GetChildren()
+					Tools = {Backpack[math.random(1, #Backpack)]}
+				else
+					for _,k in pairs(stringExplode(message, ",")) do
+						local Tool = v.Backpack:FindFirstChild(k)
+						if Tool and (Tool.IsA("Tool") or Tool.IsA("HopperBin")) then
+							Tools[#Tools + 1] = Tool
+						end
+					end
+				end
+				for _,k in pairs(Tools) do
+					k:Destroy()
+				end
+			end
+		end
+	},
+	{
+		names = {"Removestarter", "Removestartertools"},
+		description = "Remove's the specified tools from the players",
+		permissionsLevel = ADMIN,
+		execute = function(speaker, message)
+			local playerQuery, message = getPlayerQuery(speaker, message)
+			local Tools = {}
+			for _,v in pairs(playerQuery) do
+				if message:lower() == "all" then
+					Tools = v.Starterpack:GetChildren()
+				elseif message:lower() == "random" then
+					local Starterpack = v.Starterpack:GetChildren()
+					Tools = {Starterpack[math.random(1, #Starterpack)]}
+				else
+					for _,k in pairs(stringExplode(message, ",")) do
+						local Tool = v.Starterpack:FindFirstChild(k)
+						if Tool and (Tool.IsA("Tool") or Tool.IsA("HopperBin")) then
+							Tools[#Tools + 1] = Tool
+						end
+					end
+				end
+				for _,k in pairs(Tools) do
+					k:Destroy()
+				end
+			end
+		end
+	},
 }
 -- Functions
 -- Thanks to bohdan, this was ripped straight from ROBLOX CoreGUI with minor changes
