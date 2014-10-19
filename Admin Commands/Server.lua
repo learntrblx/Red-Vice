@@ -125,7 +125,7 @@ local Commands = {
 			local playerQuery, message = getPlayerQuery(speaker, message)
 			for i = 1, #playerQuery do
 				if playerQuery[i].Character and not playerQuery[i].Character:FindFirstChild("ForceField") then
-					Instance.new("ForceField",playerQuery[i].Character)
+					Instance.new("ForceField", playerQuery[i].Character)
 				end
 			end
 		end
@@ -404,7 +404,7 @@ local Commands = {
 		execute = function(speaker, message)
 			local playerQuery, message = getPlayerQuery(speaker, message, true)
 			local role = playerQuery:GetRoleInGroup(tonumber(message))
-			--replace all of the shit below
+			-- TODO: Replace below
 			local screenGui = Instance.new("ScreenGui", speaker.PlayerGui)
 			local bar = Instance.new("TextLabel")
 			bar.BorderSizePixel = 0
@@ -438,15 +438,15 @@ local Commands = {
 			elseif message:lower() == "random" then
 				Tools = {ToolStorage[math.random(1, #ToolStorage:GetChildren())]}
 			else
-				for _,v in stringExplode(message, ",") do
+				for _, v in stringExplode(message, ",") do
 					local Tool = ToolStorage:FindFirstChild(v)
 					if Tool and (Tool.IsA("Tool") or Tool.IsA("HopperBin")) then
 						Tools[#Tools + 1] = Tool
 					end
 				end
 			end
-			for _,v in pairs(Tools) do
-				for _,k in pairs(playerQuery) do
+			for _, v in pairs(Tools) do
+				for _, k in pairs(playerQuery) do
 					v:Clone().Parent = v.Backpack
 				end
 			end
@@ -464,42 +464,42 @@ local Commands = {
 			elseif message:lower() == "random" then
 				Tools = {ToolStorage[math.random(1, #ToolStorage:GetChildren())]}
 			else
-				for _,v in stringExplode(message, ",") do
+				for _, v in stringExplode(message, ",") do
 					local Tool = ToolStorage:FindFirstChild(v)
 					if Tool and (Tool.IsA("Tool") or Tool.IsA("HopperBin")) then
 						Tools[#Tools + 1] = Tool
 					end
 				end
 			end
-			for _,v in pairs(Tools) do
-				for _,k in pairs(playerQuery) do
+			for _, v in pairs(Tools) do
+				for _, k in pairs(playerQuery) do
 					v:Clone().Parent = v.Starterpack
 				end
 			end
 		end
 	},
 	{
-		names = {"Removetools"},
+		names = {"RemoveTools"},
 		description = "Remove's the specified tools from the players",
 		permissionsLevel = ADMIN,
 		execute = function(speaker, message)
 			local playerQuery, message = getPlayerQuery(speaker, message)
 			local Tools = {}
-			for _,v in pairs(playerQuery) do
+			for _, v in pairs(playerQuery) do
 				if message:lower() == "all" then
 					Tools = v.Backpack:GetChildren()
 				elseif message:lower() == "random" then
 					local Backpack = v.Backpack:GetChildren()
 					Tools = {Backpack[math.random(1, #Backpack)]}
 				else
-					for _,k in pairs(stringExplode(message, ",")) do
+					for _, k in pairs(stringExplode(message, ",")) do
 						local Tool = v.Backpack:FindFirstChild(k)
 						if Tool and (Tool.IsA("Tool") or Tool.IsA("HopperBin")) then
 							Tools[#Tools + 1] = Tool
 						end
 					end
 				end
-				for _,k in pairs(Tools) do
+				for _, k in pairs(Tools) do
 					k:Destroy()
 				end
 			end
@@ -512,21 +512,21 @@ local Commands = {
 		execute = function(speaker, message)
 			local playerQuery, message = getPlayerQuery(speaker, message)
 			local Tools = {}
-			for _,v in pairs(playerQuery) do
+			for _, v in pairs(playerQuery) do
 				if message:lower() == "all" then
 					Tools = v.Starterpack:GetChildren()
 				elseif message:lower() == "random" then
 					local Starterpack = v.Starterpack:GetChildren()
 					Tools = {Starterpack[math.random(1, #Starterpack)]}
 				else
-					for _,k in pairs(stringExplode(message, ",")) do
+					for _, k in pairs(stringExplode(message, ",")) do
 						local Tool = v.Starterpack:FindFirstChild(k)
 						if Tool and (Tool.IsA("Tool") or Tool.IsA("HopperBin")) then
 							Tools[#Tools + 1] = Tool
 						end
 					end
 				end
-				for _,k in pairs(Tools) do
+				for _, k in pairs(Tools) do
 					k:Destroy()
 				end
 			end
