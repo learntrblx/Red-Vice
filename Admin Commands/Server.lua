@@ -447,7 +447,7 @@ local Commands = {
 			end
 			for _, v in pairs(Tools) do
 				for _, k in pairs(playerQuery) do
-					v:Clone().Parent = v.Backpack
+					v:Clone().Parent = k.Backpack
 				end
 			end
 		end
@@ -473,7 +473,7 @@ local Commands = {
 			end
 			for _, v in pairs(Tools) do
 				for _, k in pairs(playerQuery) do
-					v:Clone().Parent = v.Starterpack
+					v:Clone().Parent = k.Starterpack
 				end
 			end
 		end
