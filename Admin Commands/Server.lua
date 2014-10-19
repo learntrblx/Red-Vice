@@ -656,11 +656,9 @@ function parseString(speaker, message)
 end
 
 function playerAdded(newPlayer)
-	-- Receives incoming players
-	-- Connects .Chatted event
+	-- Receives incoming players and Connects .Chatted event
 	local chatListener
 	local function hookUpChatListener()
-		print("Hooking..")
 		chatListener = newPlayer.Chatted:connect(function(message)
 			parseString(newPlayer, message)
 		end)
