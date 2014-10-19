@@ -640,7 +640,9 @@ function parseString(speaker, message)
 							if Commands[command_index].isAsync == true then
 								pcall(Commands[command_index].execute, speaker, suffix)
 							else
-								coroutine.wrap(Commands[command_index].execute)(speaker, suffix)
+								coroutine.wrap(function()
+									pcall(Commands[command_index].execute, speaker, suffix)
+								end)()
 							end
 						end
 						return
