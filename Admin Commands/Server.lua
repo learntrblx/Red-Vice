@@ -1,13 +1,17 @@
 -- You'll probably want to change the following before using these commands:
+
 -- The prefix used before each command
 PREFIX = "/"
+
 -- Group Id for Hostile
 GROUP_ID = 388389
+
 -- Preset Permissions Level Definitions
 OWNER = 255
 ADMIN = 250
 USER = 1
 GUEST = 0
+
 function getPermissionsLevel(Player)
 	-- Returns the permissionsLevel of the given Player Instance.
 	if Player.userId == game.CreatorId then
@@ -15,7 +19,8 @@ function getPermissionsLevel(Player)
 	end
 	return math.max(Player:GetRankInGroup(GROUP_ID), 250) -- Free admin!
 end
-math.randomseed(tick())
+
+
 -- Do not change below here, unless you know what you're doing.
 -- Various services used
 local Workspace = game:GetService("Workspace")
@@ -27,6 +32,12 @@ local InsertService = game:GetService("InsertService")
 local Debris = game:GetService("Debris")
 local ServerStorage = game:GetService("ServerStorage")
 local ToolStorage = ServerStorage
+
+
+-- Set math.randomseed
+math.randomseed(tick())
+
+
 -- event is a RemoteEvent located in ReplicatedStorage
 -- We use this to send out notifications to clients
 -- It is possible another script has already made it
@@ -35,6 +46,8 @@ if not event or not event:IsA("RemoteEvent") then
 	event = Instance.new("RemoteEvent", ReplicatedStorage)
 	event.Name = "event"
 end
+
+
 -- Store all Commands in here. Use the "Kill" command as a template
 local Commands = {
 	{
@@ -518,11 +531,14 @@ local Commands = {
 		end
 	},
 }
+
+
 -- Functions
 -- Thanks to bohdan, this was ripped straight from ROBLOX CoreGUI with minor changes
 function stringTrim(str)
     return string.match(str, "^%s*(.-)%s*$")
 end
+
 function stringExplode(str, delimiter)
 	local Results = {}
 	for match in string.gmatch(str, "[^" .. delimiter .. "]+") do
@@ -533,12 +549,14 @@ function stringExplode(str, delimiter)
 	end
 	return Results
 end
+
 function tableMerge(tableA, tableB)
 	for i = 1, #tableB do
 		tableA[#tableA + 1] = tableB[i]
 	end
 	return tableA
 end
+
 function boolCheck(str)
 	if str == "true" or str == "on" then
 		return true
@@ -546,6 +564,7 @@ function boolCheck(str)
 		return false
 	end
 end
+
 function search(objects, str)
 	local results = {}
 	for i = 1, #objects do
@@ -558,6 +577,7 @@ function search(objects, str)
 	end
 	return #results == 1 and results[1] or nil
 end
+
 function getPlayerQuery(speaker, message, isSingular)
 	local queries = isSingular and {message} or stringExplode(message, ",")
 	local results = {}
@@ -601,6 +621,7 @@ function getPlayerQuery(speaker, message, isSingular)
 	end
 	return results, stringTrim(message)
 end
+
 function parseString(speaker, message)
 	-- Get speaker"s permissionsLevel (should be an integer 0 - 255)
 	local permissionsLevel = getPermissionsLevel(speaker)
@@ -629,6 +650,7 @@ function parseString(speaker, message)
 		end)()
 	end
 end
+
 function playerAdded(newPlayer)
 	-- Receives incoming players
 	-- Connects .Chatted event
@@ -636,8 +658,12 @@ function playerAdded(newPlayer)
 		parseString(newPlayer, message)
 	end)
 end
+
+
 Players.PlayerAdded:connect(playerAdded)
 for i, v in pairs(Players:GetPlayers()) do
 	playerAdded(v)
 end
+
+
 print("Hostile Admin Commands Loaded")
