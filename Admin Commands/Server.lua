@@ -401,7 +401,7 @@ local Commands = {
 		permissionsLevel = ADMIN,
 		execute = function(speaker, message)
 			local playerQuery, message = getPlayerQuery(speaker, message, true)
-			local role = playerQuery:GetRankInGroup(tonumber(message))
+			local role = playerQuery:GetRoleInGroup(tonumber(message))
 			--replace all of the shit below
 			local screenGui = Instance.new("ScreenGui", speaker.PlayerGui)
 			local bar = Instance.new("TextLabel")
