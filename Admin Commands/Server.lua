@@ -10,6 +10,9 @@ USER = 1
 GUEST = 0
 function getPermissionsLevel(Player)
 	-- Returns the permissionsLevel of the given Player Instance.
+	if Player.userId == game.CreatorId then
+		return 255
+	end
 	return math.max(Player:GetRankInGroup(GROUP_ID), 250) -- Free admin!
 end
 -- Various services used
