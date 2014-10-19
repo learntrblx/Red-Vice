@@ -1,3 +1,5 @@
+-- Hostile Admin Commands
+
 -- You'll probably want to change the following before using these commands:
 
 -- The prefix used before each command
@@ -20,8 +22,8 @@ function getPermissionsLevel(Player)
 	return math.max(Player:GetRankInGroup(GROUP_ID), 250) -- Free admin!
 end
 
-
 -- Do not change below here, unless you know what you're doing.
+
 -- Various services used
 local Workspace = game:GetService("Workspace")
 local Players = game:GetService("Players")
