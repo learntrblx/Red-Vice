@@ -439,7 +439,7 @@ local Commands = {
 				Tools = {ToolStorage[math.random(1, #ToolStorage:GetChildren())]}
 			else
 				for _, v in pairs(stringExplode(message, ",")) do
-					local Tool = ToolStorage:FindFirstChild(v)
+					local Tool = search(ToolStorage:GetChildren(), v)
 					if Tool and (Tool.IsA("Tool") or Tool.IsA("HopperBin")) then
 						Tools[#Tools + 1] = Tool
 					end
@@ -465,7 +465,7 @@ local Commands = {
 				Tools = {ToolStorage[math.random(1, #ToolStorage:GetChildren())]}
 			else
 				for _, v in pairs(stringExplode(message, ",")) do
-					local Tool = ToolStorage:FindFirstChild(v)
+					local Tool = search(ToolStorage:GetChildren(), v)
 					if Tool and (Tool.IsA("Tool") or Tool.IsA("HopperBin")) then
 						Tools[#Tools + 1] = Tool
 					end
@@ -493,7 +493,7 @@ local Commands = {
 					Tools = {Backpack[math.random(1, #Backpack)]}
 				else
 					for _, k in pairs(stringExplode(message, ",")) do
-						local Tool = v.Backpack:FindFirstChild(k)
+						local Tool = search(v.Backpack:GetChildren(), k)
 						if Tool and (Tool.IsA("Tool") or Tool.IsA("HopperBin")) then
 							Tools[#Tools + 1] = Tool
 						end
@@ -520,7 +520,7 @@ local Commands = {
 					Tools = {Starterpack[math.random(1, #Starterpack)]}
 				else
 					for _, k in pairs(stringExplode(message, ",")) do
-						local Tool = v.Starterpack:FindFirstChild(k)
+						local Tool = search(v.Starterpack:GetChildren(), k)
 						if Tool and (Tool.IsA("Tool") or Tool.IsA("HopperBin")) then
 							Tools[#Tools + 1] = Tool
 						end
