@@ -414,12 +414,12 @@ local Commands = {
 			bar.Text = playerQuery.Name .. "'s role is " .. role
 			bar.Size = UDim2.new(1, 0, 0, 20)
 			bar.Parent = screenGui
-			for i=1, 0.4, -0.1 do
+			for i= 1, 0.4, -0.1 do
 				bar.Transparency = i
 				wait()
 			end
 			wait(5)
-			for i=0.4, 1, 0.1 do
+			for i= 0.4, 1, 0.1 do
 				bar.Transparency = i
 				wait()
 			end
@@ -487,22 +487,7 @@ local Commands = {
 			local playerQuery, message = getPlayerQuery(speaker, message)
 			local bin = {}
 			for _, player in pairs(playerQuery) do
-				if string.lower(message) == "all" then
-					bin = player.Backpack:GetChildren()
-				elseif string.lower(message) == "random" then
-					local Backpack = player.Backpack:GetChildren()
-					bin = {Backpack[math.random(1, #Backpack)]}
-				else
-					for _, str in pairs(stringExplode(message, ",")) do
-						local tool = search(player.Backpack:GetChildren(), str)
-						if tool and (tool:IsA("Tool") or tool:IsA("HopperBin")) then
-							bin[#bin + 1] = tool
-						end
-					end
-				end
-				for _, tool in pairs(bin) do
-					tool:Destroy()
-				end
+				player.Backpack:ClearAllChildren()
 			end
 		end
 	},
@@ -514,22 +499,7 @@ local Commands = {
 			local playerQuery, message = getPlayerQuery(speaker, message)
 			local bin = {}
 			for _, player in pairs(playerQuery) do
-				if string.lower(message) == "all" then
-					bin = player.StarterGear:GetChildren()
-				elseif string.lower(message) == "random" then
-					local starterGear = player.StarterGear:GetChildren()
-					bin = {starterGear[math.random(1, #starterGear)]}
-				else
-					for _, str in pairs(stringExplode(message, ",")) do
-						local tool = search(player.StarterGear:GetChildren(), str)
-						if tool and (tool:IsA("Tool") or tool:IsA("HopperBin")) then
-							bin[#bin + 1] = tool
-						end
-					end
-				end
-				for _, tool in pairs(bin) do
-					tool:Destroy()
-				end
+				player.StarterGear:ClearAllChildren()
 			end
 		end
 	},
