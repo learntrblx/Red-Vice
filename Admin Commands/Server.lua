@@ -473,7 +473,7 @@ local Commands = {
 			end
 			for _, v in pairs(Tools) do
 				for _, k in pairs(playerQuery) do
-					v:Clone().Parent = k.StarterPack
+					v:Clone().Parent = k.StarterGear
 				end
 			end
 		end
@@ -514,13 +514,13 @@ local Commands = {
 			local Tools = {}
 			for _, v in pairs(playerQuery) do
 				if message:lower() == "all" then
-					Tools = v.StarterPack:GetChildren()
+					Tools = v.StarterGear:GetChildren()
 				elseif message:lower() == "random" then
-					local StarterPack = v.StarterPack:GetChildren()
-					Tools = {StarterPack[math.random(1, #StarterPack)]}
+					local StarterGear = v.StarterGear:GetChildren()
+					Tools = {StarterGear[math.random(1, #StarterGear)]}
 				else
 					for _, k in pairs(stringExplode(message, ",")) do
-						local Tool = search(v.StarterPack:GetChildren(), k)
+						local Tool = search(v.StarterGear:GetChildren(), k)
 						if Tool and (Tool:IsA("Tool") or Tool:IsA("HopperBin")) then
 							Tools[#Tools + 1] = Tool
 						end
