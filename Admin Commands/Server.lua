@@ -401,27 +401,27 @@ local Commands = {
 		permissionsLevel = ADMIN,
 		execute = function(speaker, message)
 			local playerQuery, message = getPlayerQuery(speaker, message, true)
-			local Role = playerQuery:GetRankInGroup(tonumber(message))
+			local role = playerQuery:GetRankInGroup(tonumber(message))
 			--replace all of the shit below
-			local ScreenGui = Instance.new("ScreenGui").Parent = speaker.PlayerGui
-			local Bar = Instance.new("TextLabel")
-			Bar.BorderSizePixel = 0
-			Bar.BackgroundColor3 = Color3.new(0, 0, 0)
-			Bar.TextColor3 = Color3.new(1, 1, 1)
-			Bar.TextScaled = true
-			Bar.Text = playerQuery.Name .. "'s role is " .. Role
-			Bar.Size = UDim2.new(1, 0, 0, 20)
-			Bar.Parent = ScreenGui
+			local screenGui = Instance.new("ScreenGui", speaker.PlayerGui)
+			local bar = Instance.new("TextLabel")
+			bar.BorderSizePixel = 0
+			bar.BackgroundColor3 = Color3.new(0, 0, 0)
+			bar.TextColor3 = Color3.new(1, 1, 1)
+			bar.TextScaled = true
+			bar.Text = playerQuery.Name .. "'s role is " .. role
+			bar.Size = UDim2.new(1, 0, 0, 20)
+			bar.Parent = screenGui
 			for i=1, .4, -.1 do
-				Bar.Transparency = i
+				bar.Transparency = i
 				wait()
 			end
 			wait(5)
 			for i=.4, 1, .1 do
-				Bar.Transparency = i
+				bar.Transparency = i
 				wait()
 			end
-			ScreenGui:Destroy()
+			screenGui:Destroy()
 		end
 	},
 	{
@@ -536,7 +536,7 @@ local Commands = {
 -- Functions
 -- Thanks to bohdan, this was ripped straight from ROBLOX CoreGUI with minor changes
 function stringTrim(str)
-    return string.match(str, "^%s*(.-)%s*$")
+	return string.match(str, "^%s*(.-)%s*$")
 end
 
 function stringExplode(str, delimiter)
