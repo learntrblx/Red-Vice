@@ -77,15 +77,6 @@ local Commands = {
 		end
 	},
 	{
-		names = {"wait", "w"},
-		description = "Waits for the number of given seconds",
-		isAsync = true,
-		permissionsLevel = ADMIN,
-		execute = function(speaker, message)
-			wait(math.min(tonumber(message) or 0, 60))
-		end
-	},
-	{
 		names = {"Teleport", "TP", "Tele"},
 		description = "Teleports the given players to the target player.",
 		permissionsLevel = ADMIN,
@@ -500,6 +491,15 @@ local Commands = {
 			for _, player in pairs(playerQuery) do
 				player.StarterGear:ClearAllChildren()
 			end
+		end
+	},
+	{
+		names = {"wait", "w"},
+		description = "Waits for the number of given seconds",
+		isAsync = true,
+		permissionsLevel = ADMIN,
+		execute = function(speaker, message)
+			wait(math.min(tonumber(message) or 0, 60))
 		end
 	},
 }
