@@ -63,27 +63,6 @@ local Commands = {
 		end
 	},
 	{
-		names = {"test1"},
-		description = "TEST1 COMMAND",
-		permissionsLevel = ADMIN,
-		execute = function(speaker, message)
-			print("TEST1 RUN")
-			wait(10)
-			print("TEST1 END")
-		end
-	},
-	{
-		names = {"test2"},
-		description = "TEST2 COMMAND",
-		isAsync = true,
-		permissionsLevel = ADMIN,
-		execute = function(speaker, message)
-			print("TEST2 RUN")
-			wait(10)
-			print("TEST2 END")
-		end
-	},
-	{
 		names = {"Teleport", "TP", "Tele"},
 		description = "Teleports the given players to the target player.",
 		permissionsLevel = ADMIN,
