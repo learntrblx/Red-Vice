@@ -453,7 +453,7 @@ local Commands = {
 		end
 	},
 	{
-		names = {"Startergive", "Starter"},
+		names = {"StarterGive", "Starter", "StarterAdd"},
 		description = "Gives the specified players the specified tools every time they spawn",
 		permissionsLevel = ADMIN,
 		execute = function(speaker, message)
