@@ -485,7 +485,6 @@ local Commands = {
 		permissionsLevel = ADMIN,
 		execute = function(speaker, message)
 			local playerQuery, message = getPlayerQuery(speaker, message)
-			local bin = {}
 			for _, player in pairs(playerQuery) do
 				player.Backpack:ClearAllChildren()
 			end
@@ -497,7 +496,6 @@ local Commands = {
 		permissionsLevel = ADMIN,
 		execute = function(speaker, message)
 			local playerQuery, message = getPlayerQuery(speaker, message)
-			local bin = {}
 			for _, player in pairs(playerQuery) do
 				player.StarterGear:ClearAllChildren()
 			end
