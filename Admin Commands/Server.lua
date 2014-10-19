@@ -414,12 +414,12 @@ local Commands = {
 			bar.Text = playerQuery.Name .. "'s role is " .. role
 			bar.Size = UDim2.new(1, 0, 0, 20)
 			bar.Parent = screenGui
-			for i=1, .4, -.1 do
+			for i=1, 0.4, -0.1 do
 				bar.Transparency = i
 				wait()
 			end
 			wait(5)
-			for i=.4, 1, .1 do
+			for i=0.4, 1, 0.1 do
 				bar.Transparency = i
 				wait()
 			end
@@ -473,7 +473,7 @@ local Commands = {
 			end
 			for _, v in pairs(Tools) do
 				for _, k in pairs(playerQuery) do
-					v:Clone().Parent = k.Starterpack
+					v:Clone().Parent = k.StarterPack
 				end
 			end
 		end
@@ -514,13 +514,13 @@ local Commands = {
 			local Tools = {}
 			for _, v in pairs(playerQuery) do
 				if message:lower() == "all" then
-					Tools = v.Starterpack:GetChildren()
+					Tools = v.StarterPack:GetChildren()
 				elseif message:lower() == "random" then
-					local Starterpack = v.Starterpack:GetChildren()
-					Tools = {Starterpack[math.random(1, #Starterpack)]}
+					local StarterPack = v.StarterPack:GetChildren()
+					Tools = {StarterPack[math.random(1, #StarterPack)]}
 				else
 					for _, k in pairs(stringExplode(message, ",")) do
-						local Tool = search(v.Starterpack:GetChildren(), k)
+						local Tool = search(v.StarterPack:GetChildren(), k)
 						if Tool and (Tool:IsA("Tool") or Tool:IsA("HopperBin")) then
 							Tools[#Tools + 1] = Tool
 						end
