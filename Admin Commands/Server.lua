@@ -349,6 +349,23 @@ local Commands = {
 			end
 		end
 	},
+	{
+		names = {"Walkspeed", "Speed"},
+		description = "Makes the given players not PlatformStand.",
+		permissionsLevel = ADMIN,
+		execute = function(speaker, message)
+			local playerQuery, message = getPlayerQuery(speaker, message)
+			local speed = tonumber(message)
+			if not speed then
+				return
+			end
+			for i = 1, #playerQuery do
+				if playerQuery[i].Character and playerQuery[i].Character:FindFirstChild("Humanoid") then
+					playerQuery[i].Character.Humanoid.WalkSpeed = speed
+				end
+			end
+		end
+	}
 }
 -- Functions
 -- Thanks to bohdan, this was ripped straight from ROBLOX CoreGUI with minor changes
