@@ -440,7 +440,7 @@ local Commands = {
 			else
 				for _, v in pairs(stringExplode(message, ",")) do
 					local Tool = search(ToolStorage:GetChildren(), v)
-					if Tool and (Tool.IsA("Tool") or Tool.IsA("HopperBin")) then
+					if Tool and (Tool:IsA("Tool") or Tool:IsA("HopperBin")) then
 						Tools[#Tools + 1] = Tool
 					end
 				end
@@ -466,7 +466,7 @@ local Commands = {
 			else
 				for _, v in pairs(stringExplode(message, ",")) do
 					local Tool = search(ToolStorage:GetChildren(), v)
-					if Tool and (Tool.IsA("Tool") or Tool.IsA("HopperBin")) then
+					if Tool and (Tool:IsA("Tool") or Tool:IsA("HopperBin")) then
 						Tools[#Tools + 1] = Tool
 					end
 				end
@@ -494,7 +494,7 @@ local Commands = {
 				else
 					for _, k in pairs(stringExplode(message, ",")) do
 						local Tool = search(v.Backpack:GetChildren(), k)
-						if Tool and (Tool.IsA("Tool") or Tool.IsA("HopperBin")) then
+						if Tool and (Tool:IsA("Tool") or Tool:IsA("HopperBin")) then
 							Tools[#Tools + 1] = Tool
 						end
 					end
@@ -521,7 +521,7 @@ local Commands = {
 				else
 					for _, k in pairs(stringExplode(message, ",")) do
 						local Tool = search(v.Starterpack:GetChildren(), k)
-						if Tool and (Tool.IsA("Tool") or Tool.IsA("HopperBin")) then
+						if Tool and (Tool:IsA("Tool") or Tool:IsA("HopperBin")) then
 							Tools[#Tools + 1] = Tool
 						end
 					end
