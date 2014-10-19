@@ -412,7 +412,7 @@ function getPlayerQuery(speaker, message, isSingular)
 					end
 				end
 			elseif string.sub(string.lower(queries[i]), 1, 5) == "team-" and not isSingular then
-				local team = search(Teams:children(), string.sub(queries[i], 6))
+				local team = search(Teams:GetChildren(), string.sub(queries[i], 6))
 				if team then
 					for i, v in pairs(Players:GetPlayers()) do
 						if v.TeamColor == team.TeamColor and v.Neutral == false then
