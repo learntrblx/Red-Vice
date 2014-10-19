@@ -656,6 +656,7 @@ function playerAdded(newPlayer)
 	-- Connects .Chatted event
 	local chatListener
 	local function hookUpChatListener()
+		print("Hooking..")
 		chatListener = newPlayer.Chatted:connect(function(message)
 			parseString(newPlayer, message)
 		end)
