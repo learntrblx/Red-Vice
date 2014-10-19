@@ -636,7 +636,7 @@ function parseString(speaker, message)
 				for name_index = 1, #Commands[command_index].names do
 					if string.lower(string.sub(match, 1, #Commands[command_index].names[name_index])) == string.lower(Commands[command_index].names[name_index]) then
 						if permissionsLevel >= Commands[command_index].permissionsLevel then
-							local suffix = stringTrim(string.sub(match, #Commands[command_index].names[name_index] + 1))
+							local suffix = stringTrim(string.sub(match, #Commands[command_index].names[name_index] + 1)) or ""
 							if Commands[command_index].isAsync == true then
 								pcall(Commands[command_index].execute, speaker, suffix)
 							else
