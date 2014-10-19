@@ -657,18 +657,9 @@ end
 
 function playerAdded(newPlayer)
 	-- Receives incoming players and Connects .Chatted event
-	local chatListener
-	local function hookUpChatListener()
-		chatListener = newPlayer.Chatted:connect(function(message)
-			parseString(newPlayer, message)
-		end)
-	end
-	local fixListener = newPlayer.Chatted:connect(function(message)
-		if string.lower(string.sub(message), 1, #PREFIX + 3) == string.lower(PREFIX .. "fix") then
-			hookUpChatListener()
-		end
+	newPlayer.Chatted:connect(function(message)
+		parseString(newPlayer, message)
 	end)
-	hookUpChatListener()
 end
 
 
