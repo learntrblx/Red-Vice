@@ -506,7 +506,6 @@ local Commands = {
 
 
 -- Functions
--- Thanks to bohdan, this was ripped straight from ROBLOX CoreGUI with minor changes
 function stringTrim(str)
 	return string.match(str, "^%s*(.-)%s*$")
 end
