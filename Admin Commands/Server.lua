@@ -438,7 +438,7 @@ local Commands = {
 			elseif message:lower() == "random" then
 				Tools = {ToolStorage[math.random(1, #ToolStorage:GetChildren())]}
 			else
-				for _, v in stringExplode(message, ",") do
+				for _, v in pairs(stringExplode(message, ",")) do
 					local Tool = ToolStorage:FindFirstChild(v)
 					if Tool and (Tool.IsA("Tool") or Tool.IsA("HopperBin")) then
 						Tools[#Tools + 1] = Tool
@@ -464,7 +464,7 @@ local Commands = {
 			elseif message:lower() == "random" then
 				Tools = {ToolStorage[math.random(1, #ToolStorage:GetChildren())]}
 			else
-				for _, v in stringExplode(message, ",") do
+				for _, v in pairs(stringExplode(message, ",")) do
 					local Tool = ToolStorage:FindFirstChild(v)
 					if Tool and (Tool.IsA("Tool") or Tool.IsA("HopperBin")) then
 						Tools[#Tools + 1] = Tool
