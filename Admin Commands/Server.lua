@@ -33,6 +33,7 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local InsertService = game:GetService("InsertService")
 local Debris = game:GetService("Debris")
 local ServerStorage = game:GetService("ServerStorage")
+
 local ToolStorage = ServerStorage
 
 
@@ -189,7 +190,7 @@ local Commands = {
 	},
 	{
 		names = {"Explode"},
-		description = "Respawns the given players.",
+		description = "Causes the given players to explode violently.",
 		permissionsLevel = ADMIN,
 		execute = function(speaker, message)
 			local playerQuery, message = getPlayerQuery(speaker, message)
@@ -216,7 +217,7 @@ local Commands = {
 		description = "Sets the TimeOfDay to the given number.",
 		permissionsLevel = ADMIN,
 		execute = function(speaker, message)
-			Lighting.TimeOfDay = string.match(message, "^%s*(.-)%s*$")
+			Lighting.TimeOfDay = stringTrim(message)
 		end
 	},
 	{
@@ -369,7 +370,7 @@ local Commands = {
 	},
 	{
 		names = {"Walkspeed", "Speed"},
-		description = "Makes the given players not PlatformStand.",
+		description = "Sets the given players' WalkSpeed to the given number.",
 		permissionsLevel = ADMIN,
 		execute = function(speaker, message)
 			local playerQuery, message = getPlayerQuery(speaker, message)
@@ -386,7 +387,7 @@ local Commands = {
 	},
 	{
 		names = {"Damage", "Hurt", "Dmg"},
-		description = "Damages the players specified by the damage givendam",
+		description = "Damages the players specified by the damage given number.",
 		permissionsLevel = ADMIN,
 		execute = function(speaker, message)
 			local playerQuery, message = getPlayerQuery(speaker, message)
@@ -399,11 +400,11 @@ local Commands = {
 	},
 	{
 		names = {"Rank", "Role"},
-		description = "Checks the rank of the specified player and shows it in a GUI",
+		description = "Checks the rank of the given player in the given GroupId or Hostile (if no GroupId is given).",
 		permissionsLevel = ADMIN,
 		execute = function(speaker, message)
 			local playerQuery, message = getPlayerQuery(speaker, message, true)
-			local role = playerQuery:GetRoleInGroup(tonumber(message))
+			local role = playerQuery:GetRoleInGroup(tonumber(message) or GROUP_ID)
 			-- TODO: Replace below
 			local screenGui = Instance.new("ScreenGui", speaker.PlayerGui)
 			local bar = Instance.new("TextLabel")
@@ -481,7 +482,7 @@ local Commands = {
 	},
 	{
 		names = {"RemoveTools"},
-		description = "Removes the specified tools from the players.",
+		description = "Removes the all tools from the players' Backpack.",
 		permissionsLevel = ADMIN,
 		execute = function(speaker, message)
 			local playerQuery, message = getPlayerQuery(speaker, message)
@@ -492,7 +493,7 @@ local Commands = {
 	},
 	{
 		names = {"RemoveStarter", "RemoveStarterTools"},
-		description = "Removes the specified tools from the players",
+		description = "Removes all tools from the players' StarterGear.",
 		permissionsLevel = ADMIN,
 		execute = function(speaker, message)
 			local playerQuery, message = getPlayerQuery(speaker, message)
