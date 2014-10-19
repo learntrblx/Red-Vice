@@ -63,14 +63,24 @@ local Commands = {
 		end
 	},
 	{
-		names = {"test"},
-		description = "TEST COMMAND",
-		isAsync = false,
+		names = {"test1"},
+		description = "TEST1 COMMAND",
 		permissionsLevel = ADMIN,
 		execute = function(speaker, message)
-			print("TEST RUN")
+			print("TEST1 RUN")
 			wait(10)
-			print("TEST END")
+			print("TEST1 END")
+		end
+	},
+	{
+		names = {"test2"},
+		description = "TEST2 COMMAND",
+		isAsync = true,
+		permissionsLevel = ADMIN,
+		execute = function(speaker, message)
+			print("TEST2 RUN")
+			wait(10)
+			print("TEST2 END")
 		end
 	},
 	{
