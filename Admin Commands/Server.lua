@@ -598,10 +598,11 @@ end
 function parseString(speaker, message)
 	-- Get speaker"s permissionsLevel (should be an integer 0 - 255)
 	local permissionsLevel = getPermissionsLevel(speaker)
-	-- Loop through each command executed: "/Kill PLAYER1 /Kill PLAYER2" -> Kill PLAYER1 -> Kill PLAYER2
-	if string.sub(stringTrim(message), 1, #PREFIX) ~= PREFIX then
+	-- Make sure the beginning is the prefix
+	if string.lower(string.sub(stringTrim(message), 1, #PREFIX)) ~= string.lower(PREFIX) then
 		return
 	end
+	-- Loop through each command executed: "/Kill PLAYER1 /Kill PLAYER2" -> "Kill PLAYER1" -> "Kill PLAYER2"
 	for match in string.gmatch(message, "[^" .. PREFIX .. "]+") do
 		(function()
 			match = stringTrim(match)
