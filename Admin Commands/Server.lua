@@ -504,8 +504,8 @@ local Commands = {
 	},
 }
 
+-- Utility Functions
 
--- Functions
 function stringTrim(str)
 	return string.match(str, "^%s*(.-)%s*$")
 end
@@ -535,6 +535,8 @@ function boolCheck(str)
 		return false
 	end
 end
+
+-- Primary Functions
 
 function search(objects, str)
 	local results = {}
