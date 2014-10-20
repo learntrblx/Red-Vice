@@ -326,14 +326,15 @@ local Commands = {
 			end
 		end
 	},
-		{
+	{
 		names = {"Place"},
 		description = "Transports the players to the game specified by the PlaceId",
 		permissionsLevel = ADMIN,
 		execute = function(speaker, message)
 			local playerQuery, message = getPlayerQuery(speaker, message)
+			local placeId = tonumber(stringTrim(message))
 			for _, player in pairs(playerQuery) do
-				TeleportService:Teleport(player, tonumber(message))
+				TeleportService:Teleport(player, placeId)
 			end
 		end
 	},
