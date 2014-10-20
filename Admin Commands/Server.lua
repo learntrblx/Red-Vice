@@ -33,6 +33,9 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local InsertService = game:GetService("InsertService")
 local Debris = game:GetService("Debris")
 local ServerStorage = game:GetService("ServerStorage")
+local GroupService = game:GetService("GroupService")
+local MarketplaceService = game:GetService("MarketplaceService")
+local TeleportService = game:GetService("TeleportService")
 
 local ToolStorage = ServerStorage
 
@@ -53,6 +56,8 @@ end
 
 -- Store all Commands in here. Use the "Kill" command as a template
 local Commands = {
+
+	-- Character Commands
 	{
 		-- This is a table of alternate names the command can be run with
 		-- It is case insensitive, but should use CamelCase for readability within this script and in-game GUI
@@ -96,15 +101,14 @@ local Commands = {
 		end
 	},
 	{
-		names = {"Kick"},
-		description = "Kicks the given players from the current game.",
+		names = {"Explode"},
+		description = "Causes the given players to explode violently.",
 		permissionsLevel = ADMIN,
 		execute = function(speaker, message)
 			local playerQuery, message = getPlayerQuery(speaker, message)
-			local permissionsLevel = getPermissionsLevel(speaker)
 			for i = 1, #playerQuery do
-				if getPermissionsLevel(playerQuery[i]) < permissionsLevel then
-					playerQuery[i]:Kick()
+				if playerQuery[i].Character and playerQuery[i].Character:FindFirstChild("HumanoidRootPart") then
+					Instance.new("Explosion", Workspace).Position = playerQuery[i].Character.HumanoidRootPart.Position
 				end
 			end
 		end
@@ -140,6 +144,51 @@ local Commands = {
 		end
 	},
 	{
+		names = {"Fling", "Throw"},
+		description = "Flings the given players in a random direction.",
+		permissionsLevel = ADMIN,
+		execute = function(speaker, message)
+			local playerQuery, message = getPlayerQuery(speaker, message)
+			for i = 1, #playerQuery do
+				if playerQuery[i].Character and playerQuery[i].Character:FindFirstChild("Torso") and playerQuery[i].Character:FindFirstChild("Humanoid") then
+					local BodyForce = Instance.new("BodyForce", playerQuery[i].Character.Torso)
+					BodyForce.force = Vector3.new(math.random(22220, 39996), 39996, math.random(22220, 39996))
+					playerQuery[i].Character.Humanoid.Sit = true
+					Debris:AddItem(BodyForce, 0.1)
+				end
+			end
+		end
+	},
+
+	-- Humanoid Commands
+	{
+		names = {"Heal", "SetHealth"},
+		description = "Sets the given players' Health to their MaxHealth or the number given.",
+		permissionsLevel = ADMIN,
+		execute = function(speaker, message)
+			local playerQuery, message = getPlayerQuery(speaker, message)
+			local targetHealth = tonumber(message)
+			for i = 1, #playerQuery do
+				if playerQuery[i].Character and playerQuery[i].Character:FindFirstChild("Humanoid") then
+					playerQuery[i].Character.Humanoid.Health = targetHealth or playerQuery[i].Character.Humanoid.MaxHealth
+				end
+			end
+		end
+	},
+	{
+		names = {"Damage", "Hurt", "Dmg"},
+		description = "Damages the players specified by the damage given number.",
+		permissionsLevel = ADMIN,
+		execute = function(speaker, message)
+			local playerQuery, message = getPlayerQuery(speaker, message)
+			for i = 1, #playerQuery do
+				if playerQuery[i].Character and playerQuery[i].Character:FindFirstChild("Humanoid") then
+					playerQuery[i].Character.Humanoid:TakeDamage(tonumber(message))
+				end
+			end
+		end
+	},
+	{
 		names = {"Invincible", "God"},
 		description = "Gives the given players unlimited MaxHealth.",
 		permissionsLevel = ADMIN,
@@ -161,148 +210,6 @@ local Commands = {
 			for i = 1, #playerQuery do
 				if playerQuery[i].Character and playerQuery[i].Character:FindFirstChild("Humanoid") then
 					playerQuery[i].Character.Humanoid.MaxHealth = 100
-				end
-			end
-		end
-	},
-	{
-		names = {"Heal", "SetHealth"},
-		description = "Sets the given players' Health to their MaxHealth or the number given.",
-		permissionsLevel = ADMIN,
-		execute = function(speaker, message)
-			local playerQuery, message = getPlayerQuery(speaker, message)
-			local targetHealth = tonumber(message)
-			for i = 1, #playerQuery do
-				if playerQuery[i].Character and playerQuery[i].Character:FindFirstChild("Humanoid") then
-					playerQuery[i].Character.Humanoid.Health = targetHealth or playerQuery[i].Character.Humanoid.MaxHealth
-				end
-			end
-		end
-	},
-	{
-		names = {"Explode"},
-		description = "Causes the given players to explode violently.",
-		permissionsLevel = ADMIN,
-		execute = function(speaker, message)
-			local playerQuery, message = getPlayerQuery(speaker, message)
-			for i = 1, #playerQuery do
-				if playerQuery[i].Character and playerQuery[i].Character:FindFirstChild("HumanoidRootPart") then
-					Instance.new("Explosion", Workspace).Position = playerQuery[i].Character.HumanoidRootPart.Position
-				end
-			end
-		end
-	},
-	{
-		names = {"Respawn", "LoadCharacter", "RS"},
-		description = "Respawns the given players.",
-		permissionsLevel = ADMIN,
-		execute = function(speaker, message)
-			local playerQuery, message = getPlayerQuery(speaker, message)
-			for i = 1, #playerQuery do
-				playerQuery[i]:LoadCharacter()
-			end
-		end
-	},
-	{
-		names = {"TimeOfDay", "Time", "TOD"},
-		description = "Sets the TimeOfDay to the given number.",
-		permissionsLevel = ADMIN,
-		execute = function(speaker, message)
-			Lighting.TimeOfDay = stringTrim(message)
-		end
-	},
-	{
-		names = {"FogEnd", "Fog"},
-		description = "Sets the FogEnd to the given number.",
-		permissionsLevel = ADMIN,
-		execute = function(speaker, message)
-			Lighting.FogEnd = tonumber(message)
-		end
-	},
-	{
-		names = {"FogStart"},
-		description = "Sets the FogStart to the given number.",
-		permissionsLevel = ADMIN,
-		execute = function(speaker, message)
-			Lighting.FogStart = tonumber(message)
-		end
-	},
-	{
-		names = {"Brightness"},
-		description = "Sets the Brightness to the given number.",
-		permissionsLevel = ADMIN,
-		execute = function(speaker, message)
-			Lighting.Brightness = tonumber(message)
-		end
-	},
-	{
-		names = {"Shadows", "GlobalShadows"},
-		description = "Sets Shadows to either true or false.",
-		permissionsLevel = ADMIN,
-		execute = function(speaker, message)
-			local bool = boolCheck(message)
-			if bool == nil then
-				return
-			end
-			Lighting.GlobalShadows = bool
-		end
-	},
-	{
-		names = {"BTools", "GiveBTools"},
-		description = "Gives the given players building tools.",
-		permissionsLevel = ADMIN,
-		execute = function(speaker, message)
-			local playerQuery, message = getPlayerQuery(speaker, message)
-			for i = 1, #playerQuery do
-				local GameTool = Instance.new("HopperBin", playerQuery[i].Backpack)
-				GameTool.BinType = 1
-				local Clone = Instance.new("HopperBin", playerQuery[i].Backpack)
-				Clone.BinType = 3
-				local Hammer = Instance.new("HopperBin", playerQuery[i].Backpack)
-				Hammer.BinType = 4
-			end
-		end
-	},
-	{
-		names = {"Team", "SetTeam"},
-		description = "Sets the given players to the given team.",
-		permissionsLevel = ADMIN,
-		execute = function(speaker, message)
-			local playerQuery, message = getPlayerQuery(speaker, message)
-			local team = search(Teams:GetChildren(), stringTrim(message))
-			if not team or not team:IsA("Team") then
-				return
-			end
-			for i = 1, #playerQuery do
-				playerQuery[i].TeamColor = team.TeamColor
-				playerQuery[i].Neutral = false
-			end
-		end
-	},
-	{
-		names = {"Sword", "GiveSword"},
-		description = "Gives a LinkedSword to the given players.",
-		permissionsLevel = ADMIN,
-		execute = function(speaker, message)
-			local playerQuery, message = getPlayerQuery(speaker, message)
-			local Sword = InsertService:LoadAsset(47433):GetChildren()[1]
-			for i = 1, #playerQuery do
-				Sword:Clone().Parent = playerQuery[i].Character
-			end
-		end
-	},
-	{
-		names = {"Fling", "Throw"},
-		description = "Flings the given players in a random direction.",
-		permissionsLevel = ADMIN,
-		execute = function(speaker, message)
-			local playerQuery, message = getPlayerQuery(speaker, message)
-			for i = 1, #playerQuery do
-				if playerQuery[i].Character and playerQuery[i].Character:FindFirstChild("Torso") and playerQuery[i].Character:FindFirstChild("Humanoid") then
-					local BodyForce = Instance.new("BodyForce", playerQuery[i].Character.Torso)
-					BodyForce.force = Vector3.new(math.random(22220, 39996), 39996, math.random(22220, 39996))
-					playerQuery[i].Character.Humanoid.Sit = true
-					Debris:AddItem(BodyForce, 0.1)
 				end
 			end
 		end
@@ -376,19 +283,102 @@ local Commands = {
 			end
 		end
 	},
+
+	-- Player Commands
 	{
-		names = {"Damage", "Hurt", "Dmg"},
-		description = "Damages the players specified by the damage given number.",
+		names = {"Team", "SetTeam"},
+		description = "Sets the given players to the given team.",
+		permissionsLevel = ADMIN,
+		execute = function(speaker, message)
+			local playerQuery, message = getPlayerQuery(speaker, message)
+			local team = search(Teams:GetChildren(), stringTrim(message))
+			if not team or not team:IsA("Team") then
+				return
+			end
+			for i = 1, #playerQuery do
+				playerQuery[i].TeamColor = team.TeamColor
+				playerQuery[i].Neutral = false
+			end
+		end
+	},
+	{
+		names = {"Respawn", "LoadCharacter", "RS"},
+		description = "Respawns the given players.",
 		permissionsLevel = ADMIN,
 		execute = function(speaker, message)
 			local playerQuery, message = getPlayerQuery(speaker, message)
 			for i = 1, #playerQuery do
-				if playerQuery[i].Character and playerQuery[i].Character:FindFirstChild("Humanoid") then
-					playerQuery[i].Character.Humanoid:TakeDamage(tonumber(message))
+				playerQuery[i]:LoadCharacter()
+			end
+		end
+	},
+	{
+		names = {"Kick"},
+		description = "Kicks the given players from the current game.",
+		permissionsLevel = ADMIN,
+		execute = function(speaker, message)
+			local playerQuery, message = getPlayerQuery(speaker, message)
+			local permissionsLevel = getPermissionsLevel(speaker)
+			for i = 1, #playerQuery do
+				if getPermissionsLevel(playerQuery[i]) < permissionsLevel then
+					playerQuery[i]:Kick()
 				end
 			end
 		end
 	},
+		{
+		names = {"Place"},
+		description = "Transports the players to the game specified by the PlaceId",
+		permissionsLevel = ADMIN,
+		execute = function(speaker, message)
+			local playerQuery, message = getPlayerQuery(speaker, message)
+			for _,v in pairs(playerQuery) do
+				TeleportService:Teleport(v, tonumber(message))
+			end
+		end
+	},
+	{
+		names = {"Follow"},
+		description = "Transports the players to the server that the player with the specified UserId is in",
+		permissionsLevel = ADMIN,
+		execute = function(speaker, message)
+			local playerQuery, message = getPlayerQuery(speaker, message)
+			local Response = {TeleportService:GetPlayerPlaceInstanceAsync(tonumber(message))}
+			for _,v in pairs(playerQuery) do
+				TeleportService:TeleportToPlaceInstance(Response['placeId'], Response['instanceId'], v)
+			end
+		end
+	},
+	{
+		names = {"CountPlayers", "PlayerCount"},
+		description = "Displays to the user the total playercount of the server",
+		permissionsLevel = ADMIN,
+		execute = function(speaker, message)
+			-- TODO: Replace below
+			local screenGui = Instance.new("ScreenGui", speaker.PlayerGui)
+			local bar = Instance.new("TextLabel")
+			bar.BorderSizePixel = 0
+			bar.BackgroundColor3 = Color3.new(0, 0, 0)
+			bar.TextColor3 = Color3.new(1, 1, 1)
+			bar.TextScaled = true
+			bar.Text = "There are " .. Players.NumPlayers .. " in the server."
+			bar.Size = UDim2.new(1, 0, 0, 20)
+			bar.Parent = screenGui
+			for i= 1, 0.4, -0.1 do
+				bar.Transparency = i
+				wait()
+			end
+			wait(5)
+			for i= 0.4, 1, 0.1 do
+				bar.Transparency = i
+				wait()
+			end
+			screenGui:Destroy()
+			-- TODO: Replace above
+		end
+	},
+
+	-- GUI Info Commands
 	{
 		names = {"Rank", "Role"},
 		description = "Checks the rank of the given player in the given GroupId or Hostile (if no GroupId is given).",
@@ -419,6 +409,8 @@ local Commands = {
 			-- TODO: Replace above
 		end
 	},
+
+	-- Tool Commands
 	{
 		names = {"Give", "GiveTool"},
 		description = "Gives the specified players the specified tools.",
@@ -442,6 +434,17 @@ local Commands = {
 				for _, k in pairs(playerQuery) do
 					v:Clone().Parent = k.Backpack
 				end
+			end
+		end
+	},
+	{
+		names = {"RemoveTools"},
+		description = "Removes the all tools from the players' Backpack.",
+		permissionsLevel = ADMIN,
+		execute = function(speaker, message)
+			local playerQuery, message = getPlayerQuery(speaker, message)
+			for _, player in pairs(playerQuery) do
+				player.Backpack:ClearAllChildren()
 			end
 		end
 	},
@@ -472,17 +475,6 @@ local Commands = {
 		end
 	},
 	{
-		names = {"RemoveTools"},
-		description = "Removes the all tools from the players' Backpack.",
-		permissionsLevel = ADMIN,
-		execute = function(speaker, message)
-			local playerQuery, message = getPlayerQuery(speaker, message)
-			for _, player in pairs(playerQuery) do
-				player.Backpack:ClearAllChildren()
-			end
-		end
-	},
-	{
 		names = {"RemoveStarter", "RemoveStarterTools"},
 		description = "Removes all tools from the players' StarterGear.",
 		permissionsLevel = ADMIN,
@@ -493,6 +485,82 @@ local Commands = {
 			end
 		end
 	},
+	{
+		names = {"Sword", "GiveSword"},
+		description = "Gives a LinkedSword to the given players.",
+		permissionsLevel = ADMIN,
+		execute = function(speaker, message)
+			local playerQuery, message = getPlayerQuery(speaker, message)
+			local Sword = InsertService:LoadAsset(47433):GetChildren()[1]
+			for i = 1, #playerQuery do
+				Sword:Clone().Parent = playerQuery[i].Character
+			end
+		end
+	},
+	{
+		names = {"BTools", "GiveBTools"},
+		description = "Gives the given players building tools.",
+		permissionsLevel = ADMIN,
+		execute = function(speaker, message)
+			local playerQuery, message = getPlayerQuery(speaker, message)
+			for i = 1, #playerQuery do
+				local GameTool = Instance.new("HopperBin", playerQuery[i].Backpack)
+				GameTool.BinType = 1
+				local Clone = Instance.new("HopperBin", playerQuery[i].Backpack)
+				Clone.BinType = 3
+				local Hammer = Instance.new("HopperBin", playerQuery[i].Backpack)
+				Hammer.BinType = 4
+			end
+		end
+	},
+
+	-- Lighting Commands
+	{
+		names = {"TimeOfDay", "Time", "TOD"},
+		description = "Sets the TimeOfDay to the given number.",
+		permissionsLevel = ADMIN,
+		execute = function(speaker, message)
+			Lighting.TimeOfDay = stringTrim(message)
+		end
+	},
+	{
+		names = {"FogEnd", "Fog"},
+		description = "Sets the FogEnd to the given number.",
+		permissionsLevel = ADMIN,
+		execute = function(speaker, message)
+			Lighting.FogEnd = tonumber(message)
+		end
+	},
+	{
+		names = {"FogStart"},
+		description = "Sets the FogStart to the given number.",
+		permissionsLevel = ADMIN,
+		execute = function(speaker, message)
+			Lighting.FogStart = tonumber(message)
+		end
+	},
+	{
+		names = {"Brightness"},
+		description = "Sets the Brightness to the given number.",
+		permissionsLevel = ADMIN,
+		execute = function(speaker, message)
+			Lighting.Brightness = tonumber(message)
+		end
+	},
+	{
+		names = {"Shadows", "GlobalShadows"},
+		description = "Sets Shadows to either true or false.",
+		permissionsLevel = ADMIN,
+		execute = function(speaker, message)
+			local bool = boolCheck(message)
+			if bool == nil then
+				return
+			end
+			Lighting.GlobalShadows = bool
+		end
+	},
+
+	-- Utility Commands
 	{
 		names = {"wait", "w"},
 		description = "Waits for the number of given seconds",
@@ -567,7 +635,7 @@ function getPlayerQuery(speaker, message, isSingular)
 			elseif string.lower(queries[i]) == "all" and not isSingular then
 				bin = Players:GetPlayers()
 			elseif string.lower(queries[i]) == "others" and not isSingular then
-				for i, v in pairs(Players:GetPlayers()) do
+				for _, v in pairs(Players:GetPlayers()) do
 					if v ~= speaker then
 						bin[#bin + 1] = v
 					end
@@ -575,14 +643,31 @@ function getPlayerQuery(speaker, message, isSingular)
 			elseif string.sub(string.lower(queries[i]), 1, 5) == "team-" and not isSingular then
 				local team = search(Teams:GetChildren(), string.sub(queries[i], 6))
 				if team then
-					for i, v in pairs(Players:GetPlayers()) do
+					for _, v in pairs(Players:GetPlayers()) do
 						if v.TeamColor == team.TeamColor and v.Neutral == false then
 							bin[#bin + 1] = v
 						end
 					end
 				end
-			elseif string.lower(queries[i]) == "random" then
-				bin = {Players:GetPlayers()[math.random(1, Players.NumPlayers)]}
+			elseif string.sub(string.lower(queries[i]), 1, 6) == "random" then
+				if (string.sub(string.lower(queries[i]), 1, 7) == "randomx") and (#queries[i] > 7) and (not isSingular) then
+					local TempBin = {} --because Osyris doesn't like to iterate through tables properly
+					for i=1, tonumber(string.sub(queries[i], 8)), 1 do
+						local Unfinished = true
+						while Unfinished do
+							local Player = Players:GetPlayers()[math.random(1, Players.NumPlayers)]
+							if not TempBin[Player.Name] then
+								TempBin[Player.Name] = Player
+								Unfinished = false
+							end
+						end
+					end
+					for _,v in pairs(TempBin) do --fix to be numerically indexed
+						bin[#bin + 1] = v
+					end
+				else
+					bin = {Players:GetPlayers()[math.random(1, Players.NumPlayers)]}
+				end
 			else
 				bin = {search(Players:GetPlayers(), queries[i])}
 			end
