@@ -134,9 +134,9 @@ local Commands = {
 			local playerQuery, message = getPlayerQuery(speaker, message)
 			for i = 1, #playerQuery do
 				if playerQuery[i].Character then
-					for _, v in pairs(playerQuery[i].Character:GetChildren()) do
-						if v:IsA("ForceField") then
-							v:Remove()
+					for _, child in pairs(playerQuery[i].Character:GetChildren()) do
+						if child:IsA("ForceField") then
+							child:Remove()
 						end
 					end
 				end
@@ -319,9 +319,9 @@ local Commands = {
 		execute = function(speaker, message)
 			local playerQuery, message = getPlayerQuery(speaker, message)
 			local permissionsLevel = getPermissionsLevel(speaker)
-			for i = 1, #playerQuery do
-				if getPermissionsLevel(playerQuery[i]) < permissionsLevel then
-					playerQuery[i]:Kick()
+			for _, player in pairs(playerQuery) do
+				if getPermissionsLevel(player) < permissionsLevel then
+					player:Kick()
 				end
 			end
 		end
@@ -332,8 +332,8 @@ local Commands = {
 		permissionsLevel = ADMIN,
 		execute = function(speaker, message)
 			local playerQuery, message = getPlayerQuery(speaker, message)
-			for _,v in pairs(playerQuery) do
-				TeleportService:Teleport(v, tonumber(message))
+			for _, player in pairs(playerQuery) do
+				TeleportService:Teleport(player, tonumber(message))
 			end
 		end
 	},
@@ -344,8 +344,8 @@ local Commands = {
 		execute = function(speaker, message)
 			local playerQuery, message = getPlayerQuery(speaker, message)
 			local Response = {TeleportService:GetPlayerPlaceInstanceAsync(tonumber(message))}
-			for _,v in pairs(playerQuery) do
-				TeleportService:TeleportToPlaceInstance(Response['placeId'], Response['instanceId'], v)
+			for _, player in pairs(playerQuery) do
+				TeleportService:TeleportToPlaceInstance(Response.placeId, Response.instanceId, player)
 			end
 		end
 	},
@@ -423,16 +423,16 @@ local Commands = {
 			elseif string.lower(message) == "random" then
 				tools = {ToolStorage[math.random(1, #ToolStorage:GetChildren())]}
 			else
-				for _, v in pairs(stringExplode(message, ",")) do
-					local tool = search(ToolStorage:GetChildren(), v)
+				for _, str in pairs(stringExplode(message, ",")) do
+					local tool = search(ToolStorage:GetChildren(), str)
 					if tool and (tool:IsA("Tool") or tool:IsA("HopperBin")) then
 						tools[#tools + 1] = tool
 					end
 				end
 			end
-			for _, v in pairs(tools) do
-				for _, k in pairs(playerQuery) do
-					v:Clone().Parent = k.Backpack
+			for _, tool in pairs(tools) do
+				for _, player in pairs(playerQuery) do
+					tool:Clone().Parent = player.Backpack
 				end
 			end
 		end
@@ -460,16 +460,16 @@ local Commands = {
 			elseif string.lower(message) == "random" then
 				tools = {ToolStorage[math.random(1, #ToolStorage:GetChildren())]}
 			else
-				for _, v in pairs(stringExplode(message, ",")) do
-					local tool = search(ToolStorage:GetChildren(), v)
+				for _, str in pairs(stringExplode(message, ",")) do
+					local tool = search(ToolStorage:GetChildren(), str)
 					if tool and (tool:IsA("Tool") or tool:IsA("HopperBin")) then
 						tools[#tools + 1] = tool
 					end
 				end
 			end
-			for _, v in pairs(tools) do
-				for _, k in pairs(playerQuery) do
-					v:Clone().Parent = k.StarterGear
+			for _, tool in pairs(tools) do
+				for _, player in pairs(playerQuery) do
+					tool:Clone().Parent = player.StarterGear
 				end
 			end
 		end
@@ -635,35 +635,35 @@ function getPlayerQuery(speaker, message, isSingular)
 			elseif string.lower(queries[i]) == "all" and not isSingular then
 				bin = Players:GetPlayers()
 			elseif string.lower(queries[i]) == "others" and not isSingular then
-				for _, v in pairs(Players:GetPlayers()) do
-					if v ~= speaker then
-						bin[#bin + 1] = v
+				for _, player in pairs(Players:GetPlayers()) do
+					if player ~= speaker then
+						bin[#bin + 1] = player
 					end
 				end
 			elseif string.sub(string.lower(queries[i]), 1, 5) == "team-" and not isSingular then
 				local team = search(Teams:GetChildren(), string.sub(queries[i], 6))
 				if team then
-					for _, v in pairs(Players:GetPlayers()) do
-						if v.TeamColor == team.TeamColor and v.Neutral == false then
-							bin[#bin + 1] = v
+					for _, player in pairs(Players:GetPlayers()) do
+						if player.TeamColor == team.TeamColor and player.Neutral == false then
+							bin[#bin + 1] = player
 						end
 					end
 				end
 			elseif string.sub(string.lower(queries[i]), 1, 6) == "random" then
 				if (string.sub(string.lower(queries[i]), 1, 7) == "randomx") and (#queries[i] > 7) and (not isSingular) then
-					local TempBin = {} --because Osyris doesn't like to iterate through tables properly
+					local tempBin = {}
 					for i=1, tonumber(string.sub(queries[i], 8)), 1 do
-						local Unfinished = true
-						while Unfinished do
-							local Player = Players:GetPlayers()[math.random(1, Players.NumPlayers)]
-							if not TempBin[Player.Name] then
-								TempBin[Player.Name] = Player
-								Unfinished = false
+						local unfinished = true
+						while unfinished do
+							local player = Players:GetPlayers()[math.random(1, Players.NumPlayers)]
+							if not tempBin[player.Name] then
+								tempBin[player.Name] = player
+								unfinished = false
 							end
 						end
 					end
-					for _,v in pairs(TempBin) do --fix to be numerically indexed
-						bin[#bin + 1] = v
+					for _, player in pairs(tempBin) do
+						bin[#bin + 1] = player
 					end
 				else
 					bin = {Players:GetPlayers()[math.random(1, Players.NumPlayers)]}
@@ -723,8 +723,8 @@ end
 
 
 Players.PlayerAdded:connect(playerAdded)
-for i, v in pairs(Players:GetPlayers()) do
-	playerAdded(v)
+for _, player in pairs(Players:GetPlayers()) do
+	playerAdded(player)
 end
 
 
