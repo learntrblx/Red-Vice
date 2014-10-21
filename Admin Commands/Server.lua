@@ -37,8 +37,8 @@ local GroupService = game:GetService("GroupService")
 local MarketplaceService = game:GetService("MarketplaceService")
 local TeleportService = game:GetService("TeleportService")
 
-local ToolStorage = ServerStorage
-
+local toolStorage = ServerStorage
+local bannedUsers = {}
 
 -- Set math.randomseed
 math.randomseed(tick())
@@ -327,6 +327,19 @@ local Commands = {
 		end
 	},
 	{
+		names = {"Ban", "ServerBan"},
+		description = "Bans the given player from the current game.",
+		permissionsLevel = ADMIN,
+		execute = function(speaker, message)
+			local player, message = getPlayerQuery(speaker, message, true)
+			local permissionsLevel = getPermissionsLevel(speaker)
+			if getPermissionsLevel(player) < permissionsLevel then
+				bannedUsers[#bannedUsers + 1] = player.Name
+				player:Kick()
+			end
+		end
+	},
+	{
 		names = {"Place"},
 		description = "Transports the players to the game specified by the PlaceId",
 		permissionsLevel = ADMIN,
@@ -420,12 +433,12 @@ local Commands = {
 			local playerQuery, message = getPlayerQuery(speaker, message)
 			local tools = {}
 			if string.lower(message) == "all" then
-				tools = ToolStorage:GetChildren()
+				tools = toolStorage:GetChildren()
 			elseif string.lower(message) == "random" then
-				tools = {ToolStorage[math.random(1, #ToolStorage:GetChildren())]}
+				tools = {toolStorage[math.random(1, #toolStorage:GetChildren())]}
 			else
 				for _, str in pairs(stringExplode(message, ",")) do
-					local tool = search(ToolStorage:GetChildren(), str)
+					local tool = search(toolStorage:GetChildren(), str)
 					if tool and (tool:IsA("Tool") or tool:IsA("HopperBin")) then
 						tools[#tools + 1] = tool
 					end
@@ -457,12 +470,12 @@ local Commands = {
 			local playerQuery, message = getPlayerQuery(speaker, message)
 			local tools = {}
 			if string.lower(message) == "all" then
-				tools = ToolStorage:GetChildren()
+				tools = toolStorage:GetChildren()
 			elseif string.lower(message) == "random" then
-				tools = {ToolStorage[math.random(1, #ToolStorage:GetChildren())]}
+				tools = {toolStorage[math.random(1, #toolStorage:GetChildren())]}
 			else
 				for _, str in pairs(stringExplode(message, ",")) do
-					local tool = search(ToolStorage:GetChildren(), str)
+					local tool = search(toolStorage:GetChildren(), str)
 					if tool and (tool:IsA("Tool") or tool:IsA("HopperBin")) then
 						tools[#tools + 1] = tool
 					end
@@ -597,6 +610,14 @@ function tableMerge(tableA, tableB)
 	return tableA
 end
 
+function tableFind(table, value)
+	for _, v in pairs(table) do
+		if v == value then
+			return v
+		end
+	end
+end
+
 function boolCheck(str)
 	if str == "true" or str == "on" then
 		return true
@@ -716,7 +737,10 @@ function parseString(speaker, message)
 end
 
 function playerAdded(newPlayer)
-	-- Receives incoming players and Connects .Chatted event
+	if tableFind(bannedUsers, newPlayer.Name) then
+		newPlayer:Kick()
+		return
+	end
 	newPlayer.Chatted:connect(function(message)
 		parseString(newPlayer, message)
 	end)
