@@ -36,9 +36,11 @@ local ServerStorage = game:GetService("ServerStorage")
 local GroupService = game:GetService("GroupService")
 local MarketplaceService = game:GetService("MarketplaceService")
 local TeleportService = game:GetService("TeleportService")
+local DataStoreService = game:GetService("DataStoreService")
 
 local toolStorage = ServerStorage
 local bannedUsers = {}
+local bannedUsersDS = DataStoreService:GetDataStore("Hostile_bannedUsersDS")
 
 -- Set math.randomseed
 math.randomseed(tick())
@@ -337,6 +339,43 @@ local Commands = {
 				bannedUsers[#bannedUsers + 1] = player.Name
 				player:Kick()
 			end
+		end
+	},
+	{
+		names = {"UnBan", "UnServerBan"},
+		description = "UnBans the given player from the current game.",
+		permissionsLevel = ADMIN,
+		execute = function(speaker, message)
+			local playerName = stringTrim(message)
+			for i = 1, #bannedUsers do
+				if string.lower(bannedUsers[i]) == string.lower(playerName) then
+					table.remove(bannedUsers, i)
+				end
+			end
+		end
+	},
+	{
+		names = {"DSBan", "DataStoreBan", "GlobalBan", "DPBan", "PermBan"},
+		description = "Bans the given player from the current game and stores this in the DataStore.",
+		permissionsLevel = ADMIN,
+		execute = function(speaker, message)
+			local player, message = getPlayerQuery(speaker, message, true)
+			local permissionsLevel = getPermissionsLevel(speaker)
+			if getPermissionsLevel(player) < permissionsLevel then
+				bannedUsers[#bannedUsers + 1] = player.Name
+				bannedUsersDS:SetAsync(player.Name, true)
+				player:Kick()
+			end
+		end
+	},
+	{
+		names = {"UnDSBan", "UnDataStoreBan", "UnGlobalBan", "UnDPBan", "UnPermBan"},
+		description = "UnBans the given player from the current game and removes this from the DataStore.",
+		permissionsLevel = ADMIN,
+		execute = function(speaker, message)
+			local playerName = stringTrim(message)
+			bannedUsersDS:SetAsync(playerName, nil)
+			-- TODO: Check if record exists for successful unban
 		end
 	},
 	{
@@ -737,7 +776,7 @@ function parseString(speaker, message)
 end
 
 function playerAdded(newPlayer)
-	if tableFind(bannedUsers, newPlayer.Name) then
+	if tableFind(bannedUsers, newPlayer.Name) or bannedUsersDS:GetAsync(newPlayer.Name) == true then
 		newPlayer:Kick()
 		return
 	end
