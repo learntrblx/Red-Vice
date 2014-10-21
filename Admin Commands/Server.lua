@@ -38,13 +38,13 @@ local MarketplaceService = game:GetService("MarketplaceService")
 local TeleportService = game:GetService("TeleportService")
 local DataStoreService = game:GetService("DataStoreService")
 
+-- Variables
 local toolStorage = ServerStorage
 local bannedUsers = {}
 local bannedUsersDS = DataStoreService:GetDataStore("Hostile_bannedUsersDS")
 
 -- Set math.randomseed
 math.randomseed(tick())
-
 
 -- event is a RemoteEvent located in ReplicatedStorage
 -- We use this to send out notifications to clients
@@ -54,7 +54,6 @@ if not event or not event:IsA("RemoteEvent") then
 	event = Instance.new("RemoteEvent", ReplicatedStorage)
 	event.Name = "event"
 end
-
 
 -- Store all Commands in here. Use the "Kill" command as a template
 local Commands = {
