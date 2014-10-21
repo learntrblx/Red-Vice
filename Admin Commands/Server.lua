@@ -373,8 +373,7 @@ local Commands = {
 		description = "UnBans the given player from the current game and removes this from the DataStore.",
 		permissionsLevel = ADMIN,
 		execute = function(speaker, message)
-			local playerName = stringTrim(message)
-			bannedUsersDS:SetAsync(playerName, nil)
+			bannedUsersDS:SetAsync(stringTrim(message), nil)
 			-- TODO: Check if record exists for successful unban
 		end
 	},
