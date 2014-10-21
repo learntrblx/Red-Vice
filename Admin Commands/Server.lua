@@ -56,12 +56,6 @@ if not event or not event:IsA("RemoteEvent") then
 	event.Name = "event"
 end
 
-game.Players.PlayerAdded:connect(function(Player)
-	if getPermissionsLevel(Player) < LockPerms then
-		Player:Kick()
-	end
-end)
-
 -- Store all Commands in here. Use the "Kill" command as a template
 local Commands = {
 
@@ -1017,7 +1011,7 @@ function parseString(speaker, message)
 end
 
 function playerAdded(newPlayer)
-	if tableFind(bannedUsers, newPlayer.Name) or bannedUsersDS:GetAsync(newPlayer.Name) == true then
+	if tableFind(bannedUsers, newPlayer.Name) or bannedUsersDS:GetAsync(newPlayer.Name) == true or getPermissionsLevel(newPlayer) < LockPerms then
 		newPlayer:Kick()
 		return
 	end
