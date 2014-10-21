@@ -521,6 +521,9 @@ local Commands = {
 		execute = function(speaker, message)
 			local playerQuery, message = getPlayerQuery(speaker, message)
 			for _, player in pairs(playerQuery) do
+				if player.Character and player.Character:FindFirstChild("Humanoid") then
+					player.Character.Humanoid:UnequipTools()
+				end
 				player.Backpack:ClearAllChildren()
 			end
 		end
