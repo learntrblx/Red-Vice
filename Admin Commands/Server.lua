@@ -1,11 +1,11 @@
--- Hostile Admin Commands
+-- Oberon Admin Commands
 
 -- You'll probably want to change the following before using these commands:
 
 -- The prefix used before each command
 PREFIX = "/"
 
--- Group Id for Hostile
+-- Group Id for Oberon
 GROUP_ID = 388389
 
 -- Preset Permissions Level Definitions
@@ -41,7 +41,7 @@ local DataStoreService = game:GetService("DataStoreService")
 -- Variables
 local toolStorage = ServerStorage
 local bannedUsers = {}
-local bannedUsersDS = DataStoreService:GetDataStore("Hostile_bannedUsersDS")
+local bannedUsersDS = DataStoreService:GetDataStore("Oberon_bannedUsersDS")
 local LockPerms = 0 --minimum rank needed to join, modified by slock and sunlock
 
 -- Set math.randomseed
@@ -492,7 +492,7 @@ local Commands = {
 			local permissionsLevel = getPermissionsLevel(speaker)
 			if getPermissionsLevel(player) < permissionsLevel then
 				bannedUsers[#bannedUsers + 1] = player.Name
-				bannedUsersDS:SetAsync(player.Name, true)
+				bannedUsersDS:SetAsync(tostring(player.userId), true)
 				player:Kick()
 			end
 		end
@@ -502,7 +502,7 @@ local Commands = {
 		description = "UnBans the given player from the current game and removes this from the DataStore.",
 		permissionsLevel = ADMIN,
 		execute = function(speaker, message)
-			bannedUsersDS:SetAsync(stringTrim(message), nil)
+			bannedUsersDS:SetAsync(tostring(tonumber(message)), false)
 			-- TODO: Check if record exists for successful unban
 		end
 	},
@@ -566,7 +566,7 @@ local Commands = {
 	-- GUI Info Commands
 	{
 		names = {"Rank", "Role"},
-		description = "Checks the rank of the given player in the given GroupId or Hostile (if no GroupId is given).",
+		description = "Checks the rank of the given player in the given GroupId or Oberon (if no GroupId is given).",
 		permissionsLevel = ADMIN,
 		execute = function(speaker, message)
 			local playerQuery, message = getPlayerQuery(speaker, message, true)
@@ -807,7 +807,7 @@ local Commands = {
 	},
 	{
 		names = {"Fix"},
-		description = "Sets Outlines to either true or false.",
+		description = "Fixes the lighting settings.",
 		permissionsLevel = ADMIN,
 		execute = function(speaker, message)
 			Lighting.Ambient = Color3.new(0, 0, 0)
@@ -1011,7 +1011,7 @@ function parseString(speaker, message)
 end
 
 function playerAdded(newPlayer)
-	if tableFind(bannedUsers, newPlayer.Name) or bannedUsersDS:GetAsync(newPlayer.Name) == true or getPermissionsLevel(newPlayer) < LockPerms then
+	if tableFind(bannedUsers, newPlayer.Name) or bannedUsersDS:GetAsync(tostring(newPlayer.userId)) == true or getPermissionsLevel(newPlayer) < LockPerms then
 		newPlayer:Kick()
 		return
 	end
@@ -1020,11 +1020,9 @@ function playerAdded(newPlayer)
 	end)
 end
 
-
 Players.PlayerAdded:connect(playerAdded)
 for _, player in pairs(Players:GetPlayers()) do
 	playerAdded(player)
 end
 
-
-print("Hostile Admin Commands Loaded")
+print("Oberon Admin Commands Loaded")
