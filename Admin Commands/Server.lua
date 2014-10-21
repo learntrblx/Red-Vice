@@ -160,6 +160,32 @@ local Commands = {
 			end
 		end
 	},
+	{
+		names = {"Freeze"},
+		description = "Freezes the given player's character",
+		permissionsLevel = ADMIN,
+		execute = function(speaker, message)
+			local playerQuery, message = getPlayerQuery(speaker, message)
+			for i = 1, #playerQuery do
+				if playerQuery[i].Character and playerQuery[i].Character:FindFirstChild("Torso") and playerQuery[i].Character:FindFirstChild("Humanoid") then
+					playerQuery[i].Character.Torso.Anchored = true
+				end
+			end
+		end
+	},
+	{
+		names = {"UnFreeze", "Thaw"},
+		description = "Freezes the given player's character",
+		permissionsLevel = ADMIN,
+		execute = function(speaker, message)
+			local playerQuery, message = getPlayerQuery(speaker, message)
+			for i = 1, #playerQuery do
+				if playerQuery[i].Character and playerQuery[i].Character:FindFirstChild("Torso") and playerQuery[i].Character:FindFirstChild("Humanoid") then
+					playerQuery[i].Character.Torso.Anchored = false
+				end
+			end
+		end
+	},
 
 	-- Humanoid Commands
 	{
@@ -400,34 +426,6 @@ local Commands = {
 			end
 		end
 	},
-	{
-		names = {"CountPlayers", "PlayerCount"},
-		description = "Displays to the user the total playercount of the server",
-		permissionsLevel = ADMIN,
-		execute = function(speaker, message)
-			-- TODO: Replace below
-			local screenGui = Instance.new("ScreenGui", speaker.PlayerGui)
-			local bar = Instance.new("TextLabel")
-			bar.BorderSizePixel = 0
-			bar.BackgroundColor3 = Color3.new(0, 0, 0)
-			bar.TextColor3 = Color3.new(1, 1, 1)
-			bar.TextScaled = true
-			bar.Text = "There are " .. Players.NumPlayers .. " in the server."
-			bar.Size = UDim2.new(1, 0, 0, 20)
-			bar.Parent = screenGui
-			for i= 1, 0.4, -0.1 do
-				bar.Transparency = i
-				wait()
-			end
-			wait(5)
-			for i= 0.4, 1, 0.1 do
-				bar.Transparency = i
-				wait()
-			end
-			screenGui:Destroy()
-			-- TODO: Replace above
-		end
-	},
 
 	-- GUI Info Commands
 	{
@@ -445,6 +443,34 @@ local Commands = {
 			bar.TextColor3 = Color3.new(1, 1, 1)
 			bar.TextScaled = true
 			bar.Text = playerQuery.Name .. "'s role is " .. role
+			bar.Size = UDim2.new(1, 0, 0, 20)
+			bar.Parent = screenGui
+			for i= 1, 0.4, -0.1 do
+				bar.Transparency = i
+				wait()
+			end
+			wait(5)
+			for i= 0.4, 1, 0.1 do
+				bar.Transparency = i
+				wait()
+			end
+			screenGui:Destroy()
+			-- TODO: Replace above
+		end
+	},
+	{
+		names = {"CountPlayers", "PlayerCount"},
+		description = "Displays to the user the total playercount of the server",
+		permissionsLevel = ADMIN,
+		execute = function(speaker, message)
+			-- TODO: Replace below
+			local screenGui = Instance.new("ScreenGui", speaker.PlayerGui)
+			local bar = Instance.new("TextLabel")
+			bar.BorderSizePixel = 0
+			bar.BackgroundColor3 = Color3.new(0, 0, 0)
+			bar.TextColor3 = Color3.new(1, 1, 1)
+			bar.TextScaled = true
+			bar.Text = "There are " .. Players.NumPlayers .. " in the server."
 			bar.Size = UDim2.new(1, 0, 0, 20)
 			bar.Parent = screenGui
 			for i= 1, 0.4, -0.1 do
