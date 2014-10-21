@@ -6,7 +6,7 @@
 PREFIX = "/"
 
 -- Group Id for Oberon
-GROUP_ID = 388389
+GROUP_ID = 1177368
 
 -- Preset Permissions Level Definitions
 OWNER = 255
@@ -37,6 +37,9 @@ local GroupService = game:GetService("GroupService")
 local MarketplaceService = game:GetService("MarketplaceService")
 local TeleportService = game:GetService("TeleportService")
 local DataStoreService = game:GetService("DataStoreService")
+local HttpService = game:GetService("HttpService")
+
+local HttpEnabled, _ = pcall(function() HttpService:GetAsync("") end)
 
 -- Variables
 local toolStorage = ServerStorage
@@ -477,7 +480,7 @@ local Commands = {
 		execute = function(speaker, message)
 			local playerName = stringTrim(message)
 			for i = 1, #bannedUsers do
-				if string.lower(bannedUsers[i]) == string.lower(playerName) then
+				if tostring(bannedUsers[i]) == tostring(playerName) then
 					table.remove(bannedUsers, i)
 				end
 			end
@@ -491,7 +494,6 @@ local Commands = {
 			local player, message = getPlayerQuery(speaker, message, true)
 			local permissionsLevel = getPermissionsLevel(speaker)
 			if getPermissionsLevel(player) < permissionsLevel then
-				bannedUsers[#bannedUsers + 1] = player.Name
 				bannedUsersDS:SetAsync(tostring(player.userId), true)
 				player:Kick()
 			end
@@ -502,8 +504,14 @@ local Commands = {
 		description = "UnBans the given player from the current game and removes this from the DataStore.",
 		permissionsLevel = ADMIN,
 		execute = function(speaker, message)
-			bannedUsersDS:SetAsync(tostring(tonumber(message)), false)
-			-- TODO: Check if record exists for successful unban
+			local userId
+			if HttpEnabled then -- Usernames!
+				userId = getUserIdByUsername(message)
+			end
+			if not userId then
+				userId = tonumber(message)
+			end
+			bannedUsersDS:SetAsync(userId, false)
 		end
 	},
 	{
@@ -898,6 +906,10 @@ function boolCheck(str)
 	elseif str == "false" or str == "off" then
 		return false
 	end
+end
+
+function getUserIdByUsername(username)
+	return tonumber(http://rproxy.tk/rapi/GetIdByUsername/Osyris
 end
 
 -- Primary Functions
