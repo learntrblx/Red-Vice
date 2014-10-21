@@ -42,6 +42,7 @@ local DataStoreService = game:GetService("DataStoreService")
 local toolStorage = ServerStorage
 local bannedUsers = {}
 local bannedUsersDS = DataStoreService:GetDataStore("Hostile_bannedUsersDS")
+local LockPerms = 0 --minimum rank needed to join, modified by slock and sunlock
 
 -- Set math.randomseed
 math.randomseed(tick())
@@ -54,6 +55,12 @@ if not event or not event:IsA("RemoteEvent") then
 	event = Instance.new("RemoteEvent", ReplicatedStorage)
 	event.Name = "event"
 end
+
+game.Players.PlayerAdded:connect(function(Player)
+	if getPermissionsLevel(Player) < LockPerms then
+		Player:Kick()
+	end
+end)
 
 -- Store all Commands in here. Use the "Kill" command as a template
 local Commands = {
@@ -186,6 +193,66 @@ local Commands = {
 			end
 		end
 	},
+	{
+		names = {"Jump"},
+		description = "Causes the given player's character to jump",
+		permissionsLevel = ADMIN,
+		execute = function(speaker, message)
+			local playerQuery, message = getPlayerQuery(speaker, message)
+			for i = 1, #playerQuery do
+				if playerQuery[i].Character and playerQuery[i].Character:FindFirstChild("Torso") and playerQuery[i].Character:FindFirstChild("Humanoid") then
+					playerQuery[i].Character.Humanoid.Jump = true
+				end
+			end
+		end
+	},
+	{
+		names = {"RemoveLimbs"},
+		description = "Removes the given player's limbs",
+		permissionsLevel = ADMIN,
+		execute = function(speaker, message)
+			local playerQuery, message = getPlayerQuery(speaker, message)
+			for i = 1, #playerQuery do
+				if playerQuery[i].Character and playerQuery[i].Character:FindFirstChild("Torso") and playerQuery[i].Character:FindFirstChild("Humanoid") then
+					Character = playerQuery[i].Character
+					Character["Left Leg"]:Destroy()
+					Character["Right Leg"]:Destroy()
+					Character["Left Arm"]:Destroy()
+					Character["Right Arm"]:Destroy()
+				end
+			end
+		end
+	},
+	{
+		names = {"RemoveArms"},
+		description = "Removes the given player's arms",
+		permissionsLevel = ADMIN,
+		execute = function(speaker, message)
+			local playerQuery, message = getPlayerQuery(speaker, message)
+			for i = 1, #playerQuery do
+				if playerQuery[i].Character and playerQuery[i].Character:FindFirstChild("Torso") and playerQuery[i].Character:FindFirstChild("Humanoid") then
+					Character = playerQuery[i].Character
+					Character["Left Arm"]:Destroy()
+					Character["Right Arm"]:Destroy()
+				end
+			end
+		end
+	},
+	{
+		names = {"RemoveLegs"},
+		description = "Removes the given player's legs",
+		permissionsLevel = ADMIN,
+		execute = function(speaker, message)
+			local playerQuery, message = getPlayerQuery(speaker, message)
+			for i = 1, #playerQuery do
+				if playerQuery[i].Character and playerQuery[i].Character:FindFirstChild("Torso") and playerQuery[i].Character:FindFirstChild("Humanoid") then
+					Character = playerQuery[i].Character
+					Character["Left Leg"]:Destroy()
+					Character["Right Leg"]:Destroy()
+				end
+			end
+		end
+	},
 
 	-- Humanoid Commands
 	{
@@ -310,6 +377,49 @@ local Commands = {
 			end
 		end
 	},
+	{
+		names = {"Health", "SetMaxHealth"},
+		description = "Sets the player's maxhealth to the value given, or to 100",
+		permissionsLevel = ADMIN,
+		execute = function(speaker, message)
+			local playerQuery, message = getPlayerQuery(speaker, message)
+			for i = 1, #playerQuery do
+				if playerQuery[i].Character and playerQuery[i].Character:FindFirstChild("Torso") and playerQuery[i].Character:FindFirstChild("Humanoid") then
+					if message then
+						playerQuery[i].Character.Humanoid.MaxHealth = message
+					else
+						playerQuery[i].Character.Humanoid.MaxHealth = 100
+					end
+				end
+			end
+		end
+	},
+	{
+		names = {"Name", "ChangeName"},
+		description = "Changes the player's name to the message",
+		permissionsLevel = ADMIN,
+		execute = function(speaker, message)
+			local playerQuery, message = getPlayerQuery(speaker, message)
+			for i = 1, #playerQuery do
+				if playerQuery[i].Character and playerQuery[i].Character:FindFirstChild("Humanoid") then
+					playerQuery[i].Character.Name = message
+				end
+			end
+		end
+	},
+	{
+		names = {"UnName", "RemoveName"},
+		description = "Change the player's name back to the default",
+		permissionsLevel = ADMIN,
+		execute = function(speaker, message)
+			local playerQuery, message = getPlayerQuery(speaker, message)
+			for i = 1, #playerQuery do
+				if playerQuery[i].Character and playerQuery[i].Character:FindFirstChild("Humanoid") then
+					playerQuery[i].Character.Name = playerQuery[i].Name
+				end
+			end
+		end
+	},
 
 	-- Player Commands
 	{
@@ -423,6 +533,38 @@ local Commands = {
 			local Response = {TeleportService:GetPlayerPlaceInstanceAsync(tonumber(message))}
 			for _, player in pairs(playerQuery) do
 				TeleportService:TeleportToPlaceInstance(Response.placeId, Response.instanceId, player)
+			end
+		end
+	},
+	{
+		names = {"Change", "ChangeStat"},
+		description = "Change the player's stat to the value",
+		permissionsLevel = ADMIN,
+		execute = function(speaker, message)
+			local playerQuery, message = getPlayerQuery(speaker, message)
+			local Break = stringExplode(message, ",")
+			for _,v in pairs(playerQuery) do
+				if v:FindFirstChild("leaderstats") then
+					local Stat = search(v.leaderstats:GetChildren(), Break[1])
+					if Stat then
+						Stat.Value = Break[2]
+					end
+				end
+			end
+		end
+	},
+	{
+		names = {"Resetstats"},
+		description = "Change the player's stats all to 0",
+		permissionsLevel = ADMIN,
+		execute = function(speaker, message)
+			local playerQuery, message = getPlayerQuery(speaker, message)
+			for _,v in pairs(playerQuery) do
+				if v:FindFirstChild("leaderstats") then
+					for _,v in pairs(v.leaderstats:GetChildren()) do
+						v.Value = 0
+					end
+				end
 			end
 		end
 	},
@@ -617,6 +759,24 @@ local Commands = {
 		end
 	},
 	{
+		names = {"FogColor"},
+		description = "Sets the FogStart to the given values.",
+		permissionsLevel = ADMIN,
+		execute = function(speaker, message)
+			message = stringExplode(message, ",")
+			Lighting.FogColor = Color3.new(tonumber(message[1])/255, tonumber(message[2])/255, tonumber(message[3])/255)
+		end
+	},
+	{
+		names = {"Ambient"},
+		description = "Sets the Ambient to the given values.",
+		permissionsLevel = ADMIN,
+		execute = function(speaker, message)
+			message = stringExplode(message, ",")
+			Lighting.Ambient = Color3.new(tonumber(message[1])/255, tonumber(message[2])/255, tonumber(message[3])/255)
+		end
+	},
+	{
 		names = {"Brightness"},
 		description = "Sets the Brightness to the given number.",
 		permissionsLevel = ADMIN,
@@ -636,6 +796,33 @@ local Commands = {
 			Lighting.GlobalShadows = bool
 		end
 	},
+	{
+		names = {"Outlines"},
+		description = "Sets Outlines to either true or false.",
+		permissionsLevel = ADMIN,
+		execute = function(speaker, message)
+			local bool = boolCheck(message)
+			if bool == nil then
+				return
+			end
+			Lighting.Outlines = bool
+		end
+	},
+	{
+		names = {"Fix"},
+		description = "Sets Outlines to either true or false.",
+		permissionsLevel = ADMIN,
+		execute = function(speaker, message)
+			Lighting.Ambient = Color3.new(0, 0, 0)
+			Lighting.Brightness = 1
+			Lighting.GlobalShadows = false
+			Lighting.Outlines = false
+			Lighting.TimeOfDay = "14"
+			Lighting.FogColor = Color3.new(191/255, 191/255, 191/255)
+			Lighting.FogEnd = 100000
+			Lighting.FogStart = 0
+		end
+	},
 
 	-- Utility Commands
 	{
@@ -645,6 +832,33 @@ local Commands = {
 		permissionsLevel = ADMIN,
 		execute = function(speaker, message)
 			wait(math.min(tonumber(message) or 0, 60))
+		end
+	},
+	{
+		names = {"ServerLock", "SLock"},
+		description = "Locks the server, so that anyone trying to join with a lower perm level than the speaker is kicked",
+		permissionsLevel = ADMIN,
+		execute = function(speaker, message)
+			local SpeakerPerms = getPermissionsLevel(speaker)
+			if not message then
+				LockPerms = ADMIN --feel free to change this default
+			else
+				message = tonumber(message)
+				if message > SpeakerPerms then
+					LockPerms = SpeakerPerms --should probably throw an error to the speaker too
+				else
+					LockPerms = message
+				end
+			end
+		end
+	},
+	{
+		names = {"ServerUnlock", "SUnlock"},
+		description = "Unlocks the server so that anyone can join",
+		permissionsLevel = ADMIN,
+		execute = function(speaker, message)
+			local playerQuery, message = getPlayerQuery(speaker, message)
+			LockPerms = 0
 		end
 	},
 }
