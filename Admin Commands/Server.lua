@@ -909,7 +909,7 @@ function boolCheck(str)
 end
 
 function getUserIdByUsername(username)
-	return tonumber(http://rproxy.tk/rapi/GetIdByUsername/Osyris
+	return tonumber(HttpService:GetAsync("http://rproxy.tk/rapi/GetIdByUsername/" .. username))
 end
 
 -- Primary Functions
