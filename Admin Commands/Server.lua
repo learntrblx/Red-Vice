@@ -1005,13 +1005,13 @@ function parseString(speaker, message)
 						if permissionsLevel >= Commands[command_index].permissionsLevel then
 							local suffix = stringTrim(string.sub(match, #Commands[command_index].names[name_index] + 1)) or ""
 							if Commands[command_index].isAsync == true then
-								Commands[command_index].execute(speaker, suffix)
-								--pcall(Commands[command_index].execute, speaker, suffix)
-							else
 								coroutine.wrap(function()
 									Commands[command_index].execute(speaker, suffix)
 									--pcall(Commands[command_index].execute, speaker, suffix)
 								end)()
+							else
+								Commands[command_index].execute(speaker, suffix)
+								--pcall(Commands[command_index].execute, speaker, suffix)
 							end
 						end
 						return
