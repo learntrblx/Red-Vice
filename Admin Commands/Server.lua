@@ -1,12 +1,12 @@
--- Oberon Admin Commands
+-- Frigid Admin Commands
 
 -- You'll probably want to change the following before using these commands:
 
 -- The prefix used before each command
 PREFIX = "/"
 
--- Group Id for Oberon
-GROUP_ID = 1177368
+-- Group Id
+GROUP_ID = 959550
 
 -- Preset Permissions Level Definitions
 OWNER = 255
@@ -24,28 +24,20 @@ end
 
 -- Do not change below here, unless you know what you're doing.
 
--- Various services used
-local Workspace = game:GetService("Workspace")
-local Players = game:GetService("Players")
-local Lighting = game:GetService("Lighting")
-local Teams = game:GetService("Teams")
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local InsertService = game:GetService("InsertService")
-local Debris = game:GetService("Debris")
-local ServerStorage = game:GetService("ServerStorage")
-local GroupService = game:GetService("GroupService")
-local MarketplaceService = game:GetService("MarketplaceService")
-local TeleportService = game:GetService("TeleportService")
-local DataStoreService = game:GetService("DataStoreService")
-local HttpService = game:GetService("HttpService")
+-- Various services used1
+for _,service in pairs(game.ServerStorage.ServerServices:GetChildren()) do
+	getfenv()[service.Value] = game:GetService(service.Name)
+end
 
 local HttpEnabled, _ = pcall(function() HttpService:GetAsync("") end)
 
 -- Variables
 local toolStorage = ServerStorage
 local bannedUsers = {}
-local bannedUsersDS = DataStoreService:GetDataStore("Oberon_bannedUsersDS")
+local bannedUsersDS = DataStoreService:GetDataStore("Frigid_bannedUsersDS")
 local LockPerms = 0 --minimum rank needed to join, modified by slock and sunlock
+local LoopKilled = {}
+local LoopHealed = {}
 
 -- Set math.randomseed
 math.randomseed(tick())
@@ -186,6 +178,112 @@ local Commands = {
 			for i = 1, #playerQuery do
 				if playerQuery[i].Character and playerQuery[i].Character:FindFirstChild("Torso") and playerQuery[i].Character:FindFirstChild("Humanoid") then
 					playerQuery[i].Character.Torso.Anchored = false
+				end
+			end
+		end
+	},
+	{
+		names = {"Invisible"},
+		description = "Hides the given player's character",
+		permissionsLevel = ADMIN,
+		execute = function(speaker, message)
+			local playerQuery, message = getPlayerQuery(speaker, message)
+			for i = 1, #playerQuery do
+				if playerQuery[i].Character and playerQuery[i].Character:FindFirstChild("Torso") and playerQuery[i].Character:FindFirstChild("Humanoid") then
+					for _,v in pairs(playerQuery[i].Character:GetChildren()) do
+						if v:IsA("BasePart") or v:IsA("Hat") then
+							v.Transparency = 1
+						end
+					end
+					playerQuery[i].Character.Humanoid.Name = " "
+				end
+			end
+		end
+	},
+	{
+		names = {"Visible"},
+		description = "Shows the given player's character",
+		permissionsLevel = ADMIN,
+		execute = function(speaker, message)
+			local playerQuery, message = getPlayerQuery(speaker, message)
+			for i = 1, #playerQuery do
+				if playerQuery[i].Character and playerQuery[i].Character:FindFirstChild("Torso") and playerQuery[i].Character:FindFirstChild("Humanoid") then
+					for _,v in pairs(playerQuery[i].Character:GetChildren()) do
+						if v:IsA("BasePart") or v:IsA("Hat") then
+							v.Transparency = 0
+						end
+					end
+					playerQuery[i].Character.Humanoid.Name = playerQuery[i].Name
+				end
+			end
+		end
+	},
+	{
+		names = {"Lock"},
+		description = "Locks the given player's character",
+		permissionsLevel = ADMIN,
+		execute = function(speaker, message)
+			local playerQuery, message = getPlayerQuery(speaker, message)
+			for i = 1, #playerQuery do
+				if playerQuery[i].Character and playerQuery[i].Character:FindFirstChild("Torso") and playerQuery[i].Character:FindFirstChild("Humanoid") then
+					for _,v in pairs(playerQuery[i].Character:GetChildren()) do
+						if v:IsA("BasePart") or v:IsA("Hat") then
+							v.Locked = true
+						end
+					end
+				end
+			end
+		end
+	},
+	{
+		names = {"UnLock"},
+		description = "Unlocks the given player's character",
+		permissionsLevel = ADMIN,
+		execute = function(speaker, message)
+			local playerQuery, message = getPlayerQuery(speaker, message)
+			for i = 1, #playerQuery do
+				if playerQuery[i].Character and playerQuery[i].Character:FindFirstChild("Torso") and playerQuery[i].Character:FindFirstChild("Humanoid") then
+					for _,v in pairs(playerQuery[i].Character:GetChildren()) do
+						if v:IsA("BasePart") or v:IsA("Hat") then
+							v.Locked = false
+						end
+					end
+				end
+			end
+		end
+	},
+	{
+		names = {"Punish"},
+		description = "Hides the given player's character",
+		permissionsLevel = ADMIN,
+		execute = function(speaker, message)
+			local playerQuery, message = getPlayerQuery(speaker, message)
+			for i = 1, #playerQuery do
+				if playerQuery[i].Character and playerQuery[i].Character:FindFirstChild("Torso") and playerQuery[i].Character:FindFirstChild("Humanoid") then
+					for _,v in pairs(playerQuery[i].Character:GetChildren()) do
+						if v:IsA("BasePart") or v:IsA("Hat") then
+							v.Transprency = 1
+							v.Anchored = true
+						end
+					end
+				end
+			end
+		end
+	},
+	{
+		names = {"UnPunish", "Pardon"},
+		description = "Hides the given player's character",
+		permissionsLevel = ADMIN,
+		execute = function(speaker, message)
+			local playerQuery, message = getPlayerQuery(speaker, message)
+			for i = 1, #playerQuery do
+				if playerQuery[i].Character and playerQuery[i].Character:FindFirstChild("Torso") and playerQuery[i].Character:FindFirstChild("Humanoid") then
+					for _,v in pairs(playerQuery[i].Character:GetChildren()) do
+						if v:IsA("BasePart") or v:IsA("Hat") then
+							v.Transprency = 0
+							v.Anchored = false
+						end
+					end
 				end
 			end
 		end
@@ -399,7 +497,7 @@ local Commands = {
 			local playerQuery, message = getPlayerQuery(speaker, message)
 			for i = 1, #playerQuery do
 				if playerQuery[i].Character and playerQuery[i].Character:FindFirstChild("Humanoid") then
-					playerQuery[i].Character.Name = message
+					playerQuery[i].Character.Humanoid.Name = message
 				end
 			end
 		end
@@ -412,7 +510,67 @@ local Commands = {
 			local playerQuery, message = getPlayerQuery(speaker, message)
 			for i = 1, #playerQuery do
 				if playerQuery[i].Character and playerQuery[i].Character:FindFirstChild("Humanoid") then
-					playerQuery[i].Character.Name = playerQuery[i].Name
+					playerQuery[i].Character.Humanoid.Name = playerQuery[i].Name
+				end
+			end
+		end
+	},
+	{
+		names = {"LoopKill"},
+		description = "Continually kills a player",
+		permissionsLevel = ADMIN,
+		execute = function(speaker, message)
+			local playerQuery, message = getPlayerQuery(speaker, message)
+			for i = 1, #playerQuery do
+				if playerQuery[i].Character and playerQuery[i].Character:FindFirstChild("Humanoid") then
+					if not LoopKilled[playerQuery[i].Name] then
+						LoopKilled[playerQuery[i].Name] = playerQuery[i]
+					end
+				end
+			end
+		end
+	},
+	{
+		names = {"UnLoopKill"},
+		description = "Ends a loopkill",
+		permissionsLevel = ADMIN,
+		execute = function(speaker, message)
+			local playerQuery, message = getPlayerQuery(speaker, message)
+			for i = 1, #playerQuery do
+				if playerQuery[i].Character and playerQuery[i].Character:FindFirstChild("Humanoid") then
+					if LoopKilled[playerQuery[i].Name] then
+						LoopKilled[playerQuery[i].Name] = nil
+					end
+				end
+			end
+		end
+	},
+	{
+		names = {"LoopHeal"},
+		description = "Continually heals a player",
+		permissionsLevel = ADMIN,
+		execute = function(speaker, message)
+			local playerQuery, message = getPlayerQuery(speaker, message)
+			for i = 1, #playerQuery do
+				if playerQuery[i].Character and playerQuery[i].Character:FindFirstChild("Humanoid") then
+					if not LoopHealed[playerQuery[i].Name] then
+						LoopHealed[playerQuery[i].Name] = playerQuery[i]
+					end
+				end
+			end
+		end
+	},
+	{
+		names = {"UnLoopHeal"},
+		description = "Ends a loopheal",
+		permissionsLevel = ADMIN,
+		execute = function(speaker, message)
+			local playerQuery, message = getPlayerQuery(speaker, message)
+			for i = 1, #playerQuery do
+				if playerQuery[i].Character and playerQuery[i].Character:FindFirstChild("Humanoid") then
+					if LoopHealed[playerQuery[i].Name] then
+						LoopHealed[playerQuery[i].Name] = nil
+					end
 				end
 			end
 		end
@@ -522,7 +680,7 @@ local Commands = {
 			local playerQuery, message = getPlayerQuery(speaker, message)
 			local placeId = tonumber(stringTrim(message))
 			for _, player in pairs(playerQuery) do
-				TeleportService:Teleport(player, placeId)
+				TeleportService:Teleport(placeId, player)
 			end
 		end
 	},
@@ -534,7 +692,7 @@ local Commands = {
 			local playerQuery, message = getPlayerQuery(speaker, message)
 			local Response = {TeleportService:GetPlayerPlaceInstanceAsync(tonumber(message))}
 			for _, player in pairs(playerQuery) do
-				TeleportService:TeleportToPlaceInstance(Response.placeId, Response.instanceId, player)
+				TeleportService:TeleportToPlaceInstance(Response[3], Response[4], player)
 			end
 		end
 	},
@@ -574,7 +732,7 @@ local Commands = {
 	-- GUI Info Commands
 	{
 		names = {"Rank", "Role"},
-		description = "Checks the rank of the given player in the given GroupId or Oberon (if no GroupId is given).",
+		description = "Checks the rank of the given player in the given GroupId or Frigid (if no GroupId is given).",
 		permissionsLevel = ADMIN,
 		execute = function(speaker, message)
 			local playerQuery, message = getPlayerQuery(speaker, message, true)
@@ -790,7 +948,7 @@ local Commands = {
 		end
 	},
 	{
-		names = {"Shadows", "GlobalShadows"},
+		names = {"Shadows", "GlobalShadows", "DynamicLighting"},
 		description = "Sets Shadows to either true or false.",
 		permissionsLevel = ADMIN,
 		execute = function(speaker, message)
@@ -850,7 +1008,7 @@ local Commands = {
 			else
 				message = tonumber(message)
 				if message > SpeakerPerms then
-					LockPerms = SpeakerPerms --should probably throw an error to the speaker too
+					LockPerms = SpeakerPerms -- TODO: should probably throw an error to the speaker too
 				else
 					LockPerms = message
 				end
@@ -862,10 +1020,21 @@ local Commands = {
 		description = "Unlocks the server so that anyone can join",
 		permissionsLevel = ADMIN,
 		execute = function(speaker, message)
-			local playerQuery, message = getPlayerQuery(speaker, message)
 			LockPerms = 0
 		end
 	},
+	{
+		names = {"Shutdown"},
+		description = "Removes everyone from the server and locks it, ending the server",
+		permissionsLevel = ADMIN,
+		execute = function(speaker, message)
+			-- TODO: Send a notification to the client about this, and wait for a moment so they can see that
+			LockPerms = 255
+			for _,v in pairs(game.Players:GetPlayers()) do
+				v:Kick()
+			end
+		end
+	}
 }
 
 -- Utility Functions
@@ -1037,4 +1206,35 @@ for _, player in pairs(Players:GetPlayers()) do
 	playerAdded(player)
 end
 
-print("Oberon Admin Commands Loaded")
+--For the loop commands
+--Potentially make this a new thread so that if it errors it doesn't kill the commands? idk
+while wait(5) do
+	for i,v in pairs(LoopKilled) do
+		if v and v.Character and v.Character:FindFirstChild("Humanoid") then
+			v.Character.Humanoid.Health = 0
+		else
+			local Player = game.Players:FindFirstChild(i)
+			if Player and Player.Character and Player:FindFirstChild("Humanoid") then
+				Player.Character.Humanoid.Health = 0
+				LoopKilled[i] = Player
+			else
+				LoopKilled[i] = nil
+			end
+		end
+	end
+	for i,v in pairs(LoopHealed) do
+		if v and v.Character and v.Character:FindFirstChild("Humanoid") then
+			v.Character.Humanoid.Health = v.Character.Humanoid.MaxHealth
+		else
+			local Player = game.Players:FindFirstChild(i)
+			if Player and Player.Character and Player:FindFirstChild("Humanoid") then
+				Player.Character.Humanoid.Health = Player.Character.Humanoid.MaxHealth
+				LoopHealed[i] = Player
+			else
+				LoopHealed[i] = nil
+			end
+		end
+	end
+end
+
+print("Frigid Admin Commands Loaded")
