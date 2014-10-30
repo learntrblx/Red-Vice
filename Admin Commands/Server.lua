@@ -433,7 +433,7 @@ local Commands = {
 					else
 						local BodyForce = playerQuery[i].Character:FindFirstChild("NoGrav")
 					end
-					BodyForce.force = Vector3.new(0, GetMass(playerQuery[i].Character) * 196.2 * tonumber(message), 0)
+					BodyForce.force = Vector3.new(0, GetMass(playerQuery[i].Character) * 196.2 * tonumber(message)/100, 0)
 				end
 			end
 		end
