@@ -22,6 +22,15 @@ function getPermissionsLevel(Player)
 	return math.max(Player:GetRankInGroup(GROUP_ID), 250) -- Free admin!
 end
 
+function GetMass(object)
+	local mass=0
+	pcall(function()
+		if object:IsA"BasePart" then mass = mass + object:GetMass() end
+		for _,child in pairs(object:GetChildren()) do mass = mass + GetMass(child) end
+	end)
+	return mass
+end
+
 -- Do not change below here, unless you know what you're doing.
 
 -- Various services used1
@@ -348,6 +357,112 @@ local Commands = {
 			end
 		end
 	},
+	{
+		names = {"Character", "Char"},
+		description = "Changes the character(s) to resemble the given userId",
+		permissionsLevel = ADMIN,
+		execute = function(speaker, message)
+			local playerQuery, message = getPlayerQuery(speaker, message)
+			for _,v in pairs(playerQuery) do
+				v.CharacterAppearance = "http://www.roblox.com/Asset/CharacterFetch.ashx?userId=" .. message 
+				v:LoadCharacter()
+			end
+		end
+	}
+	{
+		names = {"UnCharacter", "UnChar", "FixCharacter", "FixChar"},
+		description = "Changes the character(s) to resemble their true appearence",
+		permissionsLevel = ADMIN,
+		execute = function(speaker, message)
+			local playerQuery, message = getPlayerQuery(speaker, message)
+			for _,v in pairs(playerQuery) do
+				v.CharacterAppearance = "http://www.roblox.com/Asset/CharacterFetch.ashx?userId=" .. v.userId
+				v:LoadCharacter()
+			end
+		end
+	}
+	{
+		names = {"NoGravity", "NoGrav"},
+		description = "Counteracts the gravitational force",
+		permissionsLevel = ADMIN,
+		execute = function(speaker, message)
+			local playerQuery, message = getPlayerQuery(speaker, message)
+			for i = 1, #playerQuery do
+				if playerQuery[i].Character and playerQuery[i].Character:FindFirstChild("Torso") then
+					if not playerQuery[i].Character:FindFirstChild("NoGrav") then
+						local BodyForce = Instance.new("BodyForce", playerQuery[i].Character.Torso)
+						BodyForce.Name = "NoGrav"
+					else
+						local BodyForce = playerQuery[i].Character:FindFirstChild("NoGrav")
+					end
+					BodyForce.force = Vector3.new(0, GetMass(playerQuery[i].Character) * 196.2, 0)
+				end
+			end
+		end
+	},
+	{
+		names = {"LowGravity", "LowGrav", "HalfGravity", "HalfGrav"},
+		description = "Counteracts half of the gravitational force",
+		permissionsLevel = ADMIN,
+		execute = function(speaker, message)
+			local playerQuery, message = getPlayerQuery(speaker, message)
+			for i = 1, #playerQuery do
+				if playerQuery[i].Character and playerQuery[i].Character:FindFirstChild("Torso") then
+					if not playerQuery[i].Character:FindFirstChild("NoGrav") then
+						local BodyForce = Instance.new("BodyForce", playerQuery[i].Character.Torso)
+						BodyForce.Name = "NoGrav"
+					else
+						local BodyForce = playerQuery[i].Character:FindFirstChild("NoGrav")
+					end
+					BodyForce.force = Vector3.new(0, GetMass(playerQuery[i].Character) * 196.2/2, 0)
+				end
+			end
+		end
+	},
+	{
+		names = {"SetGravity", "SetGrav"},
+		description = "Counteracts some of the gravitational force",
+		permissionsLevel = ADMIN,
+		execute = function(speaker, message)
+			local playerQuery, message = getPlayerQuery(speaker, message)
+			for i = 1, #playerQuery do
+				if playerQuery[i].Character and playerQuery[i].Character:FindFirstChild("Torso") then
+					if not playerQuery[i].Character:FindFirstChild("NoGrav") then
+						local BodyForce = Instance.new("BodyForce", playerQuery[i].Character.Torso)
+						BodyForce.Name = "NoGrav"
+					else
+						local BodyForce = playerQuery[i].Character:FindFirstChild("NoGrav")
+					end
+					BodyForce.force = Vector3.new(0, GetMass(playerQuery[i].Character) * 196.2 * tonumber(message), 0)
+				end
+			end
+		end
+	},
+	{
+		names = {"Gravity", "Grav"},
+		description = "Restores the gravitational force to normal",
+		permissionsLevel = ADMIN,
+		execute = function(speaker, message)
+			local playerQuery, message = getPlayerQuery(speaker, message)
+			for i = 1, #playerQuery do
+				if playerQuery[i].Character and playerQuery[i].Character:FindFirstChild("Torso") and playerQuery[i].Character:FindFirstChild("NoGrav") then
+					playerQuery[i].Character:FindFirstChild("NoGrav"):Destroy()
+				end
+			end
+		end
+	},
+	{
+		names = {"Hat"},
+		description = "Inserts the given hats onto the given players",
+		permissionsLevel = ADMIN,
+		execute = function(speaker, message)
+			local playerQuery, message = getPlayerQuery(speaker, message)
+			for _,v in pairs(playerQuery) do
+				if v.Character and v.Character:FindFirstChild("Head") then
+					v.Character:InsertContent("http://www.roblox.com/asset?id=" .. message)
+				end
+			end
+		end
 
 	-- Humanoid Commands
 	{
