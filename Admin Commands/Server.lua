@@ -51,7 +51,6 @@ local bannedUsersDS = DataStoreService:GetDataStore("RV_bannedUsersDS")
 local LockPerms = 0 --minimum rank needed to join, modified by slock and sunlock
 local LoopKilled = {}
 local LoopHealed = {}
-local 
 
 -- Set math.randomseed
 math.randomseed(tick())
