@@ -18,6 +18,8 @@ GUEST = 0
 
 -- Do not change below here, unless you know what you're doing.
 
+print('Loading RV Admin Commands')
+
 function getPermissionsLevel(Player)
 	-- Returns the permissionsLevel of the given Player Instance.
 	if Player.userId == game.CreatorId then
