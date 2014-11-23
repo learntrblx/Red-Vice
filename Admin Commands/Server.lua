@@ -1,25 +1,29 @@
--- Frigid Admin Commands
+-- Red Vice Admin Commands
 
 -- You'll probably want to change the following before using these commands:
 
 -- The prefix used before each command
-PREFIX = "/"
+PREFIX = ":"
 
 -- Group Id
-GROUP_ID = 959550
+GROUP_ID = 978919
 
 -- Preset Permissions Level Definitions
 OWNER = 255
-ADMIN = 250
+ADMIN = 253
+JUNIOR = 250
+TEMP = 3
 USER = 1
 GUEST = 0
+
+-- Do not change below here, unless you know what you're doing.
 
 function getPermissionsLevel(Player)
 	-- Returns the permissionsLevel of the given Player Instance.
 	if Player.userId == game.CreatorId then
 		return 255
 	end
-	return math.max(Player:GetRankInGroup(GROUP_ID), 250) -- Free admin!
+	return math.max(Player:GetRankInGroup(GROUP_ID), 1)
 end
 
 function GetMass(object)
@@ -31,9 +35,7 @@ function GetMass(object)
 	return mass
 end
 
--- Do not change below here, unless you know what you're doing.
-
--- Various services used1
+-- Various services used
 for _,service in pairs(game.ServerStorage.ServerServices:GetChildren()) do
 	getfenv()[service.Value] = game:GetService(service.Name)
 end
@@ -43,10 +45,11 @@ local HttpEnabled, _ = pcall(function() HttpService:GetAsync("") end)
 -- Variables
 local toolStorage = ServerStorage
 local bannedUsers = {}
-local bannedUsersDS = DataStoreService:GetDataStore("Frigid_bannedUsersDS")
+local bannedUsersDS = DataStoreService:GetDataStore("RV_bannedUsersDS")
 local LockPerms = 0 --minimum rank needed to join, modified by slock and sunlock
 local LoopKilled = {}
 local LoopHealed = {}
+local 
 
 -- Set math.randomseed
 math.randomseed(tick())
@@ -54,10 +57,10 @@ math.randomseed(tick())
 -- event is a RemoteEvent located in ReplicatedStorage
 -- We use this to send out notifications to clients
 -- It is possible another script has already made it
-local event = ReplicatedStorage:FindFirstChild("event")
+local event = ReplicatedStorage:FindFirstChild("AdminEvent")
 if not event or not event:IsA("RemoteEvent") then
 	event = Instance.new("RemoteEvent", ReplicatedStorage)
-	event.Name = "event"
+	event.Name = "AdminEvent"
 end
 
 -- Store all Commands in here. Use the "Kill" command as a template
@@ -847,32 +850,13 @@ local Commands = {
 	-- GUI Info Commands
 	{
 		names = {"Rank", "Role"},
-		description = "Checks the rank of the given player in the given GroupId or Frigid (if no GroupId is given).",
+		description = "Checks the rank of the given player in the given GroupId or Red Vice (if no GroupId is given).",
 		permissionsLevel = ADMIN,
 		execute = function(speaker, message)
 			local playerQuery, message = getPlayerQuery(speaker, message, true)
+			local rank = playerQuery:GetRankInGroup(tonumber(message) or GROUP_ID)
 			local role = playerQuery:GetRoleInGroup(tonumber(message) or GROUP_ID)
-			-- TODO: Replace below
-			local screenGui = Instance.new("ScreenGui", speaker.PlayerGui)
-			local bar = Instance.new("TextLabel")
-			bar.BorderSizePixel = 0
-			bar.BackgroundColor3 = Color3.new(0, 0, 0)
-			bar.TextColor3 = Color3.new(1, 1, 1)
-			bar.TextScaled = true
-			bar.Text = playerQuery.Name .. "'s role is " .. role
-			bar.Size = UDim2.new(1, 0, 0, 20)
-			bar.Parent = screenGui
-			for i= 1, 0.4, -0.1 do
-				bar.Transparency = i
-				wait()
-			end
-			wait(5)
-			for i= 0.4, 1, 0.1 do
-				bar.Transparency = i
-				wait()
-			end
-			screenGui:Destroy()
-			-- TODO: Replace above
+			event:FireClient(speaker, 'Hint', '[' .. rank .. '] ' .. role)
 		end
 	},
 	{
@@ -880,27 +864,23 @@ local Commands = {
 		description = "Displays to the user the total playercount of the server",
 		permissionsLevel = ADMIN,
 		execute = function(speaker, message)
-			-- TODO: Replace below
-			local screenGui = Instance.new("ScreenGui", speaker.PlayerGui)
-			local bar = Instance.new("TextLabel")
-			bar.BorderSizePixel = 0
-			bar.BackgroundColor3 = Color3.new(0, 0, 0)
-			bar.TextColor3 = Color3.new(1, 1, 1)
-			bar.TextScaled = true
-			bar.Text = "There are " .. Players.NumPlayers .. " in the server."
-			bar.Size = UDim2.new(1, 0, 0, 20)
-			bar.Parent = screenGui
-			for i= 1, 0.4, -0.1 do
-				bar.Transparency = i
-				wait()
-			end
-			wait(5)
-			for i= 0.4, 1, 0.1 do
-				bar.Transparency = i
-				wait()
-			end
-			screenGui:Destroy()
-			-- TODO: Replace above
+			event:FireClient(speaker, 'Hint', "There are " .. Players.NumPlayers .. " in the server.")
+		end
+	},
+	{
+		names = {'Hint', 'H'},
+		description = 'Sends all players a hint with the given text', 
+		permissionsLevel = ADMIN,
+		execute = function(speaker, message)
+			event:FireAllClients('Hint', message)
+		end
+	},
+	{
+		names = {'Message', 'M'},
+		description = 'Sends all players a message with the given text',
+		permissionsLevel = ADMIN,
+		execute = function(speaker, message)
+			event:FireAllClients('Message', {Speaker.Name, message})
 		end
 	},
 
@@ -1352,4 +1332,4 @@ while wait(5) do
 	end
 end
 
-print("Frigid Admin Commands Loaded")
+print("Red Vice Admin Commands Loaded")
