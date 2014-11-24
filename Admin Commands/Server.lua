@@ -892,7 +892,7 @@ local Commands = {
 		description = 'Sends all players a message with the given text',
 		permissionsLevel = ADMIN,
 		execute = function(speaker, message)
-			event:FireAllClients('Message', {Speaker.Name, message})
+			event:FireAllClients('Message', {speaker.Name, message})
 		end
 	},
 
