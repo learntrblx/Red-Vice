@@ -1,6 +1,6 @@
 ![logo.png](https://github.com/CoffeeFlux/Hostile/blob/master/logo200.png)
 
-Red Vice CLan Services
+Red Vice Clan Services
 =======
 
 Lua scripts for the clan world, curtousy of the finest of bakeries.
