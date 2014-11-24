@@ -464,8 +464,7 @@ local Commands = {
 						BodyForce = Instance.new("BodyForce", playerQuery[i].Character.Torso)
 						BodyForce.Name = "NoGrav"
 					end
-					print(message)
-					BodyForce.force = Vector3.new(0, GetMass(playerQuery[i].Character) * 196.2 * tonumber(message)/100, 0)
+					BodyForce.force = Vector3.new(0, GetMass(playerQuery[i].Character) * 196.2 * (100-tonumber(message)) / 100, 0)
 				end
 			end
 		end
