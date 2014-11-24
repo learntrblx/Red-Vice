@@ -300,7 +300,11 @@ local Commands = {
 			for i = 1, #playerQuery do
 				if playerQuery[i].Character and playerQuery[i].Character:FindFirstChild("Torso") and playerQuery[i].Character:FindFirstChild("Humanoid") then
 					for _,v in pairs(playerQuery[i].Character:GetChildren()) do
-						if v:IsA("BasePart") or v:IsA("Hat") then
+						if v:IsA("BasePart") and v.Name ~= 'HumanoidRootPart' then
+							v.Transparency = 1
+							v.Anchored = true
+							v.CanCollide = false
+						elseif v:IsA('Hat') then
 							v.Transparency = 1
 							v.Anchored = true
 						end
@@ -318,9 +322,13 @@ local Commands = {
 			for i = 1, #playerQuery do
 				if playerQuery[i].Character and playerQuery[i].Character:FindFirstChild("Torso") and playerQuery[i].Character:FindFirstChild("Humanoid") then
 					for _,v in pairs(playerQuery[i].Character:GetChildren()) do
-						if v:IsA("BasePart") or v:IsA("Hat") then
+						if v:IsA("BasePart") and v.Name ~= 'HumanoidRootPart' then
 							v.Transprency = 0
 							v.Anchored = false
+							v.CanCollide = true
+						elseif v:IsA("Hat") then
+							v.Transprency = 0
+							v.Anchored = true
 						end
 					end
 				end
