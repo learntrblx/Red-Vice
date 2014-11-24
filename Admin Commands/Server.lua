@@ -428,7 +428,7 @@ local Commands = {
 						BodyForce = Instance.new("BodyForce", playerQuery[i].Character.Torso)
 						BodyForce.Name = "NoGrav"
 					end
-					BodyForce.force = Vector3.new(0, GetMass(playerQuery[i].Character) * 196.2/1.05, 0)
+					BodyForce.force = Vector3.new(0, GetMass(playerQuery[i].Character) * 196.2/1.01, 0)
 				end
 			end
 		end
@@ -484,13 +484,15 @@ local Commands = {
 	},
 	{
 		names = {"Hat"},
-		description = "Inserts the given hats onto the given players",
+		description = "Inserts the given hat onto the given players",
 		permissionsLevel = ADMIN,
 		execute = function(speaker, message)
 			local playerQuery, message = getPlayerQuery(speaker, message)
 			for _,v in pairs(playerQuery) do
 				if v.Character and v.Character:FindFirstChild("Head") then
-					v.Character:InsertContent("http://www.roblox.com/asset?id=" .. message)
+					local Hat = InsertService:LoadAsset(tonumber(message)):GetChildren()[1]
+					Hat.Parent = v.Character
+					v:MakeJoints()
 				end
 			end
 		end
