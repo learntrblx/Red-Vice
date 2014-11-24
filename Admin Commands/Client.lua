@@ -10,10 +10,10 @@ local Time = .2
 
 event.OnClientEvent:connect(function(Type, Content)
 	if Type == 'Message' then
-		local Message = Content[1]
-		local Sender = Content[2]
+		local Message = Content[2]
+		local Sender = Content[1]
 
-		local Frame = Instance.new('Frame', script)
+		local Frame = Instance.new('Frame', gui)
 			Frame.BackgroundColor3 = Color3.new(27/255, 42/255, 53/255)
 			Frame.BackgroundTransparency = .2
 			Frame.BorderSizePixel = 0
@@ -46,8 +46,8 @@ event.OnClientEvent:connect(function(Type, Content)
 			Bottom.TextYAlignment = 'Top'
 
 		Frame:TweenPosition(UDim2.new(.3, 0, .2, 0), 'Out', 'Quad', Time)
-		wait(Message:len() / 2)
-		Frame:TweenPosition(UDim2.new(.3, 0, 1, 0), 'Out', 'Quad', Time)
+		wait(Message:len() / 3 + 2)
+		Frame:TweenPosition(UDim2.new(1, 0, .2, 0), 'Out', 'Quad', Time)
 		wait(Time)
 		Frame:Destroy()
 	elseif Type == 'Hint' then
@@ -62,12 +62,12 @@ event.OnClientEvent:connect(function(Type, Content)
 			Hint.TextColor3 = Color3.new(1, 1, 1)
 
 		Hint:TweenPosition(UDim2.new(0, 0, 0, 0), 'Out', 'Quad', Time)
-		wait(Content:len() / 2.5 + 1)
+		wait(Content:len() / 3 + 1)
 		Hint:TweenPosition(UDim2.new(0, 0, 0, -30), 'Out', 'Quad', Time)
 		wait(Time)
 		Hint:Destroy()
 	elseif Type == 'UnorderedList' then
-		local Frame = Instance.new('ScrollingFrame', script)
+		local Frame = Instance.new('ScrollingFrame', gui)
 			Frame.BackgroundColor3 = Color3.new(27/255, 42/255, 53/255)
 			Frame.BackgroundTransparency = .2
 			Frame.BorderSizePixel = 0

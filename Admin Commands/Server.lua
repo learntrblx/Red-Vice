@@ -25,7 +25,7 @@ function getPermissionsLevel(Player)
 	if Player.userId == game.CreatorId then
 		return 255
 	end
-	return math.max(Player:GetRankInGroup(GROUP_ID), 1)
+	return math.max(Player:GetRankInGroup(GROUP_ID), 0)
 end
 
 function GetMass(object)
@@ -61,6 +61,7 @@ local bannedUsersDS = DataStoreService:GetDataStore("RV_bannedUsersDS")
 local LockPerms = 0 --minimum rank needed to join, modified by slock and sunlock
 local LoopKilled = {}
 local LoopHealed = {}
+local ShadowsInitial = Lighting.GlobalShadows
 
 -- Set math.randomseed
 math.randomseed(tick())
@@ -921,7 +922,6 @@ local Commands = {
 		description = 'Sends all players a message with the given text',
 		permissionsLevel = ADMIN,
 		execute = function(speaker, message)
-			print('fired')
 			event:FireAllClients('Message', {speaker.Name, message})
 		end
 	},
@@ -1115,7 +1115,7 @@ local Commands = {
 		execute = function(speaker, message)
 			Lighting.Ambient = Color3.new(0, 0, 0)
 			Lighting.Brightness = 1
-			Lighting.GlobalShadows = false
+			Lighting.GlobalShadows = ShadowsInitial
 			Lighting.Outlines = false
 			Lighting.TimeOfDay = "14"
 			Lighting.FogColor = Color3.new(191/255, 191/255, 191/255)
@@ -1141,11 +1141,12 @@ local Commands = {
 		execute = function(speaker, message)
 			local SpeakerPerms = getPermissionsLevel(speaker)
 			if not message then
-				LockPerms = ADMIN --feel free to change this default
+				LockPerms = ADMIN --TODO: change this default
 			else
 				message = tonumber(message)
 				if message > SpeakerPerms then
-					LockPerms = SpeakerPerms -- TODO: should probably throw an error to the speaker too
+					LockPerms = SpeakerPerms
+					event:FireClient(speaker, 'Hint', 'Attempt to lock higher than your own rank, locking instead to your rank')
 				else
 					LockPerms = message
 				end
@@ -1165,7 +1166,8 @@ local Commands = {
 		description = "Removes everyone from the server and locks it, ending the server",
 		permissionsLevel = ADMIN,
 		execute = function(speaker, message)
-			-- TODO: Send a notification to the client about this, and wait for a moment so they can see that
+			event:FireAllClients('Message', {'SERVER', 'Shutting down this server...'})
+			wait(5)
 			LockPerms = 255
 			for _,v in pairs(game.Players:GetPlayers()) do
 				v:Kick()
