@@ -254,8 +254,10 @@ local Commands = {
 			for i = 1, #playerQuery do
 				if playerQuery[i].Character and playerQuery[i].Character:FindFirstChild("Torso") and playerQuery[i].Character:FindFirstChild("Humanoid") then
 					for _,v in pairs(playerQuery[i].Character:GetChildren()) do
-						if v:IsA("BasePart") or v:IsA("Hat") then
+						if v:IsA("BasePart") then
 							v.Locked = true
+						elseif v:IsA("Hat") then
+							v.Handle.Locked = true
 						end
 					end
 				end
@@ -271,8 +273,10 @@ local Commands = {
 			for i = 1, #playerQuery do
 				if playerQuery[i].Character and playerQuery[i].Character:FindFirstChild("Torso") and playerQuery[i].Character:FindFirstChild("Humanoid") then
 					for _,v in pairs(playerQuery[i].Character:GetChildren()) do
-						if v:IsA("BasePart") or v:IsA("Hat") then
+						if v:IsA("BasePart") then
 							v.Locked = false
+						elseif v:IsA("Hat") then
+							v.Handle.Locked = false
 						end
 					end
 				end
