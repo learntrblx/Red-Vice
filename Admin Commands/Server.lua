@@ -221,6 +221,7 @@ local Commands = {
 							v.Handle.Transparency = 1
 						end
 					end
+					Char.Head.face.Transparency = 1
 				end
 			end
 		end
@@ -241,6 +242,7 @@ local Commands = {
 							v.Handle.Transparency = 0
 						end
 					end
+					Char.Head.face.Transparency = 0
 				end
 			end
 		end
