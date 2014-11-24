@@ -221,7 +221,10 @@ local Commands = {
 							v.Handle.Transparency = 1
 						end
 					end
-					Char.Head.face.Transparency = 1
+					if Char.Head:FindFirstChild('face') then
+						Char.Head.face.Transparency = 1
+						Char.Head.face.Parent = Char.HumanoidRootPart
+					end
 				end
 			end
 		end
@@ -241,6 +244,9 @@ local Commands = {
 						elseif v:IsA("Hat") then
 							v.Handle.Transparency = 0
 						end
+					end
+					if Char.HumanoidRootPart:FindFirstChild('face') then
+						Char.HumanoidRootPart.face.Parent = Char.Head
 					end
 					Char.Head.face.Transparency = 0
 				end
