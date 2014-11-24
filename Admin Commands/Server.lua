@@ -239,7 +239,7 @@ local Commands = {
 				local Char = playerQuery[i].Character
 				if Char and Char:FindFirstChild("Torso") and Char:FindFirstChild("Humanoid") then
 					for _,v in pairs(Char:GetChildren()) do
-						if v:IsA("BasePart") then
+						if v:IsA("BasePart") and v.Name ~= 'HumanoidRootPart' then
 							v.Transparency = 0
 						elseif v:IsA("Hat") then
 							v.Handle.Transparency = 0
