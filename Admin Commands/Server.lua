@@ -206,7 +206,7 @@ local Commands = {
 		end
 	},
 	{
-		names = {"Invisible"},
+		names = {"Invisible", "Invis"},
 		description = "Hides the given player's character",
 		permissionsLevel = ADMIN,
 		execute = function(speaker, message)
