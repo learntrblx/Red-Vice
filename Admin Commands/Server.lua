@@ -221,10 +221,7 @@ local Commands = {
 							v.Handle.Transparency = 1
 						end
 					end
-					if Char.Head:FindFirstChild('face') then
-						Char.Head.face.Transparency = 1
-						Char.Head.face.Parent = Char.HumanoidRootPart
-					end
+					Char.Head.face.Transparency = 1
 				end
 			end
 		end
@@ -244,9 +241,6 @@ local Commands = {
 						elseif v:IsA("Hat") then
 							v.Handle.Transparency = 0
 						end
-					end
-					if Char.HumanoidRootPart:FindFirstChild('face') then
-						Char.HumanoidRootPart.face.Parent = Char.Head
 					end
 					Char.Head.face.Transparency = 0
 				end
@@ -309,6 +303,7 @@ local Commands = {
 							v.Handle.Anchored = true
 						end
 					end
+					playerQuery[i].Character.Head.face.Transparency = 1
 				end
 			end
 		end
@@ -323,7 +318,7 @@ local Commands = {
 				if playerQuery[i].Character and playerQuery[i].Character:FindFirstChild("Torso") and playerQuery[i].Character:FindFirstChild("Humanoid") then
 					for _,v in pairs(playerQuery[i].Character:GetChildren()) do
 						if v:IsA("BasePart") and v.Name ~= 'HumanoidRootPart' then
-							v.Transprency = 0
+							v.Transparency = 0
 							v.Anchored = false
 							v.CanCollide = true
 						elseif v:IsA("Hat") then
@@ -331,6 +326,7 @@ local Commands = {
 							v.Handle.Anchored = true
 						end
 					end
+					playerQuery[i].Character.Head.face.Transparency = 0
 				end
 			end
 		end
