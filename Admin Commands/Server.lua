@@ -661,6 +661,7 @@ local Commands = {
 						local Neck2 = Char.Torso.Neck:Clone()
 						Head2.Name = 'Head2'
 						Head2.Parent = Char
+						Head2.Transparency = 0
 						Neck2.Name = 'Neck2'
 						Neck2.Part1 = Head2
 						Neck2.Parent = Char.Torso
@@ -1361,17 +1362,14 @@ print("Red Vice Admin Commands Loaded")
 
 --For the loop commands
 --Potentially make this a new thread so that if it errors it doesn't kill the commands? idk
-while wait(2) do
+while wait(1) do
 	for i,v in pairs(LoopKilled) do
 		if v and v.Character and v.Character:FindFirstChild("Humanoid") then
 			v.Character.Humanoid.Health = 0
 		else
 			local Player = game.Players:FindFirstChild(i)
-			if Player and Player.Character and Player:FindFirstChild("Humanoid") then
-				Player.Character.Humanoid.Health = 0
+			if Player then
 				LoopKilled[i] = Player
-			else
-				LoopKilled[i] = nil
 			end
 		end
 	end
@@ -1380,11 +1378,8 @@ while wait(2) do
 			v.Character.Humanoid.Health = v.Character.Humanoid.MaxHealth
 		else
 			local Player = game.Players:FindFirstChild(i)
-			if Player and Player.Character and Player:FindFirstChild("Humanoid") then
-				Player.Character.Humanoid.Health = Player.Character.Humanoid.MaxHealth
+			if Player then
 				LoopHealed[i] = Player
-			else
-				LoopHealed[i] = nil
 			end
 		end
 	end
