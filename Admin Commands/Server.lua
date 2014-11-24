@@ -10,8 +10,8 @@ GROUP_ID = 978919
 
 -- Preset Permissions Level Definitions
 OWNER = 255
-ADMIN = 253
-JUNIOR = 250
+SUPER = 253
+ADMIN = 250
 TEMP = 3
 USER = 1
 GUEST = 0
