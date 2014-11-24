@@ -1,3 +1,5 @@
+print('Loading Red Vice Admin LocalScript')
+
 local ReplicatedStorage = game:GetService('ReplicatedStorage')
 local event = ReplicatedStorage:WaitForChild('AdminEvent')
 local gui = Instance.new('ScreenGui', script)
@@ -12,7 +14,7 @@ event.OnClientEvent:connect(function(Type, Content)
 		local Sender = Content[2]
 
 		local Frame = Instance.new('Frame', script)
-			Frame.BackgroundColor = Color3.new(27/255, 42/255, 53/255)
+			Frame.BackgroundColor3 = Color3.new(27/255, 42/255, 53/255)
 			Frame.BackgroundTransparency = .2
 			Frame.BorderSizePixel = 0
 			Frame.Position = UDim2.new(-.3, 0, .2, 0)
@@ -44,13 +46,13 @@ event.OnClientEvent:connect(function(Type, Content)
 			Bottom.TextYAlignment = 'Top'
 
 		Frame:TweenPosition(UDim2.new(.3, 0, .2, 0), 'Out', 'Quad', Time)
-		wait(Message:Len() * 2)
+		wait(Message:len() * 2)
 		Frame:TweenPosition(UDim2.new(.3, 0, 1, 0), 'Out', 'Quad', Time)
 		wait(Time)
 		Frame:Destroy()
 	elseif Type == 'Hint' then
 		local Hint = Instance.new('TextLabel', gui)
-		Hint.BackgroundColor = Color3.new(27/255, 42/255, 53/255)
+		Hint.BackgroundColor3 = Color3.new(27/255, 42/255, 53/255)
 			Hint.BackgroundTransparency = .2
 			Hint.BorderSizePixel = 0
 			Hint.Position = UDim2.new(0, 0, 0, -30)
@@ -60,13 +62,13 @@ event.OnClientEvent:connect(function(Type, Content)
 			Hint.TextColor3 = Color3.new(1, 1, 1)
 
 		Hint:TweenPosition(UDim2.new(0, 0, 0, 0), 'Out', 'Quad', Time)
-		wait(Content:Len() * 2)
+		wait(Content:len() * 2)
 		Hint:TweenPosition(UDim2.new(0, 0, 0, -30), 'Out', 'Quad', Time)
 		wait(Time)
 		Hint:Destroy()
 	elseif Type == 'UnorderedList' then
 		local Frame = Instance.new('ScrollingFrame', script)
-			Frame.BackgroundColor = Color3.new(27/255, 42/255, 53/255)
+			Frame.BackgroundColor3 = Color3.new(27/255, 42/255, 53/255)
 			Frame.BackgroundTransparency = .2
 			Frame.BorderSizePixel = 0
 			Frame.Position = UDim2.new(-.3, 0, .2, 0)
@@ -104,3 +106,5 @@ event.OnClientEvent:connect(function(Type, Content)
 		end)
 	end
 end)
+
+print('Red Vice Admin LocalScript Loaded')

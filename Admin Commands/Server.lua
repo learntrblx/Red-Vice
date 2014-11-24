@@ -214,8 +214,10 @@ local Commands = {
 			for i = 1, #playerQuery do
 				if playerQuery[i].Character and playerQuery[i].Character:FindFirstChild("Torso") and playerQuery[i].Character:FindFirstChild("Humanoid") then
 					for _,v in pairs(playerQuery[i].Character:GetChildren()) do
-						if v:IsA("BasePart") or v:IsA("Hat") then
+						if v:IsA("BasePart") then
 							v.Transparency = 1
+						elseif v:IsA('Hat') then
+							v.Handle.Transparency = 1
 						end
 					end
 					playerQuery[i].Character.Humanoid.Name = " "
@@ -232,8 +234,10 @@ local Commands = {
 			for i = 1, #playerQuery do
 				if playerQuery[i].Character and playerQuery[i].Character:FindFirstChild("Torso") and playerQuery[i].Character:FindFirstChild("Humanoid") then
 					for _,v in pairs(playerQuery[i].Character:GetChildren()) do
-						if v:IsA("BasePart") or v:IsA("Hat") then
+						if v:IsA("BasePart") then
 							v.Transparency = 0
+						elseif v:IsA("Hat") then
+							v.Handle.Transparency = 0
 						end
 					end
 					playerQuery[i].Character.Humanoid.Name = playerQuery[i].Name
