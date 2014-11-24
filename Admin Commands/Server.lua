@@ -417,7 +417,7 @@ local Commands = {
 	},
 	{
 		names = {"NoGravity", "NoGrav"},
-		description = "Counteracts the gravitational force",
+		description = "Counteracts the gravitational force almost completely",
 		permissionsLevel = ADMIN,
 		execute = function(speaker, message)
 			local playerQuery, message = getPlayerQuery(speaker, message)
@@ -428,7 +428,7 @@ local Commands = {
 						BodyForce = Instance.new("BodyForce", playerQuery[i].Character.Torso)
 						BodyForce.Name = "NoGrav"
 					end
-					BodyForce.force = Vector3.new(0, GetMass(playerQuery[i].Character) * 196.2, 0)
+					BodyForce.force = Vector3.new(0, GetMass(playerQuery[i].Character) * 196.2/1.1, 0)
 				end
 			end
 		end
