@@ -38,9 +38,19 @@ function GetMass(object)
 end
 
 -- Various services used
-for _,service in pairs(game.ServerStorage.ServerServices:GetChildren()) do
-	getfenv()[service.Value] = game:GetService(service.Name)
-end
+local Workspace = game:GetService("Workspace")
+local Players = game:GetService("Players")
+local Lighting = game:GetService("Lighting")
+local Teams = game:GetService("Teams")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local InsertService = game:GetService("InsertService")
+local Debris = game:GetService("Debris")
+local ServerStorage = game:GetService("ServerStorage")
+local GroupService = game:GetService("GroupService")
+local MarketplaceService = game:GetService("MarketplaceService")
+local TeleportService = game:GetService("TeleportService")
+local DataStoreService = game:GetService("DataStoreService")
+local HttpService = game:GetService("HttpService")
 
 local HttpEnabled, _ = pcall(function() HttpService:GetAsync("") end)
 
@@ -372,7 +382,7 @@ local Commands = {
 				v:LoadCharacter()
 			end
 		end
-	}
+	},
 	{
 		names = {"UnCharacter", "UnChar", "FixCharacter", "FixChar"},
 		description = "Changes the character(s) to resemble their true appearence",
@@ -384,7 +394,7 @@ local Commands = {
 				v:LoadCharacter()
 			end
 		end
-	}
+	},
 	{
 		names = {"NoGravity", "NoGrav"},
 		description = "Counteracts the gravitational force",
@@ -467,6 +477,7 @@ local Commands = {
 				end
 			end
 		end
+	},
 
 	-- Humanoid Commands
 	{
@@ -1302,6 +1313,8 @@ for _, player in pairs(Players:GetPlayers()) do
 	playerAdded(player)
 end
 
+print("Red Vice Admin Commands Loaded")
+
 --For the loop commands
 --Potentially make this a new thread so that if it errors it doesn't kill the commands? idk
 while wait(5) do
@@ -1332,5 +1345,3 @@ while wait(5) do
 		end
 	end
 end
-
-print("Red Vice Admin Commands Loaded")
