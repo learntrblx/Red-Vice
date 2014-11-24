@@ -62,6 +62,7 @@ local LockPerms = 0 --minimum rank needed to join, modified by slock and sunlock
 local LoopKilled = {}
 local LoopHealed = {}
 local ShadowsInitial = Lighting.GlobalShadows
+local Faces = {}
 
 -- Set math.randomseed
 math.randomseed(tick())
@@ -222,7 +223,10 @@ local Commands = {
 							v.Handle.Transparency = 1
 						end
 					end
-					Char.Head.face.Transparency = 1
+					if not Faces[playerQuery[i]] then
+						Faces[playerQuery[i].Name] = Char.Head.face.Texture
+					end
+					Char.Head.face.Texture = ''
 				end
 			end
 		end
@@ -243,7 +247,10 @@ local Commands = {
 							v.Handle.Transparency = 0
 						end
 					end
-					Char.Head.face.Transparency = 0
+					Char.Head.face.Texture = Faces[playerQuery[i].Name] 
+					if Char.Head.Anchored == false then
+						Faces[playerQuery[i].Name] = nil
+					end
 				end
 			end
 		end
@@ -304,7 +311,10 @@ local Commands = {
 							v.Handle.Anchored = true
 						end
 					end
-					playerQuery[i].Character.Head.face.Transparency = 1
+					if not Faces[playerQuery[i].Name] then
+						Faces[playerQuery[i].Name] = Char.Head.face.Texture
+					end
+					Char.Head.face.Texture = ''
 				end
 			end
 		end
@@ -327,7 +337,8 @@ local Commands = {
 							v.Handle.Anchored = true
 						end
 					end
-					playerQuery[i].Character.Head.face.Transparency = 0
+					Char.Head.face.Texture = Faces[playerQuery[i].Name]
+					Faces[playerQuery[i].Name] = nil
 				end
 			end
 		end
