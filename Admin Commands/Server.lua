@@ -232,9 +232,11 @@ local Commands = {
 		execute = function(speaker, message)
 			local playerQuery, message = getPlayerQuery(speaker, message)
 			for i = 1, #playerQuery do
-				print('running')
+				print(playerQuery[i].Name)
 				if playerQuery[i].Character and playerQuery[i].Character:FindFirstChild("Torso") and playerQuery[i].Character:FindFirstChild("Humanoid") then
+					print('passed checks')
 					for _,v in pairs(playerQuery[i].Character:GetChildren()) do
+						print(v.Name)
 						if v:IsA("BasePart") then
 							v.Transparency = 0
 						elseif v:IsA("Hat") then
