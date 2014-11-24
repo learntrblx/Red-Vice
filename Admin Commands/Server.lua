@@ -428,7 +428,7 @@ local Commands = {
 						BodyForce = Instance.new("BodyForce", playerQuery[i].Character.Torso)
 						BodyForce.Name = "NoGrav"
 					end
-					BodyForce.force = Vector3.new(0, GetMass(playerQuery[i].Character) * 196.2/1.1, 0)
+					BodyForce.force = Vector3.new(0, GetMass(playerQuery[i].Character) * 196.2/1.05, 0)
 				end
 			end
 		end
@@ -476,8 +476,8 @@ local Commands = {
 		execute = function(speaker, message)
 			local playerQuery, message = getPlayerQuery(speaker, message)
 			for i = 1, #playerQuery do
-				if playerQuery[i].Character and playerQuery[i].Character:FindFirstChild("Torso") and playerQuery[i].Character:FindFirstChild("NoGrav") then
-					playerQuery[i].Character:FindFirstChild("NoGrav"):Destroy()
+				if playerQuery[i].Character and playerQuery[i].Character:FindFirstChild("Torso") and playerQuery[i].Character.Torso:FindFirstChild("NoGrav") then
+					playerQuery[i].Character.Torso:FindFirstChild("NoGrav"):Destroy()
 				end
 			end
 		end
