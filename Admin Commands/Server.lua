@@ -16,6 +16,14 @@ TEMP = 3
 USER = 1
 GUEST = 0
 
+-- Preset admins, outside of the group, in the format {Name, Level}
+local AdminList = 	{
+						['CoffeeFlux'] = ADMIN,
+						['Osyris'] = ADMIN,
+					}
+-- Preset bans
+local bannedUsers = {'Scripth', 'Superburke1'}
+
 -- Do not change below here, unless you know what you're doing.
 
 print('Loading RV Admin Commands')
@@ -25,7 +33,7 @@ function getPermissionsLevel(Player)
 	if Player.userId == game.CreatorId then
 		return 255
 	end
-	return math.max(Player:GetRankInGroup(GROUP_ID), 0)
+	return AdminList[Player.Name] or math.max(Player:GetRankInGroup(GROUP_ID), 0)
 end
 
 function GetMass(object)
@@ -56,13 +64,13 @@ local HttpEnabled, _ = pcall(function() HttpService:GetAsync("") end)
 
 -- Variables
 local toolStorage = ServerStorage
-local bannedUsers = {}
 local bannedUsersDS = DataStoreService:GetDataStore("RV_bannedUsersDS")
 local LockPerms = 0 --minimum rank needed to join, modified by slock and sunlock
 local LoopKilled = {}
 local LoopHealed = {}
 local ShadowsInitial = Lighting.GlobalShadows
 local Faces = {}
+local Logs = {}
 
 -- Set math.randomseed
 math.randomseed(tick())
@@ -936,6 +944,58 @@ local Commands = {
 			event:FireAllClients('Message', {speaker.Name, message})
 		end
 	},
+	{
+		names = {'PrivateMessage', 'PM'},
+		description = 'Send a message to the specified users',
+		permissionsLevel = ADMIN,
+		execute = function(speaker, message)
+			local playerQuery, message = getPlayerQuery(speaker, message)
+			for _,v in pairs(playerQuery) do
+				event:FireClient(v, {speaker.Name, message})
+			end
+		end
+	},
+	{
+		names = {'ListTools', 'Tools'},
+		description = 'Show a list of all the tools in the toolStorage',
+		permissionsLevel = ADMIN,
+		execute = function(speaker, message)
+			event:FireClient(speaker, toolStorage:GetChildren())
+		end
+	},
+	{
+		names = {'ListBans', 'BanList', 'Bans'},
+		description = 'Show a list of all the users banned in the server',
+		permissionsLevel = ADMIN,
+		execute = function(speaker, message)
+			event:FireClient(speaker, bannedUsers)
+		end
+	},
+	{
+		names = {'ListAdmins', 'AdminList', 'Admins'},
+		description = 'Show a list of manual admins and admins in the server',
+		permissionsLevel = ADMIN,
+		execute = function(speaker, message)
+			local ReturnList = {}
+			for i,v in pairs(AdminList) do
+				ReturnList[#ReturnList + 1] = '[' .. v .. '] ' .. i
+			end
+			for _,v in pairs(Players:GetPlayers()) do
+				if getPermissionsLevel(v) > (tonumber(message) or TEMP) then
+					ReturnList[#ReturnList + 1] = '[' .. getPermissionsLevel(v) .. '] ' .. v.Name
+				end
+			end
+			event:FireClient(speaker, ReturnList)
+		end
+	},
+	{
+		names = {'ListLogs', 'ShowLogs', 'Logs'},
+		description = 'Show a list of every actiont taken this server, and by who'
+		permissionsLevel = ADMIN,
+		execute = function(speaker, message)
+			local ReturnTable
+			for _,v in pairs(Logs) do
+				ReturnTable[#ReturnTable] = '[' .. v[1] .. '] ' .. v[2]
 
 	-- Tool Commands
 	{
@@ -1173,6 +1233,42 @@ local Commands = {
 		end
 	},
 	{
+		names = {'Admin'},
+		description = 'Sets to user to the specified admin level, defaulting at TEMP',
+		permissionsLevel = ADMIN,
+		execute = function(speaker, message)
+			local playerQuery, message = getPlayerQuery(message)
+			local Perms
+			if message then
+				if tonumber(message) < getPermissionsLevel(speaker) then
+					Perms = tonumber(message)
+				else
+					Perms = getPermissionsLevel(speaker) - 1
+					event:FireClient('Hint', 'Attempting to admin someone to your rank or above, instead giving them the rank below you')
+				end
+			else
+				Perms = TEMP
+			end
+			for _,v in pairs(playerQuery) do
+				AdminList[v.Name] = Perms
+			end
+		end
+	},
+	{
+		names = {'UnAdmin', 'RemoveAdmin'},
+		description = 'Removes admin privilidges, does not work if the person has their rank from the group',
+		permissionsLevel = ADMIN,
+		execute = function(speaker, message)
+			local playerQuery, message = getPlayerQuery(message)
+			local SpeakerPerms = getPermissionsLevel(speaker)
+			for _,v in pairs(playerQuery) do
+				if SpeakerPerms > getPermissionsLevel(v) then
+					AdminList[v.Name] = nil
+				end
+			end
+		end
+	},
+	{
 		names = {"Shutdown"},
 		description = "Removes everyone from the server and locks it, ending the server",
 		permissionsLevel = ADMIN,
@@ -1314,7 +1410,7 @@ function parseString(speaker, message)
 	if string.lower(string.sub(stringTrim(message), 1, #PREFIX)) ~= string.lower(PREFIX) then
 		return
 	end
-	-- Loop through each command executed: "/Kill PLAYER1 /Kill PLAYER2" -> "Kill PLAYER1" -> "Kill PLAYER2"
+	-- Loop through each command executed: ":Kill PLAYER1 :Kill PLAYER2" -> "Kill PLAYER1" -> "Kill PLAYER2"
 	for match in string.gmatch(message, "[^" .. PREFIX .. "]+") do
 		(function()
 			match = stringTrim(match)
@@ -1332,6 +1428,7 @@ function parseString(speaker, message)
 								Commands[command_index].execute(speaker, suffix)
 								--pcall(Commands[command_index].execute, speaker, suffix)
 							end
+							Logs[#Logs + 1] = {speaker, command_index}
 						end
 						return
 					end
