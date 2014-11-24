@@ -1,6 +1,8 @@
-![logo.png](https://github.com/OsyrisHostile/Hostile/blob/master/logo200.png)
+![logo.png](https://github.com/CoffeeFlux/Hostile/blob/master/logo200.png)
 
-Hostile
+Red Vice CLan Services
 =======
 
-Lua scripts for a group on ROBLOX.
+Lua scripts for the clan world, curtousy of the finest of bakeries.
+
+Please contribute! The code's on Github for a reason.
