@@ -46,7 +46,7 @@ event.OnClientEvent:connect(function(Type, Content)
 			Bottom.TextYAlignment = 'Top'
 
 		Frame:TweenPosition(UDim2.new(.3, 0, .2, 0), 'Out', 'Quad', Time)
-		wait(Message:len() * 2)
+		wait(Message:len() / 2)
 		Frame:TweenPosition(UDim2.new(.3, 0, 1, 0), 'Out', 'Quad', Time)
 		wait(Time)
 		Frame:Destroy()
@@ -57,12 +57,12 @@ event.OnClientEvent:connect(function(Type, Content)
 			Hint.BorderSizePixel = 0
 			Hint.Position = UDim2.new(0, 0, 0, -30)
 			Hint.Size = UDim2.new(1, 0, 0, 30)
-			Hint.FontSize = 'Size18'
+			Hint.FontSize = 'Size14'
 			Hint.Text = Content
 			Hint.TextColor3 = Color3.new(1, 1, 1)
 
 		Hint:TweenPosition(UDim2.new(0, 0, 0, 0), 'Out', 'Quad', Time)
-		wait(Content:len() * 2)
+		wait(Content:len() / 2.5 + 1)
 		Hint:TweenPosition(UDim2.new(0, 0, 0, -30), 'Out', 'Quad', Time)
 		wait(Time)
 		Hint:Destroy()

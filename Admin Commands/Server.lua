@@ -655,17 +655,7 @@ local Commands = {
 			for i = 1, #playerQuery do
 				local Char = playerQuery[i].Character
 				if Char and Char:FindFirstChild("Head") and Char:FindFirstChild("Torso") and Char:FindFirstChild("Humanoid") then
-					Char.Head.Transparency = 1
-					if not Char:FindFirstChild('Head2') then
-						local Head2 = Char.Head:Clone()
-						local Neck2 = Char.Torso.Neck:Clone()
-						Head2.Name = 'Head2'
-						Head2.Parent = Char
-						Head2.Transparency = 0
-						Neck2.Name = 'Neck2'
-						Neck2.Part1 = Head2
-						Neck2.Parent = Char.Torso
-					end
+					--TODO: implement this stupid command
 				end
 			end
 		end
@@ -679,13 +669,7 @@ local Commands = {
 			for i = 1, #playerQuery do
 				local Char = playerQuery[i].Character
 				if Char and Char:FindFirstChild("Torso") and Char:FindFirstChild("Humanoid") then
-					Char.Head.Transparency = 0
-					if Char:FindFirstChild('Head2') then
-						Char.Head2:Destroy()
-					end
-					if Char.Torso:FindFirstChild('Neck2') then
-						Char.Torso.Neck2:Destroy()
-					end
+					--TODO: also implement this one
 				end
 			end
 		end
@@ -921,7 +905,7 @@ local Commands = {
 		description = "Displays to the user the total playercount of the server",
 		permissionsLevel = ADMIN,
 		execute = function(speaker, message)
-			event:FireClient(speaker, 'Hint', "There are " .. Players.NumPlayers .. " in the server.")
+			event:FireClient(speaker, 'Hint', "There are " .. Players.NumPlayers .. " players in the server.")
 		end
 	},
 	{
@@ -937,6 +921,7 @@ local Commands = {
 		description = 'Sends all players a message with the given text',
 		permissionsLevel = ADMIN,
 		execute = function(speaker, message)
+			print('fired')
 			event:FireAllClients('Message', {speaker.Name, message})
 		end
 	},
