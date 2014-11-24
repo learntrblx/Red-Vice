@@ -6,6 +6,9 @@ local gui = Instance.new('ScreenGui', script)
 
 local Time = .2
 
+local BLACK = Color3.new(27/255, 42/255, 53/255)
+local WHITE = Color3.new(1, 1, 1)
+
 --Types of GUIs to create: Message, Hint, UnorderedList
 
 event.OnClientEvent:connect(function(Type, Content)
@@ -14,7 +17,7 @@ event.OnClientEvent:connect(function(Type, Content)
 		local Sender = Content[1]
 
 		local Frame = Instance.new('Frame', gui)
-			Frame.BackgroundColor3 = Color3.new(27/255, 42/255, 53/255)
+			Frame.BackgroundColor3 = BLACK
 			Frame.BackgroundTransparency = .2
 			Frame.BorderSizePixel = 0
 			Frame.Position = UDim2.new(-.3, 0, .2, 0)
@@ -25,7 +28,7 @@ event.OnClientEvent:connect(function(Type, Content)
 			Top.BackgroundTransparency = 1
 			Top.BorderSizePixel = 0
 			Top.Size = UDim2.new(1, 0, 0, 30)
-			Top.TextColor3 = Color3.new(1, 1, 1)
+			Top.TextColor3 = WHITE
 			Top.ZIndex = 2
 			Top.Font = 'SourceSansBold'
 			Top.FontSize = 'Size24'
@@ -36,7 +39,7 @@ event.OnClientEvent:connect(function(Type, Content)
 			Bottom.BorderSizePixel = 0
 			Bottom.Size = UDim2.new(1, -20, 1, -40)
 			Bottom.Position = UDim2.new(0, 10, 0, 40)
-			Bottom.TextColor3 = Color3.new(1, 1, 1)
+			Bottom.TextColor3 = WHITE
 			Bottom.ZIndex = 2
 			Bottom.Font = 'SourceSans'
 			Bottom.FontSize = 'Size24'
@@ -52,14 +55,14 @@ event.OnClientEvent:connect(function(Type, Content)
 		Frame:Destroy()
 	elseif Type == 'Hint' then
 		local Hint = Instance.new('TextLabel', gui)
-		Hint.BackgroundColor3 = Color3.new(27/255, 42/255, 53/255)
+		Hint.BackgroundColor3 = BLACK
 			Hint.BackgroundTransparency = .2
 			Hint.BorderSizePixel = 0
 			Hint.Position = UDim2.new(0, 0, 0, -30)
 			Hint.Size = UDim2.new(1, 0, 0, 30)
 			Hint.FontSize = 'Size14'
 			Hint.Text = Content
-			Hint.TextColor3 = Color3.new(1, 1, 1)
+			Hint.TextColor3 = WHITE
 
 		Hint:TweenPosition(UDim2.new(0, 0, 0, 0), 'Out', 'Quad', Time)
 		wait(Content:len() / 3 + 1)
@@ -68,7 +71,7 @@ event.OnClientEvent:connect(function(Type, Content)
 		Hint:Destroy()
 	elseif Type == 'UnorderedList' then
 		local Frame = Instance.new('ScrollingFrame', gui)
-			Frame.BackgroundColor3 = Color3.new(27/255, 42/255, 53/255)
+			Frame.BackgroundColor3 = BLCK
 			Frame.BackgroundTransparency = .2
 			Frame.BorderSizePixel = 0
 			Frame.Position = UDim2.new(-.3, 0, .2, 0)
