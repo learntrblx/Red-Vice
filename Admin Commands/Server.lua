@@ -212,15 +212,15 @@ local Commands = {
 		execute = function(speaker, message)
 			local playerQuery, message = getPlayerQuery(speaker, message)
 			for i = 1, #playerQuery do
-				if playerQuery[i].Character and playerQuery[i].Character:FindFirstChild("Torso") and playerQuery[i].Character:FindFirstChild("Humanoid") then
-					for _,v in pairs(playerQuery[i].Character:GetChildren()) do
+				local Char = playerQuery[i].Character
+				if Char and Char:FindFirstChild("Torso") and Char:FindFirstChild("Humanoid") then
+					for _,v in pairs(Char:GetChildren()) do
 						if v:IsA("BasePart") then
 							v.Transparency = 1
 						elseif v:IsA('Hat') then
 							v.Handle.Transparency = 1
 						end
 					end
-					playerQuery[i].Character.Humanoid.Name = " "
 				end
 			end
 		end
@@ -232,18 +232,15 @@ local Commands = {
 		execute = function(speaker, message)
 			local playerQuery, message = getPlayerQuery(speaker, message)
 			for i = 1, #playerQuery do
-				print(playerQuery[i].Name)
-				if playerQuery[i].Character and playerQuery[i].Character:FindFirstChild("Torso") and playerQuery[i].Character:FindFirstChild("Humanoid") then
-					print('passed checks')
-					for _,v in pairs(playerQuery[i].Character:GetChildren()) do
-						print(v.Name)
+				local Char = playerQuery[i].Character
+				if Char and Char:FindFirstChild("Torso") and Char:FindFirstChild("Humanoid") then
+					for _,v in pairs(Char:GetChildren()) do
 						if v:IsA("BasePart") then
 							v.Transparency = 0
 						elseif v:IsA("Hat") then
 							v.Handle.Transparency = 0
 						end
 					end
-					playerQuery[i].Character.Humanoid.Name = playerQuery[i].Name
 				end
 			end
 		end
