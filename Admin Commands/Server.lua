@@ -305,8 +305,8 @@ local Commands = {
 							v.Anchored = true
 							v.CanCollide = false
 						elseif v:IsA('Hat') then
-							v.Transparency = 1
-							v.Anchored = true
+							v.Handle.Transparency = 1
+							v.Handle.Anchored = true
 						end
 					end
 				end
@@ -327,8 +327,8 @@ local Commands = {
 							v.Anchored = false
 							v.CanCollide = true
 						elseif v:IsA("Hat") then
-							v.Transprency = 0
-							v.Anchored = true
+							v.Handle.Transprency = 0
+							v.Handle.Anchored = true
 						end
 					end
 				end
