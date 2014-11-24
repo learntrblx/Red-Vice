@@ -492,7 +492,6 @@ local Commands = {
 				if v.Character and v.Character:FindFirstChild("Head") then
 					local Hat = InsertService:LoadAsset(tonumber(message)):GetChildren()[1]
 					Hat.Parent = v.Character
-					v:MakeJoints()
 				end
 			end
 		end
@@ -500,15 +499,15 @@ local Commands = {
 
 	-- Humanoid Commands
 	{
-		names = {"Heal", "SetHealth"},
-		description = "Sets the given players' Health to their MaxHealth or the number given.",
+		names = {"Heal"},
+		description = "Sets the given players' Health to their Health + amount",
 		permissionsLevel = ADMIN,
 		execute = function(speaker, message)
 			local playerQuery, message = getPlayerQuery(speaker, message)
 			local targetHealth = tonumber(message)
 			for i = 1, #playerQuery do
 				if playerQuery[i].Character and playerQuery[i].Character:FindFirstChild("Humanoid") then
-					playerQuery[i].Character.Humanoid.Health = targetHealth or playerQuery[i].Character.Humanoid.MaxHealth
+					playerQuery[i].Character.Humanoid.Health = playerQuery[i].Character.Humanoid.Health + targetHealth
 				end
 			end
 		end
@@ -622,18 +621,27 @@ local Commands = {
 		end
 	},
 	{
-		names = {"Health", "SetMaxHealth"},
+		names = {"Health", "SetHealth"},
+		description = "Sets the player's health to the value given, or to 100",
+		permissionsLevel = ADMIN,
+		execute = function(speaker, message)
+			local playerQuery, message = getPlayerQuery(speaker, message)
+			for i = 1, #playerQuery do
+				if playerQuery[i].Character and playerQuery[i].Character:FindFirstChild("Torso") and playerQuery[i].Character:FindFirstChild("Humanoid") then
+					playerQuery[i].Character.Humanoid.Health = tonumber(message) or 100
+				end
+			end
+		end
+	},
+	{
+		names = {"MaxHealth", "SetMaxHealth"},
 		description = "Sets the player's maxhealth to the value given, or to 100",
 		permissionsLevel = ADMIN,
 		execute = function(speaker, message)
 			local playerQuery, message = getPlayerQuery(speaker, message)
 			for i = 1, #playerQuery do
 				if playerQuery[i].Character and playerQuery[i].Character:FindFirstChild("Torso") and playerQuery[i].Character:FindFirstChild("Humanoid") then
-					if message then
-						playerQuery[i].Character.Humanoid.MaxHealth = message
-					else
-						playerQuery[i].Character.Humanoid.MaxHealth = 100
-					end
+					playerQuery[i].Character.Humanoid.MaxHealth = tonumber(message) or 100
 				end
 			end
 		end
