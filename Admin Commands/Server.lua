@@ -442,11 +442,12 @@ local Commands = {
 			local playerQuery, message = getPlayerQuery(speaker, message)
 			for i = 1, #playerQuery do
 				if playerQuery[i].Character and playerQuery[i].Character:FindFirstChild("Torso") then
+					local BodyForce
 					if not playerQuery[i].Character:FindFirstChild("NoGrav") then
-						local BodyForce = Instance.new("BodyForce", playerQuery[i].Character.Torso)
+						BodyForce = Instance.new("BodyForce", playerQuery[i].Character.Torso)
 						BodyForce.Name = "NoGrav"
 					else
-						local BodyForce = playerQuery[i].Character:FindFirstChild("NoGrav")
+						BodyForce = playerQuery[i].Character:FindFirstChild("NoGrav")
 					end
 					BodyForce.force = Vector3.new(0, GetMass(playerQuery[i].Character) * 196.2/2, 0)
 				end
@@ -461,11 +462,12 @@ local Commands = {
 			local playerQuery, message = getPlayerQuery(speaker, message)
 			for i = 1, #playerQuery do
 				if playerQuery[i].Character and playerQuery[i].Character:FindFirstChild("Torso") then
+					local BodyForce
 					if not playerQuery[i].Character:FindFirstChild("NoGrav") then
-						local BodyForce = Instance.new("BodyForce", playerQuery[i].Character.Torso)
+						BodyForce = Instance.new("BodyForce", playerQuery[i].Character.Torso)
 						BodyForce.Name = "NoGrav"
 					else
-						local BodyForce = playerQuery[i].Character:FindFirstChild("NoGrav")
+						BodyForce = playerQuery[i].Character:FindFirstChild("NoGrav")
 					end
 					BodyForce.force = Vector3.new(0, GetMass(playerQuery[i].Character) * 196.2 * tonumber(message)/100, 0)
 				end
