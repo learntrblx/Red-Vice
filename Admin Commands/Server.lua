@@ -423,7 +423,7 @@ local Commands = {
 			local playerQuery, message = getPlayerQuery(speaker, message)
 			for i = 1, #playerQuery do
 				if playerQuery[i].Character and playerQuery[i].Character:FindFirstChild("Torso") then
-					local BodyForce = playerQuery[i].Character:FindFirstChild("NoGrav")
+					local BodyForce = playerQuery[i].Character.Torso:FindFirstChild("NoGrav")
 					if not BodyForce then
 						BodyForce = Instance.new("BodyForce", playerQuery[i].Character.Torso)
 						BodyForce.Name = "NoGrav"
@@ -441,7 +441,7 @@ local Commands = {
 			local playerQuery, message = getPlayerQuery(speaker, message)
 			for i = 1, #playerQuery do
 				if playerQuery[i].Character and playerQuery[i].Character:FindFirstChild("Torso") then
-					local BodyForce = playerQuery[i].Character:FindFirstChild("NoGrav")
+					local BodyForce = playerQuery[i].Character.Torso:FindFirstChild("NoGrav")
 					if not BodyForce then
 						BodyForce = Instance.new("BodyForce", playerQuery[i].Character.Torso)
 						BodyForce.Name = "NoGrav"
@@ -458,7 +458,7 @@ local Commands = {
 		execute = function(speaker, message)
 			local playerQuery, message = getPlayerQuery(speaker, message)
 			for i = 1, #playerQuery do
-				if playerQuery[i].Character and playerQuery[i].Character:FindFirstChild("Torso") then
+				if playerQuery[i].Character and playerQuery[i].Character.Torso:FindFirstChild("Torso") then
 					local BodyForce = playerQuery[i].Character:FindFirstChild("NoGrav")
 					if not BodyForce then
 						BodyForce = Instance.new("BodyForce", playerQuery[i].Character.Torso)
