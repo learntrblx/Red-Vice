@@ -301,7 +301,7 @@ local Commands = {
 				if playerQuery[i].Character and playerQuery[i].Character:FindFirstChild("Torso") and playerQuery[i].Character:FindFirstChild("Humanoid") then
 					for _,v in pairs(playerQuery[i].Character:GetChildren()) do
 						if v:IsA("BasePart") or v:IsA("Hat") then
-							v.Transprency = 1
+							v.Transparency = 1
 							v.Anchored = true
 						end
 					end
