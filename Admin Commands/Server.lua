@@ -653,8 +653,18 @@ local Commands = {
 		execute = function(speaker, message)
 			local playerQuery, message = getPlayerQuery(speaker, message)
 			for i = 1, #playerQuery do
-				if playerQuery[i].Character and playerQuery[i].Character:FindFirstChild("Humanoid") then
-					playerQuery[i].Character.Humanoid.Name = message
+				local Char = playerQuery[i].Character
+				if Char and Char:FindFirstChild("Head") and Char:FindFirstChild("Torso") and Char:FindFirstChild("Humanoid") then
+					Char.Head.Transparency = 1
+					if not Char:FindFirstChild('Head2') then
+						local Head2 = Char.Head:Clone()
+						local Neck2 = Char.Torso.Neck:Clone()
+						Head2.Name = 'Head2'
+						Head2.Parent = Char
+						Neck2.Name = 'Neck2'
+						Neck2.Part1 = Head2
+						Neck2.Parent = Char.Torso
+					end
 				end
 			end
 		end
@@ -666,8 +676,15 @@ local Commands = {
 		execute = function(speaker, message)
 			local playerQuery, message = getPlayerQuery(speaker, message)
 			for i = 1, #playerQuery do
-				if playerQuery[i].Character and playerQuery[i].Character:FindFirstChild("Humanoid") then
-					playerQuery[i].Character.Humanoid.Name = playerQuery[i].Name
+				local Char = playerQuery[i].Character
+				if Char and Char:FindFirstChild("Torso") and Char:FindFirstChild("Humanoid") then
+					Char.Head.Transparency = 0
+					if Char:FindFirstChild('Head2') then
+						Char.Head2:Destroy()
+					end
+					if Char.Torso:FindFirstChild('Neck2') then
+						Char.Torso.Neck2:Destroy()
+					end
 				end
 			end
 		end
@@ -1344,7 +1361,7 @@ print("Red Vice Admin Commands Loaded")
 
 --For the loop commands
 --Potentially make this a new thread so that if it errors it doesn't kill the commands? idk
-while wait(5) do
+while wait(2) do
 	for i,v in pairs(LoopKilled) do
 		if v and v.Character and v.Character:FindFirstChild("Humanoid") then
 			v.Character.Humanoid.Health = 0
