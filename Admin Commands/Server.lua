@@ -16,7 +16,7 @@ TEMP = 3
 USER = 1
 GUEST = 0
 
--- Preset admins, outside of the group, in the format {Name, Level}
+-- Preset admins, outside of the group, in the format ['NAME'] = LEVEL,
 local AdminList = 	{
 						['CoffeeFlux'] = ADMIN,
 						['Osyris'] = ADMIN,
@@ -96,7 +96,7 @@ local Commands = {
 		-- It is shown within in-game GUI
 		description = "Kills the given players.",
 		-- This is the minimum permissions level required to execute this command
-		permissionsLevel = ADMIN,
+		permissionsLevel = TEMP,
 		-- This function is run only if the speaker meets the minimum permissions level for this command
 		execute = function(speaker, message)
 			-- Converts "a, b, c test" to {Player a, Player b, Player c}, "test"
@@ -114,7 +114,7 @@ local Commands = {
 	{
 		names = {"Teleport", "TP", "Tele"},
 		description = "Teleports the given players to the target player.",
-		permissionsLevel = ADMIN,
+		permissionsLevel = TEMP,
 		execute = function(speaker, message)
 			local playerQuery, message = getPlayerQuery(speaker, message)
 			local targetPlayer, _ = getPlayerQuery(speaker, message, true)
@@ -133,7 +133,7 @@ local Commands = {
 	{
 		names = {"Explode"},
 		description = "Causes the given players to explode violently.",
-		permissionsLevel = ADMIN,
+		permissionsLevel = TEMP,
 		execute = function(speaker, message)
 			local playerQuery, message = getPlayerQuery(speaker, message)
 			for i = 1, #playerQuery do
@@ -146,7 +146,7 @@ local Commands = {
 	{
 		names = {"ForceField", "FF"},
 		description = "Gives the given players a forcefield.",
-		permissionsLevel = ADMIN,
+		permissionsLevel = TEMP,
 		execute = function(speaker, message)
 			local playerQuery, message = getPlayerQuery(speaker, message)
 			for i = 1, #playerQuery do
@@ -159,7 +159,7 @@ local Commands = {
 	{
 		names = {"UnForceField", "UnFF"},
 		description = "Removes any forcefields from the given players.",
-		permissionsLevel = ADMIN,
+		permissionsLevel = TEMP,
 		execute = function(speaker, message)
 			local playerQuery, message = getPlayerQuery(speaker, message)
 			for i = 1, #playerQuery do
@@ -176,7 +176,7 @@ local Commands = {
 	{
 		names = {"Fling", "Throw"},
 		description = "Flings the given players in a random direction.",
-		permissionsLevel = ADMIN,
+		permissionsLevel = TEMP,
 		execute = function(speaker, message)
 			local playerQuery, message = getPlayerQuery(speaker, message)
 			for i = 1, #playerQuery do
@@ -192,7 +192,7 @@ local Commands = {
 	{
 		names = {"Freeze"},
 		description = "Freezes the given player's character",
-		permissionsLevel = ADMIN,
+		permissionsLevel = TEMP,
 		execute = function(speaker, message)
 			local playerQuery, message = getPlayerQuery(speaker, message)
 			for i = 1, #playerQuery do
@@ -205,7 +205,7 @@ local Commands = {
 	{
 		names = {"UnFreeze", "Thaw"},
 		description = "Freezes the given player's character",
-		permissionsLevel = ADMIN,
+		permissionsLevel = TEMP,
 		execute = function(speaker, message)
 			local playerQuery, message = getPlayerQuery(speaker, message)
 			for i = 1, #playerQuery do
@@ -218,7 +218,7 @@ local Commands = {
 	{
 		names = {"Invisible", "Invis"},
 		description = "Hides the given player's character",
-		permissionsLevel = ADMIN,
+		permissionsLevel = TEMP,
 		execute = function(speaker, message)
 			local playerQuery, message = getPlayerQuery(speaker, message)
 			for i = 1, #playerQuery do
@@ -242,7 +242,7 @@ local Commands = {
 	{
 		names = {"Visible"},
 		description = "Shows the given player's character",
-		permissionsLevel = ADMIN,
+		permissionsLevel = TEMP,
 		execute = function(speaker, message)
 			local playerQuery, message = getPlayerQuery(speaker, message)
 			for i = 1, #playerQuery do
@@ -266,7 +266,7 @@ local Commands = {
 	{
 		names = {"Lock"},
 		description = "Locks the given player's character",
-		permissionsLevel = ADMIN,
+		permissionsLevel = TEMP,
 		execute = function(speaker, message)
 			local playerQuery, message = getPlayerQuery(speaker, message)
 			for i = 1, #playerQuery do
@@ -285,7 +285,7 @@ local Commands = {
 	{
 		names = {"UnLock"},
 		description = "Unlocks the given player's character",
-		permissionsLevel = ADMIN,
+		permissionsLevel = TEMP,
 		execute = function(speaker, message)
 			local playerQuery, message = getPlayerQuery(speaker, message)
 			for i = 1, #playerQuery do
@@ -304,7 +304,7 @@ local Commands = {
 	{
 		names = {"Punish"},
 		description = "Hides the given player's character",
-		permissionsLevel = ADMIN,
+		permissionsLevel = TEMP,
 		execute = function(speaker, message)
 			local playerQuery, message = getPlayerQuery(speaker, message)
 			for i = 1, #playerQuery do
@@ -330,7 +330,7 @@ local Commands = {
 	{
 		names = {"UnPunish", "Pardon"},
 		description = "Hides the given player's character",
-		permissionsLevel = ADMIN,
+		permissionsLevel = TEMP,
 		execute = function(speaker, message)
 			local playerQuery, message = getPlayerQuery(speaker, message)
 			for i = 1, #playerQuery do
@@ -354,7 +354,7 @@ local Commands = {
 	{
 		names = {"Jump"},
 		description = "Causes the given player's character to jump",
-		permissionsLevel = ADMIN,
+		permissionsLevel = TEMP,
 		execute = function(speaker, message)
 			local playerQuery, message = getPlayerQuery(speaker, message)
 			for i = 1, #playerQuery do
@@ -367,7 +367,7 @@ local Commands = {
 	{
 		names = {"RemoveLimbs"},
 		description = "Removes the given player's limbs",
-		permissionsLevel = ADMIN,
+		permissionsLevel = TEMP,
 		execute = function(speaker, message)
 			local playerQuery, message = getPlayerQuery(speaker, message)
 			for i = 1, #playerQuery do
@@ -384,7 +384,7 @@ local Commands = {
 	{
 		names = {"RemoveArms"},
 		description = "Removes the given player's arms",
-		permissionsLevel = ADMIN,
+		permissionsLevel = TEMP,
 		execute = function(speaker, message)
 			local playerQuery, message = getPlayerQuery(speaker, message)
 			for i = 1, #playerQuery do
@@ -399,7 +399,7 @@ local Commands = {
 	{
 		names = {"RemoveLegs"},
 		description = "Removes the given player's legs",
-		permissionsLevel = ADMIN,
+		permissionsLevel = TEMP,
 		execute = function(speaker, message)
 			local playerQuery, message = getPlayerQuery(speaker, message)
 			for i = 1, #playerQuery do
@@ -414,7 +414,7 @@ local Commands = {
 	{
 		names = {"Character", "Char"},
 		description = "Changes the character(s) to resemble the given userId",
-		permissionsLevel = ADMIN,
+		permissionsLevel = TEMP,
 		execute = function(speaker, message)
 			local playerQuery, message = getPlayerQuery(speaker, message)
 			for _,v in pairs(playerQuery) do
@@ -426,7 +426,7 @@ local Commands = {
 	{
 		names = {"UnCharacter", "UnChar", "FixCharacter", "FixChar"},
 		description = "Changes the character(s) to resemble their true appearence",
-		permissionsLevel = ADMIN,
+		permissionsLevel = TEMP,
 		execute = function(speaker, message)
 			local playerQuery, message = getPlayerQuery(speaker, message)
 			for _,v in pairs(playerQuery) do
@@ -438,7 +438,7 @@ local Commands = {
 	{
 		names = {"NoGravity", "NoGrav"},
 		description = "Counteracts the gravitational force almost completely",
-		permissionsLevel = ADMIN,
+		permissionsLevel = TEMP,
 		execute = function(speaker, message)
 			local playerQuery, message = getPlayerQuery(speaker, message)
 			for i = 1, #playerQuery do
@@ -456,7 +456,7 @@ local Commands = {
 	{
 		names = {"LowGravity", "LowGrav", "HalfGravity", "HalfGrav"},
 		description = "Counteracts half of the gravitational force",
-		permissionsLevel = ADMIN,
+		permissionsLevel = TEMP,
 		execute = function(speaker, message)
 			local playerQuery, message = getPlayerQuery(speaker, message)
 			for i = 1, #playerQuery do
@@ -474,7 +474,7 @@ local Commands = {
 	{
 		names = {"SetGravity", "SetGrav"},
 		description = "Counteracts some of the gravitational force",
-		permissionsLevel = ADMIN,
+		permissionsLevel = TEMP,
 		execute = function(speaker, message)
 			local playerQuery, message = getPlayerQuery(speaker, message)
 			for i = 1, #playerQuery do
@@ -492,7 +492,7 @@ local Commands = {
 	{
 		names = {"Gravity", "Grav"},
 		description = "Restores the gravitational force to normal",
-		permissionsLevel = ADMIN,
+		permissionsLevel = TEMP,
 		execute = function(speaker, message)
 			local playerQuery, message = getPlayerQuery(speaker, message)
 			for i = 1, #playerQuery do
@@ -505,7 +505,7 @@ local Commands = {
 	{
 		names = {"Hat"},
 		description = "Inserts the given hat onto the given players",
-		permissionsLevel = ADMIN,
+		permissionsLevel = TEMP,
 		execute = function(speaker, message)
 			local playerQuery, message = getPlayerQuery(speaker, message)
 			for _,v in pairs(playerQuery) do
@@ -521,7 +521,7 @@ local Commands = {
 	{
 		names = {"Heal"},
 		description = "Sets the given players' Health to their Health + amount",
-		permissionsLevel = ADMIN,
+		permissionsLevel = TEMP,
 		execute = function(speaker, message)
 			local playerQuery, message = getPlayerQuery(speaker, message)
 			local targetHealth = tonumber(message)
@@ -535,7 +535,7 @@ local Commands = {
 	{
 		names = {"Damage", "Hurt", "Dmg"},
 		description = "Damages the players specified by the damage given number.",
-		permissionsLevel = ADMIN,
+		permissionsLevel = TEMP,
 		execute = function(speaker, message)
 			local playerQuery, message = getPlayerQuery(speaker, message)
 			for i = 1, #playerQuery do
@@ -548,7 +548,7 @@ local Commands = {
 	{
 		names = {"Invincible", "God"},
 		description = "Gives the given players unlimited MaxHealth.",
-		permissionsLevel = ADMIN,
+		permissionsLevel = TEMP,
 		execute = function(speaker, message)
 			local playerQuery, message = getPlayerQuery(speaker, message)
 			for i = 1, #playerQuery do
@@ -561,7 +561,7 @@ local Commands = {
 	{
 		names = {"UnInvincible", "UnGod"},
 		description = "Gives the given players 100 MaxHealth.",
-		permissionsLevel = ADMIN,
+		permissionsLevel = TEMP,
 		execute = function(speaker, message)
 			local playerQuery, message = getPlayerQuery(speaker, message)
 			for i = 1, #playerQuery do
@@ -574,7 +574,7 @@ local Commands = {
 	{
 		names = {"Sit"},
 		description = "Makes the given players sit.",
-		permissionsLevel = ADMIN,
+		permissionsLevel = TEMP,
 		execute = function(speaker, message)
 			local playerQuery, message = getPlayerQuery(speaker, message)
 			for i = 1, #playerQuery do
@@ -587,7 +587,7 @@ local Commands = {
 	{
 		names = {"UnSit"},
 		description = "Makes the given players stand.",
-		permissionsLevel = ADMIN,
+		permissionsLevel = TEMP,
 		execute = function(speaker, message)
 			local playerQuery, message = getPlayerQuery(speaker, message)
 			for i = 1, #playerQuery do
@@ -600,7 +600,7 @@ local Commands = {
 	{
 		names = {"PlatformStand"},
 		description = "Makes the given players PlatformStand.",
-		permissionsLevel = ADMIN,
+		permissionsLevel = TEMP,
 		execute = function(speaker, message)
 			local playerQuery, message = getPlayerQuery(speaker, message)
 			for i = 1, #playerQuery do
@@ -613,7 +613,7 @@ local Commands = {
 	{
 		names = {"UnPlatformStand"},
 		description = "Makes the given players not PlatformStand.",
-		permissionsLevel = ADMIN,
+		permissionsLevel = TEMP,
 		execute = function(speaker, message)
 			local playerQuery, message = getPlayerQuery(speaker, message)
 			for i = 1, #playerQuery do
@@ -626,7 +626,7 @@ local Commands = {
 	{
 		names = {"Walkspeed", "Speed"},
 		description = "Sets the given players' WalkSpeed to the given number.",
-		permissionsLevel = ADMIN,
+		permissionsLevel = TEMP,
 		execute = function(speaker, message)
 			local playerQuery, message = getPlayerQuery(speaker, message)
 			local speed = tonumber(message)
@@ -643,7 +643,7 @@ local Commands = {
 	{
 		names = {"Health", "SetHealth"},
 		description = "Sets the player's health to the value given, or to 100",
-		permissionsLevel = ADMIN,
+		permissionsLevel = TEMP,
 		execute = function(speaker, message)
 			local playerQuery, message = getPlayerQuery(speaker, message)
 			for i = 1, #playerQuery do
@@ -656,7 +656,7 @@ local Commands = {
 	{
 		names = {"MaxHealth", "SetMaxHealth"},
 		description = "Sets the player's maxhealth to the value given, or to 100",
-		permissionsLevel = ADMIN,
+		permissionsLevel = TEMP,
 		execute = function(speaker, message)
 			local playerQuery, message = getPlayerQuery(speaker, message)
 			for i = 1, #playerQuery do
@@ -669,7 +669,7 @@ local Commands = {
 	{
 		names = {"Name", "ChangeName"},
 		description = "Changes the player's name to the message",
-		permissionsLevel = ADMIN,
+		permissionsLevel = TEMP,
 		execute = function(speaker, message)
 			local playerQuery, message = getPlayerQuery(speaker, message)
 			for i = 1, #playerQuery do
@@ -683,7 +683,7 @@ local Commands = {
 	{
 		names = {"UnName", "RemoveName"},
 		description = "Change the player's name back to the default",
-		permissionsLevel = ADMIN,
+		permissionsLevel = TEMP,
 		execute = function(speaker, message)
 			local playerQuery, message = getPlayerQuery(speaker, message)
 			for i = 1, #playerQuery do
@@ -759,7 +759,7 @@ local Commands = {
 	{
 		names = {"Team", "SetTeam"},
 		description = "Sets the given players to the given team.",
-		permissionsLevel = ADMIN,
+		permissionsLevel = TEMP,
 		execute = function(speaker, message)
 			local playerQuery, message = getPlayerQuery(speaker, message)
 			local team = search(Teams:GetChildren(), stringTrim(message))
@@ -775,7 +775,7 @@ local Commands = {
 	{
 		names = {"Respawn", "LoadCharacter", "RS"},
 		description = "Respawns the given players.",
-		permissionsLevel = ADMIN,
+		permissionsLevel = TEMP,
 		execute = function(speaker, message)
 			local playerQuery, message = getPlayerQuery(speaker, message)
 			for i = 1, #playerQuery do
@@ -826,7 +826,7 @@ local Commands = {
 	{
 		names = {"DSBan", "DataStoreBan", "GlobalBan", "DPBan", "PermBan"},
 		description = "Bans the given player from the current game and stores this in the DataStore.",
-		permissionsLevel = ADMIN,
+		permissionsLevel = SUPER,
 		execute = function(speaker, message)
 			local player, message = getPlayerQuery(speaker, message, true)
 			local permissionsLevel = getPermissionsLevel(speaker)
@@ -839,7 +839,7 @@ local Commands = {
 	{
 		names = {"UnDSBan", "UnDataStoreBan", "UnGlobalBan", "UnDPBan", "UnPermBan"},
 		description = "UnBans the given player from the current game and removes this from the DataStore.",
-		permissionsLevel = ADMIN,
+		permissionsLevel = SUPER,
 		execute = function(speaker, message)
 			local userId
 			if HttpEnabled then -- Usernames!
@@ -854,7 +854,7 @@ local Commands = {
 	{
 		names = {"Place"},
 		description = "Transports the players to the game specified by the PlaceId",
-		permissionsLevel = ADMIN,
+		permissionsLevel = TEMP,
 		execute = function(speaker, message)
 			local playerQuery, message = getPlayerQuery(speaker, message)
 			local placeId = tonumber(stringTrim(message))
@@ -866,7 +866,7 @@ local Commands = {
 	{
 		names = {"Follow"},
 		description = "Transports the players to the server that the player with the specified UserId is in",
-		permissionsLevel = ADMIN,
+		permissionsLevel = TEMP,
 		execute = function(speaker, message)
 			local playerQuery, message = getPlayerQuery(speaker, message)
 			local Response = {TeleportService:GetPlayerPlaceInstanceAsync(tonumber(message))}
@@ -878,7 +878,7 @@ local Commands = {
 	{
 		names = {"Change", "ChangeStat"},
 		description = "Change the player's stat to the value",
-		permissionsLevel = ADMIN,
+		permissionsLevel = TEMP,
 		execute = function(speaker, message)
 			local playerQuery, message = getPlayerQuery(speaker, message)
 			local Break = stringExplode(message, ",")
@@ -895,7 +895,7 @@ local Commands = {
 	{
 		names = {"Resetstats"},
 		description = "Change the player's stats all to 0",
-		permissionsLevel = ADMIN,
+		permissionsLevel = TEMP,
 		execute = function(speaker, message)
 			local playerQuery, message = getPlayerQuery(speaker, message)
 			for _,v in pairs(playerQuery) do
@@ -912,7 +912,7 @@ local Commands = {
 	{
 		names = {"Rank", "Role"},
 		description = "Checks the rank of the given player in the given GroupId or Red Vice (if no GroupId is given).",
-		permissionsLevel = ADMIN,
+		permissionsLevel = TEMP,
 		execute = function(speaker, message)
 			local playerQuery, message = getPlayerQuery(speaker, message, true)
 			local rank = playerQuery:GetRankInGroup(tonumber(message) or GROUP_ID)
@@ -923,7 +923,7 @@ local Commands = {
 	{
 		names = {"CountPlayers", "PlayerCount"},
 		description = "Displays to the user the total playercount of the server",
-		permissionsLevel = ADMIN,
+		permissionsLevel = GUEST,
 		execute = function(speaker, message)
 			event:FireClient(speaker, 'Hint', "There are " .. Players.NumPlayers .. " players in the server.")
 		end
@@ -931,7 +931,7 @@ local Commands = {
 	{
 		names = {'Hint', 'H'},
 		description = 'Sends all players a hint with the given text', 
-		permissionsLevel = ADMIN,
+		permissionsLevel = TEMP,
 		execute = function(speaker, message)
 			event:FireAllClients('Hint', message)
 		end
@@ -939,7 +939,7 @@ local Commands = {
 	{
 		names = {'Message', 'M'},
 		description = 'Sends all players a message with the given text',
-		permissionsLevel = ADMIN,
+		permissionsLevel = TEMP,
 		execute = function(speaker, message)
 			event:FireAllClients('Message', {speaker.Name, message})
 		end
@@ -947,7 +947,7 @@ local Commands = {
 	{
 		names = {'PrivateMessage', 'PM'},
 		description = 'Send a message to the specified users',
-		permissionsLevel = ADMIN,
+		permissionsLevel = TEMP,
 		execute = function(speaker, message)
 			local playerQuery, message = getPlayerQuery(speaker, message)
 			for _,v in pairs(playerQuery) do
@@ -958,7 +958,7 @@ local Commands = {
 	{
 		names = {'ListTools', 'Tools'},
 		description = 'Show a list of all the tools in the toolStorage',
-		permissionsLevel = ADMIN,
+		permissionsLevel = TEMP,
 		execute = function(speaker, message)
 			event:FireClient(speaker, toolStorage:GetChildren())
 		end
@@ -974,7 +974,7 @@ local Commands = {
 	{
 		names = {'ListAdmins', 'AdminList', 'Admins'},
 		description = 'Show a list of manual admins and admins in the server',
-		permissionsLevel = ADMIN,
+		permissionsLevel = USER,
 		execute = function(speaker, message)
 			local ReturnList = {}
 			for i,v in pairs(AdminList) do
@@ -1001,7 +1001,7 @@ local Commands = {
 	{
 		names = {"Give", "GiveTool"},
 		description = "Gives the specified players the specified tools.",
-		permissionsLevel = ADMIN,
+		permissionsLevel = TEMP,
 		execute = function(speaker, message)
 			local playerQuery, message = getPlayerQuery(speaker, message)
 			local tools = {}
@@ -1027,7 +1027,7 @@ local Commands = {
 	{
 		names = {"RemoveTools"},
 		description = "Removes the all tools from the players' Backpack.",
-		permissionsLevel = ADMIN,
+		permissionsLevel = TEMP,
 		execute = function(speaker, message)
 			local playerQuery, message = getPlayerQuery(speaker, message)
 			for _, player in pairs(playerQuery) do
@@ -1041,7 +1041,7 @@ local Commands = {
 	{
 		names = {"StarterGive", "Starter", "StarterAdd"},
 		description = "Gives the specified players the specified tools every time they spawn.",
-		permissionsLevel = ADMIN,
+		permissionsLevel = TEMP,
 		execute = function(speaker, message)
 			local playerQuery, message = getPlayerQuery(speaker, message)
 			local tools = {}
@@ -1067,7 +1067,7 @@ local Commands = {
 	{
 		names = {"RemoveStarter", "RemoveStarterTools"},
 		description = "Removes all tools from the players' StarterGear.",
-		permissionsLevel = ADMIN,
+		permissionsLevel = TEMP,
 		execute = function(speaker, message)
 			local playerQuery, message = getPlayerQuery(speaker, message)
 			for _, player in pairs(playerQuery) do
@@ -1078,7 +1078,7 @@ local Commands = {
 	{
 		names = {"Sword", "GiveSword"},
 		description = "Gives a LinkedSword to the given players.",
-		permissionsLevel = ADMIN,
+		permissionsLevel = TEMP,
 		execute = function(speaker, message)
 			local playerQuery, message = getPlayerQuery(speaker, message)
 			local Sword = InsertService:LoadAsset(47433):GetChildren()[1]
@@ -1108,7 +1108,7 @@ local Commands = {
 	{
 		names = {"TimeOfDay", "Time", "TOD"},
 		description = "Sets the TimeOfDay to the given number.",
-		permissionsLevel = ADMIN,
+		permissionsLevel = TEMP,
 		execute = function(speaker, message)
 			Lighting.TimeOfDay = stringTrim(message)
 		end
@@ -1116,7 +1116,7 @@ local Commands = {
 	{
 		names = {"FogEnd", "Fog"},
 		description = "Sets the FogEnd to the given number.",
-		permissionsLevel = ADMIN,
+		permissionsLevel = TEMP,
 		execute = function(speaker, message)
 			Lighting.FogEnd = tonumber(message)
 		end
@@ -1124,7 +1124,7 @@ local Commands = {
 	{
 		names = {"FogStart"},
 		description = "Sets the FogStart to the given number.",
-		permissionsLevel = ADMIN,
+		permissionsLevel = TEMP,
 		execute = function(speaker, message)
 			Lighting.FogStart = tonumber(message)
 		end
@@ -1132,7 +1132,7 @@ local Commands = {
 	{
 		names = {"FogColor"},
 		description = "Sets the FogStart to the given values.",
-		permissionsLevel = ADMIN,
+		permissionsLevel = TEMP,
 		execute = function(speaker, message)
 			message = stringExplode(message, ",")
 			Lighting.FogColor = Color3.new(tonumber(message[1])/255, tonumber(message[2])/255, tonumber(message[3])/255)
@@ -1141,7 +1141,7 @@ local Commands = {
 	{
 		names = {"Ambient"},
 		description = "Sets the Ambient to the given values.",
-		permissionsLevel = ADMIN,
+		permissionsLevel = TEMP,
 		execute = function(speaker, message)
 			message = stringExplode(message, ",")
 			Lighting.Ambient = Color3.new(tonumber(message[1])/255, tonumber(message[2])/255, tonumber(message[3])/255)
@@ -1150,7 +1150,7 @@ local Commands = {
 	{
 		names = {"Brightness"},
 		description = "Sets the Brightness to the given number.",
-		permissionsLevel = ADMIN,
+		permissionsLevel = TEMP,
 		execute = function(speaker, message)
 			Lighting.Brightness = tonumber(message)
 		end
@@ -1158,7 +1158,7 @@ local Commands = {
 	{
 		names = {"Shadows", "GlobalShadows", "DynamicLighting"},
 		description = "Sets Shadows to either true or false.",
-		permissionsLevel = ADMIN,
+		permissionsLevel = TEMP,
 		execute = function(speaker, message)
 			local bool = boolCheck(message)
 			if bool == nil then
@@ -1170,7 +1170,7 @@ local Commands = {
 	{
 		names = {"Outlines"},
 		description = "Sets Outlines to either true or false.",
-		permissionsLevel = ADMIN,
+		permissionsLevel = TEMP,
 		execute = function(speaker, message)
 			local bool = boolCheck(message)
 			if bool == nil then
@@ -1182,7 +1182,7 @@ local Commands = {
 	{
 		names = {"Fix"},
 		description = "Fixes the lighting settings.",
-		permissionsLevel = ADMIN,
+		permissionsLevel = TEMP,
 		execute = function(speaker, message)
 			Lighting.Ambient = Color3.new(0, 0, 0)
 			Lighting.Brightness = 1

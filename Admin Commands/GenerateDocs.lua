@@ -18,28 +18,13 @@ end
 
 local Commands = {
 
-	-- Character Commands
 	{
-		-- This is a table of alternate names the command can be run with
-		-- It is case insensitive, but should use CamelCase for readability within this script and in-game GUI
-		names = {"Kill", "Blox"},
-		-- This should be a short description of what the command does and the arguments needed
-		-- It is shown within in-game GUI
-		description = "Kills the given players.",
-		-- This is the minimum permissions level required to execute this command
+		names = {"wait", "w"},
+		description = "Waits for the number of given seconds",
+		isAsync = true,
 		permissionsLevel = ADMIN,
-		-- This function is run only if the speaker meets the minimum permissions level for this command
 		execute = function(speaker, message)
-			-- Converts "a, b, c test" to {Player a, Player b, Player c}, "test"
-			local playerQuery, message = getPlayerQuery(speaker, message)
-			-- Loop through each player in the queryn and run player.Character:BreakJoints()
-			for i = 1, #playerQuery do
-				-- All commands are sandboxed with pcall, so even if a command errors: the command suite will not break
-				-- Make sure they have a character so that the loop does not break
-				if playerQuery[i].Character then
-					playerQuery[i].Character:BreakJoints()
-				end
-			end
+			wait(math.min(tonumber(message) or 0, 60))
 		end
 	},
 	{
@@ -83,5 +68,7 @@ function GenerateDocs(cmds)
 		print('<b>Description: </b>' .. v.description)
 		print('<br>')
 		print('<b>Permissions Level: </b>' .. tostring(TranslatePerms(v.permissionsLevel)))
+		print('<br>')
+		print('<b>IsAsync: </b><i>' .. tostring(v.isAsync)) .. '</i>'
 	end
 end

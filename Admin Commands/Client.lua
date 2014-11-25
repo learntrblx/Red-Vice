@@ -49,6 +49,7 @@ event.OnClientEvent:connect(function(Type, Content)
 			Bottom.TextYAlignment = 'Top'
 
 		Frame:TweenPosition(UDim2.new(.3, 0, .2, 0), 'Out', 'Quad', Time)
+		wait(Time)
 		wait(Message:len() / 3 + 2)
 		Frame:TweenPosition(UDim2.new(1, 0, .2, 0), 'Out', 'Quad', Time)
 		wait(Time)
@@ -65,6 +66,7 @@ event.OnClientEvent:connect(function(Type, Content)
 			Hint.TextColor3 = WHITE
 
 		Hint:TweenPosition(UDim2.new(0, 0, 0, 0), 'Out', 'Quad', Time)
+		wait(Time)
 		wait(Content:len() / 3 + 1)
 		Hint:TweenPosition(UDim2.new(0, 0, 0, -30), 'Out', 'Quad', Time)
 		wait(Time)
