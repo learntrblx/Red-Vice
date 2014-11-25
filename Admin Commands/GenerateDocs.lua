@@ -71,6 +71,7 @@ function GenerateDocs(cmds)
 	print('<h2>Command Documentation</h2>')
 
 	for _,v in pairs(Commands)
+		print(' ')
 		print('<br>')
 		local Names = v.names[1]
 		for _,v in pairs({table.unpack(v.names, 2)}) do
