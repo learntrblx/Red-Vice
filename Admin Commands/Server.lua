@@ -1243,6 +1243,7 @@ local Commands = {
 		description = 'Sets to user to the specified admin level, defaulting at TEMP',
 		permissionsLevel = ADMIN,
 		execute = function(speaker, message)
+			print(message)
 			local playerQuery, message = getPlayerQuery(message)
 			local Perms
 			if message then
@@ -1463,11 +1464,11 @@ function playerAdded(newPlayer)
 end
 
 -- Merge in all child ModuleScripts
---for _,v in pairs(script.Parent.Modules:GetChildren()) do
---	if v:IsA('ModuleScript') then
---		Commands = tableMerge(Commands, require(v).Commands)
---	end
---end
+for _,v in pairs(script.Parent.Modules:GetChildren()) do
+	if v:IsA('ModuleScript') then
+		Commands = tableMerge(Commands, require(v).Commands)
+	end
+end
 
 Players.PlayerAdded:connect(playerAdded)
 for _, player in pairs(Players:GetPlayers()) do
