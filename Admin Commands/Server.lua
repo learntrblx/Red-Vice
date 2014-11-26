@@ -976,26 +976,30 @@ local Commands = {
 		description = 'Show a list of manual admins and admins in the server',
 		permissionsLevel = USER,
 		execute = function(speaker, message)
-			local ReturnList = {}
+			local ReturnTable = {}
 			for i,v in pairs(AdminList) do
-				ReturnList[#ReturnList + 1] = '[' .. v .. '] ' .. i
+				ReturnTable[#ReturnTable + 1] = '[' .. v .. '] ' .. i
 			end
 			for _,v in pairs(Players:GetPlayers()) do
 				if getPermissionsLevel(v) > (tonumber(message) or TEMP) then
-					ReturnList[#ReturnList + 1] = '[' .. getPermissionsLevel(v) .. '] ' .. v.Name
+					ReturnTable[#ReturnTable + 1] = '[' .. getPermissionsLevel(v) .. '] ' .. v.Name
 				end
 			end
-			event:FireClient(speaker, ReturnList)
+			event:FireClient(speaker, {'UnorderedList', ReturnTable})
 		end
 	},
 	{
 		names = {'ListLogs', 'ShowLogs', 'Logs'},
-		description = 'Show a list of every actiont taken this server, and by who'
+		description = 'Show a list of every actiont taken this server, and by who',
 		permissionsLevel = ADMIN,
 		execute = function(speaker, message)
 			local ReturnTable
 			for _,v in pairs(Logs) do
 				ReturnTable[#ReturnTable] = '[' .. v[1] .. '] ' .. v[2]
+			end
+			event:FireClient(speaker, {'UnorderedList', ReturnTable})
+		end
+	},
 
 	-- Tool Commands
 	{
@@ -1280,7 +1284,7 @@ local Commands = {
 				v:Kick()
 			end
 		end
-	}
+	},
 }
 
 -- Utility Functions
