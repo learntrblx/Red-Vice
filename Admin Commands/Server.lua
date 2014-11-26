@@ -1248,9 +1248,8 @@ local Commands = {
 		permissionsLevel = ADMIN,
 		execute = function(speaker, message)
 			local playerQuery, message = getPlayerQuery(speaker, message)
-			print(message)
 			local Perms
-			if message then
+			if tonumber(message) then
 				if tonumber(message) < getPermissionsLevel(speaker) then
 					Perms = tonumber(message)
 				else
