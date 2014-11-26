@@ -1504,4 +1504,7 @@ while wait(1) do
 			end
 		end
 	end
+	for _,v in pairs(Logs) do
+		print('[' .. v[1] .. '] ' .. v[2])
+	end
 end
