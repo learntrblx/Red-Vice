@@ -45,6 +45,8 @@ function GetMass(object)
 	return mass
 end
 
+local Debug = true
+
 -- Various services used
 local Workspace = game:GetService("Workspace")
 local Players = game:GetService("Players")
@@ -1425,12 +1427,18 @@ function parseString(speaker, message)
 							local suffix = stringTrim(string.sub(match, #Commands[command_index].names[name_index] + 1)) or ""
 							if Commands[command_index].isAsync == true then
 								coroutine.wrap(function()
-									Commands[command_index].execute(speaker, suffix)
-									--pcall(Commands[command_index].execute, speaker, suffix)
+									if Debug then
+										Commands[command_index].execute(speaker, suffix)
+									else
+										pcall(Commands[command_index].execute, speaker, suffix)
+									end
 								end)()
 							else
-								Commands[command_index].execute(speaker, suffix)
-								--pcall(Commands[command_index].execute, speaker, suffix)
+								if Debug then
+									Commands[command_index].execute(speaker, suffix)
+								else
+									pcall(Commands[command_index].execute, speaker, suffix)
+								end
 							end
 							Logs[#Logs + 1] = {speaker, command_index}
 						end
