@@ -1248,7 +1248,7 @@ local Commands = {
 		permissionsLevel = ADMIN,
 		execute = function(speaker, message)
 			print(message)
-			local playerQuery, message = getPlayerQuery(message)
+			local playerQuery, message = getPlayerQuery(speaker, message)
 			local Perms
 			if message then
 				if tonumber(message) < getPermissionsLevel(speaker) then
@@ -1272,7 +1272,7 @@ local Commands = {
 		description = 'Removes admin privilidges, does not work if the person has their rank from the group',
 		permissionsLevel = ADMIN,
 		execute = function(speaker, message)
-			local playerQuery, message = getPlayerQuery(message)
+			local playerQuery, message = getPlayerQuery(speaker, message)
 			local SpeakerPerms = getPermissionsLevel(speaker)
 			for _,v in pairs(playerQuery) do
 				if SpeakerPerms > getPermissionsLevel(v) then
