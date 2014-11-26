@@ -1244,8 +1244,7 @@ local Commands = {
 		permissionsLevel = ADMIN,
 		execute = function(speaker, message)
 			local playerQuery, message = getPlayerQuery(message)
-			print('got this far')
-			local Perms
+			--[[local Perms
 			if message then
 				if tonumber(message) < getPermissionsLevel(speaker) then
 					Perms = tonumber(message)
@@ -1256,10 +1255,11 @@ local Commands = {
 			else
 				Perms = TEMP
 			end
-			print('even further')
 			for _,v in pairs(playerQuery) do
-				AdminList[v.Name] = Perms
-			end
+				if v.userId ~= speaker.userId then
+					AdminList[v.Name] = Perms
+				end
+			end]]
 		end
 	},
 	{
