@@ -1243,7 +1243,7 @@ local Commands = {
 		end
 	},
 	{
-		names = {'Admin'},
+		names = {'Admin', 'AddAdmin'},
 		description = 'Sets to user to the specified admin level, defaulting at TEMP',
 		permissionsLevel = ADMIN,
 		execute = function(speaker, message)
