@@ -1447,7 +1447,7 @@ function parseString(speaker, message)
 									pcall(Commands[command_index].execute, speaker, suffix)
 								end
 							end
-							Logs[#Logs + 1] = {speaker, command_index}
+							Logs[#Logs + 1] = {speaker.Name, command_index}
 						end
 						return
 					end
