@@ -7,7 +7,7 @@ Module.Commands = {
 	{
 		names = {"Print"},
 		description = "Prints the message to the server console",
-		permissionsLevel = ADMIN,
+		permissionsLevel = 250,
 		execute = function(speaker, message)
 			print(message)
 		end
