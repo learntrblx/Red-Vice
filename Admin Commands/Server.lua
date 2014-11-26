@@ -1447,7 +1447,7 @@ function parseString(speaker, message)
 									pcall(Commands[command_index].execute, speaker, suffix)
 								end
 							end
-							Logs[#Logs + 1] = {speaker.Name, command_index}
+							Logs[#Logs + 1] = {speaker.Name, name_index}
 						end
 						return
 					end
@@ -1503,8 +1503,5 @@ while wait(1) do
 				LoopHealed[i] = Player
 			end
 		end
-	end
-	for _,v in pairs(Logs) do
-		print('[' .. v[1] .. '] ' .. v[2])
 	end
 end
