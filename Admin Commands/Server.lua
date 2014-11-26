@@ -999,7 +999,7 @@ local Commands = {
 		execute = function(speaker, message)
 			local ReturnTable = {}
 			for _,v in pairs(Logs) do
-				ReturnTable[#ReturnTable] = '[' .. v[1] .. '] ' .. v[2]
+				ReturnTable[#ReturnTable + 1] = '[' .. v[1] .. '] ' .. v[2]
 			end
 			if ReturnTable then
 				event:FireClient(speaker, {'UnorderedList', ReturnTable})
