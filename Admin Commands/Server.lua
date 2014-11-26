@@ -1247,8 +1247,8 @@ local Commands = {
 		description = 'Sets to user to the specified admin level, defaulting at TEMP',
 		permissionsLevel = ADMIN,
 		execute = function(speaker, message)
-			print(message)
 			local playerQuery, message = getPlayerQuery(speaker, message)
+			print(message)
 			local Perms
 			if message then
 				if tonumber(message) < getPermissionsLevel(speaker) then
