@@ -987,7 +987,9 @@ local Commands = {
 					ReturnTable[#ReturnTable + 1] = '[' .. getPermissionsLevel(v) .. '] ' .. v.Name
 				end
 			end
-			event:FireClient(speaker, {'UnorderedList', ReturnTable})
+			if ReturnTable then
+				event:FireClient(speaker, {'UnorderedList', ReturnTable})
+			end
 		end
 	},
 	{
@@ -995,11 +997,13 @@ local Commands = {
 		description = 'Show a list of every actiont taken this server, and by who',
 		permissionsLevel = ADMIN,
 		execute = function(speaker, message)
-			local ReturnTable
+			local ReturnTable = {}
 			for _,v in pairs(Logs) do
 				ReturnTable[#ReturnTable] = '[' .. v[1] .. '] ' .. v[2]
 			end
-			event:FireClient(speaker, {'UnorderedList', ReturnTable})
+			if ReturnTable then
+				event:FireClient(speaker, {'UnorderedList', ReturnTable})
+			end
 		end
 	},
 
