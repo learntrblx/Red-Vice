@@ -1274,7 +1274,7 @@ local Commands = {
 			local playerQuery, message = getPlayerQuery(speaker, message)
 			local SpeakerPerms = getPermissionsLevel(speaker)
 			for _,v in pairs(playerQuery) do
-				if SpeakerPerms > getPermissionsLevel(v) then
+				if SpeakerPerms > getPermissionsLevel(v) and v.userId ~= speaker.userId then
 					AdminList[v.Name] = nil
 				end
 			end
