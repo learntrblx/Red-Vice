@@ -1467,9 +1467,11 @@ function playerAdded(newPlayer)
 end
 
 -- Merge in all child ModuleScripts
-for _,v in pairs(script.Parent.Modules:GetChildren()) do
-	if v:IsA('ModuleScript') then
-		Commands = tableMerge(Commands, require(v).Commands)
+if script.Parent:FindFirstChild('Modules') then
+	for _,v in pairs(script.Parent.Modules:GetChildren()) do
+		if v:IsA('ModuleScript') then
+			Commands = tableMerge(Commands, require(v).Commands)
+		end
 	end
 end
 
