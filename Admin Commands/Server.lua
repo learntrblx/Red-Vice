@@ -1283,7 +1283,7 @@ local Commands = {
 	{
 		names = {"Shutdown"},
 		description = "Removes everyone from the server and locks it, ending the server",
-		permissionsLevel = ADMIN,
+		permissionsLevel = SUPER,
 		execute = function(speaker, message)
 			event:FireAllClients('Message', {'SERVER', 'Shutting down this server...'})
 			wait(5)
