@@ -962,7 +962,7 @@ local Commands = {
 		description = 'Show a list of all the tools in the toolStorage',
 		permissionsLevel = TEMP,
 		execute = function(speaker, message)
-			event:FireClient(speaker, toolStorage:GetChildren())
+			event:FireClient(speaker, {'UnorderedList', toolStorage:GetChildren()})
 		end
 	},
 	{
@@ -970,7 +970,7 @@ local Commands = {
 		description = 'Show a list of all the users banned in the server',
 		permissionsLevel = ADMIN,
 		execute = function(speaker, message)
-			event:FireClient(speaker, bannedUsers)
+			event:FireClient(speaker, {'UnorderedList', bannedUsers})
 		end
 	},
 	{
