@@ -12,6 +12,7 @@ local WHITE = Color3.new(1, 1, 1)
 --Types of GUIs to create: Message, Hint, UnorderedList
 
 event.OnClientEvent:connect(function(Type, Content)
+	print('Fired a ' .. Type)
 	if Type == 'Message' then
 		local Message = Content[2]
 		local Sender = Content[1]
