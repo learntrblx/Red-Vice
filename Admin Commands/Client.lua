@@ -2,7 +2,8 @@ print('Loading Red Vice Admin LocalScript')
 
 local ReplicatedStorage = game:GetService('ReplicatedStorage')
 local event = ReplicatedStorage:WaitForChild('AdminEvent')
-local gui = Instance.new('ScreenGui', script)
+local gui = Instance.new('ScreenGui', script.Parent)
+gui.Name = 'RV Admin Gui'
 
 local Time = .2
 
