@@ -883,7 +883,7 @@ local Commands = {
 		permissionsLevel = TEMP,
 		execute = function(speaker, message)
 			local playerQuery, message = getPlayerQuery(speaker, message)
-			local Break = stringExplode(message, ",")
+			local Break = stringExplode(message, " ")
 			for _,v in pairs(playerQuery) do
 				if v:FindFirstChild("leaderstats") then
 					local Stat = search(v.leaderstats:GetChildren(), Break[1])
