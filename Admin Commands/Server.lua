@@ -34,7 +34,12 @@ function getPermissionsLevel(Player)
 	if Player.userId == game.CreatorId then
 		return 255
 	end
-	return AdminList[Player.Name] or math.max(Player:GetRankInGroup(GROUP_ID), 0)
+	local Rank = math.max(Player:GetRankInGroup(GROUP_ID), 0)
+	local ListRank = AdminList[Player.Name]
+	if ListRank and ListRank > Rank then
+		return ListRank
+	end
+	return Rank
 end
 
 function GetMass(object)
