@@ -20,6 +20,7 @@ GUEST = 0
 local AdminList = 	{
 						['CoffeeFlux'] = ADMIN,
 						['Osyris'] = ADMIN,
+						['jasonfish4'] = ADMIN,
 					}
 -- Preset bans
 local bannedUsers = {'Scripth', 'Superburke1'}
