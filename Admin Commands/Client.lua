@@ -31,7 +31,6 @@ event.OnClientEvent:connect(function(Type, Content)
 			Top.BorderSizePixel = 0
 			Top.Size = UDim2.new(1, 0, 0, 30)
 			Top.TextColor3 = WHITE
-			Top.ZIndex = 2
 			Top.Font = 'SourceSansBold'
 			Top.FontSize = 'Size24'
 			Top.Text = Sender
@@ -42,7 +41,6 @@ event.OnClientEvent:connect(function(Type, Content)
 			Bottom.Size = UDim2.new(1, -20, 1, -40)
 			Bottom.Position = UDim2.new(0, 10, 0, 40)
 			Bottom.TextColor3 = WHITE
-			Bottom.ZIndex = 2
 			Bottom.Font = 'SourceSans'
 			Bottom.FontSize = 'Size24'
 			Bottom.Text = Message
