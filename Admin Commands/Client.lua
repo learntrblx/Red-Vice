@@ -5,6 +5,8 @@ local event = ReplicatedStorage:WaitForChild('AdminEvent')
 local gui = Instance.new('ScreenGui', script)
 
 local Time = .2
+local TimeScale = .3
+local TimeShift = 2
 
 local BLACK = Color3.new(27/255, 42/255, 53/255)
 local WHITE = Color3.new(1, 1, 1)
@@ -50,7 +52,7 @@ event.OnClientEvent:connect(function(Type, Content)
 
 		Frame:TweenPosition(UDim2.new(.3, 0, .2, 0), 'Out', 'Quad', Time)
 		wait(Time)
-		wait(Message:len() / 3 + 2)
+		wait(Message:len() * TimeScale + TimeShift)
 		Frame:TweenPosition(UDim2.new(1, 0, .2, 0), 'Out', 'Quad', Time)
 		wait(Time)
 		Frame:Destroy()
@@ -67,7 +69,7 @@ event.OnClientEvent:connect(function(Type, Content)
 
 		Hint:TweenPosition(UDim2.new(0, 0, 0, 0), 'Out', 'Quad', Time)
 		wait(Time)
-		wait(Content:len() / 3 + 1)
+		wait(Content:len() / TimeScale + TimeShift)
 		Hint:TweenPosition(UDim2.new(0, 0, 0, -30), 'Out', 'Quad', Time)
 		wait(Time)
 		Hint:Destroy()
