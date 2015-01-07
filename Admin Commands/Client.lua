@@ -1,6 +1,15 @@
 print('Loading Red Vice Admin LocalScript')
 
 local ReplicatedStorage = game:GetService('ReplicatedStorage')
+local Players = game:GetService('Players')
+
+local Player = Players.LocalPlayer
+local Mouse = Player:GetMouse()
+Player.CharacterAdded:wait() wait()
+local Character = Player.Character
+local Humanoid = Character:WaitForChild('Humanoid')
+local HumanoidRootPart = Character:WaitForChild('HumanoidRootPart')
+
 local event = ReplicatedStorage:WaitForChild('AdminEvent')
 local gui = Instance.new('ScreenGui', script)
 

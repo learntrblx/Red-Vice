@@ -18,9 +18,9 @@ GUEST = 0
 
 -- Preset admins, outside of the group, in the format ['NAME'] = LEVEL,
 local AdminList = 	{
-						['CoffeeFlux'] = ADMIN,
-						['Osyris'] = ADMIN,
-						['jasonfish4'] = ADMIN,
+						CoffeeFlux = SUPER,
+						Osyris = SUPER,
+						jasonfish4 = SUPER,
 					}
 -- Preset bans
 local bannedUsers = {'Scripth', 'Superburke1'}
@@ -43,11 +43,13 @@ function getPermissionsLevel(Player)
 end
 
 function GetMass(object)
-	local mass=0
-	pcall(function()
-		if object:IsA("BasePart") then mass = mass + object:GetMass() end
-		for _,child in pairs(object:GetChildren()) do mass = mass + GetMass(child) end
-	end)
+	local mass = 0
+	if object:IsA('BasePart') or object:IsA('UnionOperation') then
+		mass = mass + object:GetMass()
+	end
+	for _,v in pairs(object:GetChildren()) do
+		mass = mass + GetMass(v)
+	end
 	return mass
 end
 
@@ -79,6 +81,8 @@ local LoopHealed = {}
 local ShadowsInitial = Lighting.GlobalShadows
 local Faces = {}
 local Logs = {}
+local WarpPoints = {}
+local WarpPointsDS = DataStoreService:GetDataStore('RV_warpPointsDS')
 
 -- Set math.randomseed
 math.randomseed(tick())
@@ -90,6 +94,10 @@ local event = ReplicatedStorage:FindFirstChild("AdminEvent")
 if not event or not event:IsA("RemoteEvent") then
 	event = Instance.new("RemoteEvent", ReplicatedStorage)
 	event.Name = "AdminEvent"
+end
+
+if not HttpEnabled then
+	print('PLEASE ENABLE HTTPSERVICE FOR FULL FUNCTIONALITY')
 end
 
 -- Store all Commands in here. Use the "Kill" command as a template
@@ -524,6 +532,74 @@ local Commands = {
 			end
 		end
 	},
+	{
+		names = {"AddWarp", "AddWarpPoint"},
+		description = "Adds the location of the player's torso to the warp list, using the name given",
+		permissionsLevel = TEMP,
+		execute = function(speaker, message)
+			local Char = speaker.Character
+			if Char and Char:FindFirstChild('HumanoidRootPart') then
+				WarpPoints[stringTrim(message)] = Char.HumanoidRootPart.CFrame
+			end
+		end
+	},
+	{
+		names = {"Warp", "WarpTo"},
+		description = "Teleports the players to the given warp point",
+		permissionsLevel = TEMP,
+		execute = function(speaker, message)
+			local playerQuery, message = getPlayerQuery(speaker, message)
+			for _,v in pairs(playerQuery) do
+				local Char = v.Character
+				if Char and Char:FindFirstChild('HumanoidRootPart') then
+					local Target = WarpPoints[message]
+					if Target then
+						Char.HumanoidRootPart.CFrame = Target
+						return true
+					end
+					Target = WarpPointsDS:GetAsync(message)
+					if Target then
+						Char.HumanoidRootPart.CFrame = Target
+						return true
+					end
+					event:FireClient(speaker, 'Hint', 'Invalid warp point')
+				end
+			end
+		end
+	},
+	{
+		names = {'AddDSWarp', 'AddWarpDS', 'AddWarpPointDS', 'AddDSWarpPoint'},
+		description = 'Adds the location of the torso of the speaker to the datastore warp list, using the given name'
+		permissionsLevel = ADMIN,
+		execute = function(speaker, message)
+			local Char = speaker.Character
+			if Char and Char:FindFirstChild('HumanoidRootPart') then
+				WarpPointsDS:SetAsync(message, Char.HumanoidRootPart.CFrame)
+			end
+		end
+	},
+	{
+		names = {"Nil"},
+		description = "Nils the player's character",
+		permissionsLevel = TEMP,
+		execute = function(speaker, message)
+			local playerQuery, message = getPlayerQuery(speaker, message)
+			for i = 1, #playerQuery do
+				playerQuery[i].Character = nil
+			end
+		end
+	},
+	{
+		names = {"UnNil", "DeNil"},
+		description = "Loads the player's character",
+		permissionsLevel = TEMP,
+		execute = function(speaker, message)
+			local playerQuery, message = getPlayerQuery(speaker, message)
+			for i = 1, #playerQuery do
+				playerQuery[i]:LoadCharacter()
+			end
+		end
+	},
 
 	-- Humanoid Commands
 	{
@@ -675,7 +751,7 @@ local Commands = {
 		end
 	},
 	{
-		names = {"Name", "ChangeName"},
+		names = {"Name", "ChangeName", 'SetName'},
 		description = "Changes the player's name to the message",
 		permissionsLevel = TEMP,
 		execute = function(speaker, message)
@@ -683,7 +759,21 @@ local Commands = {
 			for i = 1, #playerQuery do
 				local Char = playerQuery[i].Character
 				if Char and Char:FindFirstChild("Head") and Char:FindFirstChild("Torso") and Char:FindFirstChild("Humanoid") then
-					--TODO: implement this stupid command
+					if Char:FindFirstChild('FakeName') then
+						Char.FakeName:Destroy()
+					end
+					local FakeName = Instance.new('Model', Char)
+					FakeName.Name = 'FakeName'
+					local FakeHead = Char.Head:Clone()
+					FakeHead.Parent = FakeName
+					local Humanoid = Instance.new('Humanoid', FakeName)
+					Humanoid.Name = 'FakeHumanoid'
+					Humanoid.MaxHealth = 0
+					Humanoid.Health = 0
+					local Weld = Instance.new('Weld', FakeHead)
+					Weld.Part0 = FakeHead
+					Weld.Part1 = Char.Head
+					Char.Head.Transparency = 1
 				end
 			end
 		end
@@ -696,8 +786,11 @@ local Commands = {
 			local playerQuery, message = getPlayerQuery(speaker, message)
 			for i = 1, #playerQuery do
 				local Char = playerQuery[i].Character
-				if Char and Char:FindFirstChild("Torso") and Char:FindFirstChild("Humanoid") then
-					--TODO: also implement this one
+				if Char and Char:FindFirstChild("Torso") and Char:FindFirstChild("Humanoid") and Char:FindFirstChild('Head') then
+					if Char:FindFirstChild('FakeName') then
+						Char.FakeName:Destroy()
+					end
+					Char.Head.Transparency = 0
 				end
 			end
 		end
