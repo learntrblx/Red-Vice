@@ -12,3 +12,5 @@ Current Free Services:
 
 Please contribute! The code's on Github for a reason.
 This includes submitting bug reports via Issues, they'll be fixed fairly quickly if reported that way.
+
+(Forked from CoffeeFlux)
