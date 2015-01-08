@@ -69,6 +69,7 @@ local MarketplaceService = game:GetService("MarketplaceService")
 local TeleportService = game:GetService("TeleportService")
 local DataStoreService = game:GetService("DataStoreService")
 local HttpService = game:GetService("HttpService")
+local StarterGui = game:GetService('StarterGui')
 
 local HttpEnabled, _ = pcall(function() HttpService:GetAsync("") end)
 
@@ -1577,6 +1578,10 @@ end
 Players.PlayerAdded:connect(playerAdded)
 for _, player in pairs(Players:GetPlayers()) do
 	playerAdded(player)
+end
+
+if script.Parent:FindFirstChild('Red Vice LocalScript') then
+	script.Parent['Red Vice LocalScript'].Parent = StarterGui
 end
 
 print("Red Vice Admin Commands Loaded")
